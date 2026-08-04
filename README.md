@@ -5,6 +5,15 @@ engagement point in Sweden paired with senior-led delivery from Sri Lanka.
 
 Plain Node.js. No build step, no bundler, no CSS framework. Edit a file, restart, done.
 
+## Related MassifyX Services
+
+This site is one piece of the MassifyX platform. Two decoupled microservices power it:
+
+| Service | Repo | Role |
+|---|---|---|
+| 🕵️ War Room | [`massifyx-warroom`](https://github.com/Viraj97-SL/massifyx-warroom) *(private)* | LangGraph deep-agent investigation service — turns one disruption incident into a cited impact briefing |
+| 📡 Intelligence Service (MIS) | [`massifyx-intelligence`](https://github.com/Viraj97-SL/massifyx-intelligence) | GDELT ingest + AI enrichment + read API powering this site's `/live` disruption monitor |
+
 ## Run it
 
 ```bash
