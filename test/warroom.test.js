@@ -23,6 +23,7 @@ let fakeWarroom;
 let fakeWarroomPort;
 let warroomShouldFail = false;
 let warroomRateLimited = false;
+let warroomUnauthorized = false;
 let lastCreatedJob = null;
 let app;
 let server;
@@ -43,6 +44,12 @@ function startFakeWarroom() {
           res.end(JSON.stringify({ error: 'rate limited' }));
           return;
         }
+        if (warroomUnauthorized) {
+          res.statusCode = 401;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ detail: 'invalid or missing API key' }));
+          return;
+        }
         let raw = '';
         req.on('data', (chunk) => { raw += chunk; });
         req.on('end', () => {
@@ -55,6 +62,12 @@ function startFakeWarroom() {
       }
 
       if (req.method === 'GET' && req.url === '/api/v1/investigations/wrj_test123') {
+        if (warroomUnauthorized) {
+          res.statusCode = 401;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ detail: 'invalid or missing API key' }));
+          return;
+        }
         res.setHeader('Content-Type', 'application/json');
         res.end(
           JSON.stringify({
@@ -299,6 +312,46 @@ test('GET /live/investigate/:jobId returns available:false (never 500) when War 
     assert.equal(body.available, false);
   } finally {
     warroomShouldFail = false;
+  }
+});
+
+// A wrong/mismatched WARROOM_API_KEY means War Room is reachable and
+// answering (401), not down -- but the client contract still has nowhere
+// to put "reachable but rejecting us" other than the same available:false
+// shape as a real outage, so this asserts the response shape stays sane
+// (never leaks the 401 detail body, never 500) while lib/warroomClient.js
+// logs the distinction server-side instead of staying silent.
+test('POST /live/investigate returns available:false (never leaks the 401 body) when WARROOM_API_KEY is rejected', async () => {
+  warroomUnauthorized = true;
+  try {
+    const res = await fetch(`${base}/live/investigate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Cookie: unlockedCookie },
+      body: JSON.stringify(validIncident)
+    });
+    const body = await res.json();
+    assert.equal(res.status, 200);
+    assert.deepEqual(body, { available: false });
+  } finally {
+    warroomUnauthorized = false;
+  }
+});
+
+// Same case but on the poll path: getInvestigation used to spread any
+// JSON body through as `{ available: true, ...json }` regardless of status,
+// so a 401 with a `{"detail": "..."}` body was forwarded as available:true
+// with no recognizable `status` -- which public/js/live-warroom.js then
+// rendered as "This investigation failed," implying the research itself
+// failed rather than an auth/config problem no retry will fix.
+test('GET /live/investigate/:jobId returns available:false (not a fake success) when WARROOM_API_KEY is rejected', async () => {
+  warroomUnauthorized = true;
+  try {
+    const res = await fetch(`${base}/live/investigate/wrj_test123`, { headers: { Cookie: unlockedCookie } });
+    const body = await res.json();
+    assert.equal(res.status, 200);
+    assert.deepEqual(body, { available: false });
+  } finally {
+    warroomUnauthorized = false;
   }
 });
 
