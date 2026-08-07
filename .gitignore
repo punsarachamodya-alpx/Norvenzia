@@ -3,6 +3,7 @@ node_modules/
 # Admin overrides and backups live on the server's disk, not in the repo.
 # See §17: hosts with an ephemeral filesystem discard these on redeploy.
 data/
+!.claude/skills/**/data/
 
 # Admin-uploaded images
 public/img/uploads/*
@@ -11,3 +12,12 @@ public/img/uploads/*
 npm-debug.log*
 .env
 .DS_Store
+
+# Ad-hoc local run artifacts (manual smoke checks).
+*.pid
+*.out.log
+*.err.log
+
+# Personal planning notes for the MIS fork-and-build workflow — not part of
+# the shared repo's history.
+docs/internal/
