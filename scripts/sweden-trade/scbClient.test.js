@@ -22,20 +22,20 @@ test('buildDataUrl never falls back to a bare "*" -- every code must be explicit
 });
 
 test('readFixture loads and parses a real committed fixture', () => {
-  const fixture = readFixture('tab3195-2024-raw.json');
+  const fixture = readFixture('se/tab3195-2024-raw.json');
   assert.equal(fixture.class, 'dataset');
   assert.ok(Array.isArray(fixture.value));
 });
 
-test('useFixtures reflects the SWEDEN_TRADE_USE_FIXTURE env var', () => {
-  const original = process.env.SWEDEN_TRADE_USE_FIXTURE;
+test('useFixtures reflects the TRADE_USE_FIXTURE env var', () => {
+  const original = process.env.TRADE_USE_FIXTURE;
   try {
-    delete process.env.SWEDEN_TRADE_USE_FIXTURE;
+    delete process.env.TRADE_USE_FIXTURE;
     assert.equal(useFixtures(), false);
-    process.env.SWEDEN_TRADE_USE_FIXTURE = '1';
+    process.env.TRADE_USE_FIXTURE = '1';
     assert.equal(useFixtures(), true);
   } finally {
-    if (original === undefined) delete process.env.SWEDEN_TRADE_USE_FIXTURE;
-    else process.env.SWEDEN_TRADE_USE_FIXTURE = original;
+    if (original === undefined) delete process.env.TRADE_USE_FIXTURE;
+    else process.env.TRADE_USE_FIXTURE = original;
   }
 });

@@ -17,25 +17,25 @@ function buildValidDataset() {
       latestYear: 2024,
       yearsCovered: [2022, 2023, 2024]
     },
-    hero: { year: 2024, totalImportsSek: 1000000, totalExportsSek: 1100000, tradeBalanceSek: 100000 },
+    hero: { year: 2024, totalImportsValue: 1000000, totalExportsValue: 1100000, tradeBalanceValue: 100000 },
     topGoodsCategories: [
-      { code: '7', label: 'Machinery', importValueSek: 600000, share: 0.6 },
-      { code: '5', label: 'Chemicals', importValueSek: 300000, share: 0.3 },
-      { code: '0', label: 'Food', importValueSek: 100000, share: 0.1 }
+      { code: '7', label: 'Machinery', importValue: 600000, share: 0.6 },
+      { code: '5', label: 'Chemicals', importValue: 300000, share: 0.3 },
+      { code: '0', label: 'Food', importValue: 100000, share: 0.1 }
     ],
     topPartners: [
-      { code: 'DE', label: 'Germany', importValueSek: 300000, exportValueSek: 200000, share: 0.3, lat: 52.52, lon: 13.405 },
-      { code: 'NL', label: 'Netherlands', importValueSek: 250000, exportValueSek: 150000, share: 0.25, lat: 52.37, lon: 4.9 },
-      { code: 'NO', label: 'Norway', importValueSek: 200000, exportValueSek: 190000, share: 0.2, lat: 59.91, lon: 10.75 },
-      { code: 'DK', label: 'Denmark', importValueSek: 100000, exportValueSek: 90000, share: 0.1, lat: 55.68, lon: 12.57 },
-      { code: 'FI', label: 'Finland', importValueSek: 50000, exportValueSek: 60000, share: 0.05, lat: 60.17, lon: 24.94 }
+      { code: 'DE', label: 'Germany', importValue: 300000, exportValue: 200000, share: 0.3, lat: 52.52, lon: 13.405 },
+      { code: 'NL', label: 'Netherlands', importValue: 250000, exportValue: 150000, share: 0.25, lat: 52.37, lon: 4.9 },
+      { code: 'NO', label: 'Norway', importValue: 200000, exportValue: 190000, share: 0.2, lat: 59.91, lon: 10.75 },
+      { code: 'DK', label: 'Denmark', importValue: 100000, exportValue: 90000, share: 0.1, lat: 55.68, lon: 12.57 },
+      { code: 'FI', label: 'Finland', importValue: 50000, exportValue: 60000, share: 0.05, lat: 60.17, lon: 24.94 }
     ],
     concentration: { top5PartnerImportShare: 0.9, top10PartnerImportShare: 0.9, hhiPartners: 2050, top5GoodsImportShare: 0.9 },
     balance: {
       years: [2022, 2023, 2024],
-      importsSek: [900000, 950000, 1000000],
-      exportsSek: [980000, 1050000, 1100000],
-      balanceSek: [80000, 100000, 100000]
+      importsValue: [900000, 950000, 1000000],
+      exportsValue: [980000, 1050000, 1100000],
+      balanceValue: [80000, 100000, 100000]
     },
     trend: {
       years: [2023, 2024],
@@ -57,29 +57,29 @@ test('a well-formed, internally-consistent dataset passes with zero errors', () 
 
 test('assertValid throws a single Error listing every problem when the dataset is invalid', () => {
   const data = clone(buildValidDataset());
-  data.hero.totalImportsSek = -5;
+  data.hero.totalImportsValue = -5;
   assert.throws(() => assertValid(data), /failed validation/);
 });
 
-test('rejects a negative hero.totalImportsSek', () => {
+test('rejects a negative hero.totalImportsValue', () => {
   const data = clone(buildValidDataset());
-  data.hero.totalImportsSek = -1;
+  data.hero.totalImportsValue = -1;
   const { errors } = validateDataset(data);
-  assert.ok(errors.some((e) => e.includes('hero.totalImportsSek')));
+  assert.ok(errors.some((e) => e.includes('hero.totalImportsValue')));
 });
 
-test('rejects a tradeBalanceSek that does not equal exports - imports', () => {
+test('rejects a tradeBalanceValue that does not equal exports - imports', () => {
   const data = clone(buildValidDataset());
-  data.hero.tradeBalanceSek = 999999;
+  data.hero.tradeBalanceValue = 999999;
   const { errors } = validateDataset(data);
-  assert.ok(errors.some((e) => e.includes('hero.tradeBalanceSek')));
+  assert.ok(errors.some((e) => e.includes('hero.tradeBalanceValue')));
 });
 
-test('rejects a negative topPartners importValueSek', () => {
+test('rejects a negative topPartners importValue', () => {
   const data = clone(buildValidDataset());
-  data.topPartners[0].importValueSek = -100;
+  data.topPartners[0].importValue = -100;
   const { errors } = validateDataset(data);
-  assert.ok(errors.some((e) => e.includes('importValueSek')));
+  assert.ok(errors.some((e) => e.includes('importValue')));
 });
 
 test('rejects topPartners not sorted descending', () => {
@@ -132,11 +132,11 @@ test('rejects balance.years that are not strictly ascending', () => {
   assert.ok(errors.some((e) => e.includes('not strictly ascending')));
 });
 
-test('rejects balance.balanceSek that does not equal exports - imports', () => {
+test('rejects balance.balanceValue that does not equal exports - imports', () => {
   const data = clone(buildValidDataset());
-  data.balance.balanceSek[2] = 12345;
+  data.balance.balanceValue[2] = 12345;
   const { errors } = validateDataset(data);
-  assert.ok(errors.some((e) => e.includes('does not equal exportsSek - importsSek')));
+  assert.ok(errors.some((e) => e.includes('does not equal exportsValue - importsValue')));
 });
 
 test('rejects a trend.years length that is not balance.years.length - 1', () => {
@@ -165,7 +165,7 @@ test('rejects meta.yearsCovered that does not match balance.years', () => {
 
 test('hard-fails (not just warns) when a cross-table total is wildly off, e.g. a unit-conversion bug', () => {
   const data = clone(buildValidDataset());
-  data.balance.importsSek[2] = data.hero.totalImportsSek * 1000; // simulate a forgotten/duplicated unit conversion
+  data.balance.importsValue[2] = data.hero.totalImportsValue * 1000; // simulate a forgotten/duplicated unit conversion
   const { errors } = validateDataset(data);
   assert.ok(errors.some((e) => e.includes('diverges') && e.includes('check table/unit')));
 });
@@ -173,7 +173,7 @@ test('hard-fails (not just warns) when a cross-table total is wildly off, e.g. a
 test('soft-warns (not errors) on the known, small TAB3197-vs-TAB3195 confidential-data gap', () => {
   const data = clone(buildValidDataset());
   // Shrink the goods total by ~4%, mirroring the real, expected, documented gap.
-  data.topGoodsCategories[2].importValueSek = 60000;
+  data.topGoodsCategories[2].importValue = 60000;
   data.topGoodsCategories[2].share = 0.06;
   const { errors, warnings } = validateDataset(data);
   assert.deepEqual(errors, []);

@@ -1,0 +1,26 @@
+[
+  {
+    "code": "SE",
+    "name": "Sweden",
+    "slug": "se",
+    "dataPath": "se.json"
+  },
+  {
+    "code": "DK",
+    "name": "Denmark",
+    "slug": "dk",
+    "dataPath": "dk.json"
+  },
+  {
+    "code": "FI",
+    "name": "Finland",
+    "slug": "fi",
+    "dataPath": "fi.json"
+  },
+  {
+    "code": "GB",
+    "name": "United Kingdom",
+    "slug": "uk",
+    "dataPath": "uk.json"
+  }
+]

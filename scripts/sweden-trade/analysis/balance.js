@@ -3,40 +3,47 @@
 // Trade-balance time series from TAB5390 rows (Imports/Exports/Net Trade
 // totals, one row per year per ImportExport code).
 
-const SEK_MILLION_TO_THOUSAND = 1000;
+const MILLION_TO_THOUSAND = 1000;
 
-// TAB5390 reports in SEK million; every other figure in the output file
-// (TAB3195/TAB3197-derived) is SEK thousand, so we convert here once, x1000
-// exactly (lossless), to keep the whole file in one consistent unit. This
-// is a unit conversion of a table's own reported number, not a rescale or
-// estimate of it.
-function buildBalanceSeries(rows, { importCode = 'ITOT', exportCode = 'ETOT', contentsCode }) {
+// TAB5390 reports its native unit in millions; every other figure in the
+// output file (TAB3195/TAB3197-derived) is in thousands, so we convert here
+// once, x1000 exactly (lossless), to keep the whole file in one consistent
+// unit. This is a unit conversion of a table's own reported number, not a
+// rescale or estimate of it. `unitMultiplier` makes that conversion factor
+// explicit rather than assuming every source reports in millions: it
+// defaults to MILLION_TO_THOUSAND (SCB's TAB5390), but DST's KN8Y reports
+// raw DKK (not millions) for the balance series, so
+// countries/denmark.config.js passes 0.001 instead (see its own comment for
+// the real-data confirmation). `importExportDim` is the row key holding the
+// import/export selector -- "ImportExport" for SCB's TAB5390 (default,
+// unchanged), "INDUD" for DST's KN8Y.
+function buildBalanceSeries(rows, { importCode = 'ITOT', exportCode = 'ETOT', contentsCode, unitMultiplier = MILLION_TO_THOUSAND, importExportDim = 'ImportExport', contentsCodeDim = 'ContentsCode' }) {
   const byYear = new Map();
   for (const row of rows) {
-    if (row.ContentsCode !== contentsCode) continue;
-    if (row.ImportExport !== importCode && row.ImportExport !== exportCode) continue;
+    if (row[contentsCodeDim] !== contentsCode) continue;
+    if (row[importExportDim] !== importCode && row[importExportDim] !== exportCode) continue;
     if (!byYear.has(row.Tid)) byYear.set(row.Tid, {});
     const entry = byYear.get(row.Tid);
-    if (row.ImportExport === importCode) entry.importsSek = row.value * SEK_MILLION_TO_THOUSAND;
-    if (row.ImportExport === exportCode) entry.exportsSek = row.value * SEK_MILLION_TO_THOUSAND;
+    if (row[importExportDim] === importCode) entry.importsValue = row.value * unitMultiplier;
+    if (row[importExportDim] === exportCode) entry.exportsValue = row.value * unitMultiplier;
   }
 
   const years = [...byYear.keys()].sort((a, b) => Number(a) - Number(b));
-  const importsSek = [];
-  const exportsSek = [];
-  const balanceSek = [];
+  const importsValue = [];
+  const exportsValue = [];
+  const balanceValue = [];
 
   for (const year of years) {
     const entry = byYear.get(year);
-    if (entry.importsSek == null || entry.exportsSek == null) {
+    if (entry.importsValue == null || entry.exportsValue == null) {
       throw new Error(`buildBalanceSeries: year ${year} is missing an imports or exports value`);
     }
-    importsSek.push(entry.importsSek);
-    exportsSek.push(entry.exportsSek);
-    balanceSek.push(entry.exportsSek - entry.importsSek);
+    importsValue.push(entry.importsValue);
+    exportsValue.push(entry.exportsValue);
+    balanceValue.push(entry.exportsValue - entry.importsValue);
   }
 
-  return { years: years.map(Number), importsSek, exportsSek, balanceSek };
+  return { years: years.map(Number), importsValue, exportsValue, balanceValue };
 }
 
 // Year-over-year % change: (thisYear - lastYear) / lastYear, per
@@ -48,14 +55,14 @@ function buildTrendSeries(balance) {
   const exportGrowthPct = [];
 
   for (let i = 1; i < balance.years.length; i++) {
-    const prevImports = balance.importsSek[i - 1];
-    const prevExports = balance.exportsSek[i - 1];
+    const prevImports = balance.importsValue[i - 1];
+    const prevExports = balance.exportsValue[i - 1];
     years.push(balance.years[i]);
-    importGrowthPct.push((balance.importsSek[i] - prevImports) / prevImports);
-    exportGrowthPct.push((balance.exportsSek[i] - prevExports) / prevExports);
+    importGrowthPct.push((balance.importsValue[i] - prevImports) / prevImports);
+    exportGrowthPct.push((balance.exportsValue[i] - prevExports) / prevExports);
   }
 
   return { years, importGrowthPct, exportGrowthPct };
 }
 
-module.exports = { buildBalanceSeries, buildTrendSeries, SEK_MILLION_TO_THOUSAND };
+module.exports = { buildBalanceSeries, buildTrendSeries, MILLION_TO_THOUSAND };

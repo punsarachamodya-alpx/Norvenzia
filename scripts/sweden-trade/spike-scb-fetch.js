@@ -8,14 +8,14 @@ const fs = require('fs');
 const path = require('path');
 const { parseJsonStat, dimensionLabels } = require('./jsonStatParser');
 
-const FIXTURE_PATH = path.join(__dirname, 'fixtures', 'tab3195-2024-raw.json');
+const FIXTURE_PATH = path.join(__dirname, 'fixtures', 'se', 'tab3195-2024-raw.json');
 const SCB_DATA_URL =
   'https://statistikdatabasen.scb.se/api/v2/tables/TAB3195/data' +
   '?lang=en&outputFormat=json-stat2' +
   '&valuecodes[Handelspartner]=*&valuecodes[ContentsCode]=*&valuecodes[Tid]=2024';
 
 async function fetchOrLoadFixture() {
-  if (process.env.SWEDEN_TRADE_USE_FIXTURE === '1') {
+  if (process.env.TRADE_USE_FIXTURE === '1') {
     return JSON.parse(fs.readFileSync(FIXTURE_PATH, 'utf8'));
   }
   const res = await fetch(SCB_DATA_URL);

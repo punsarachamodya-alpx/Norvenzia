@@ -1,16 +1,30 @@
-/* Sweden Trade Intelligence scrollytelling page.
+/* Trade Intelligence scrollytelling page (multi-country capable -- see
+   docs/internal/SWEDEN_TRADE_BUILD_INSTRUCTIONS.md).
    Reads the same pre-baked dataset the server rendered the readable,
    no-JS version of the page from (see the #story-data JSON island in
    views/story.ejs) and drives a sticky D3 chart as the reader scrolls past
    each .story__step, using public/js/story-engine.js as the scroll stepper.
    Every beat this file can render is conditional on the step actually
    existing in the DOM -- views/story.ejs only emits a step when its backing
-   array in sweden-trade.json is non-empty, so an empty/pending array (see
-   meta.pending) here just means fewer scenes get wired up, never a broken
-   or blank sticky panel. Nothing here invents a number: every value comes
-   straight out of the JSON island. */
+   array in the dataset is non-empty, so an empty/pending array here just
+   means fewer scenes get wired up, never a broken or blank sticky panel.
+   Nothing here invents a number: every value, including the country name and
+   currency code, comes straight out of the JSON island's `meta` block. */
 (function () {
   'use strict';
+
+  // Country dropdown (views/story.ejs's #storyCountrySelect) navigates on
+  // change -- wired here rather than an inline onchange="" attribute because
+  // this site's CSP sets script-src-attr 'none' (server.js), which silently
+  // drops inline event handlers. Kept ahead of the `d3` gate below and
+  // independent of the chart/step wiring so the dropdown still works even
+  // if the chart bundle fails to load for any reason.
+  var countrySelect = document.getElementById('storyCountrySelect');
+  if (countrySelect) {
+    countrySelect.addEventListener('change', function () {
+      if (this.value) window.location.href = '/insights/trade/' + this.value;
+    });
+  }
 
   if (typeof d3 === 'undefined') return;
 
@@ -38,19 +52,21 @@
   var svg = d3.select(svgEl);
 
   // ------------------------------------------------------------ formatting
-  // Mirrors the formatSek/formatPct helpers in views/story.ejs -- the two
-  // runtimes (server-rendered prose, client-rendered chart labels) format
-  // independently, but from the same source numbers and the same rules.
+  // Mirrors the formatCurrency/formatPct helpers in views/story.ejs -- the
+  // two runtimes (server-rendered prose, client-rendered chart labels)
+  // format independently, but from the same source numbers and the same
+  // rules. Currency code comes from trade.meta.currency, not hardcoded.
 
-  function formatSek(thousandsSek) {
-    if (typeof thousandsSek !== 'number' || !isFinite(thousandsSek)) return '—';
-    var sek = thousandsSek * 1000;
-    var abs = Math.abs(sek);
-    var sign = sek < 0 ? '-' : '';
-    if (abs >= 1e12) return sign + 'SEK ' + (abs / 1e12).toFixed(2) + 'tn';
-    if (abs >= 1e9) return sign + 'SEK ' + (abs / 1e9).toFixed(1) + 'bn';
-    if (abs >= 1e6) return sign + 'SEK ' + (abs / 1e6).toFixed(1) + 'm';
-    return sign + 'SEK ' + Math.round(abs).toLocaleString('en-US');
+  function formatCurrency(thousandsValue, currencyCode) {
+    if (typeof thousandsValue !== 'number' || !isFinite(thousandsValue)) return '—';
+    var units = thousandsValue * 1000;
+    var abs = Math.abs(units);
+    var sign = units < 0 ? '-' : '';
+    var code = currencyCode || '';
+    if (abs >= 1e12) return sign + code + ' ' + (abs / 1e12).toFixed(2) + 'tn';
+    if (abs >= 1e9) return sign + code + ' ' + (abs / 1e9).toFixed(1) + 'bn';
+    if (abs >= 1e6) return sign + code + ' ' + (abs / 1e6).toFixed(1) + 'm';
+    return sign + code + ' ' + Math.round(abs).toLocaleString('en-US');
   }
 
   function formatPct(fraction, digits) {
@@ -244,6 +260,9 @@
 
   // ------------------------------------------------------------------ data
 
+  var meta = trade.meta || {};
+  var currency = meta.currency || '';
+  var countryName = meta.country || 'the country';
   var hero = trade.hero || {};
   var topGoods = Array.isArray(trade.topGoodsCategories) ? trade.topGoodsCategories : [];
   var topPartners = Array.isArray(trade.topPartners) ? trade.topPartners : [];
@@ -251,21 +270,25 @@
   var balance = trade.balance || {};
   var trend = trade.trend || {};
 
+  function fmt(thousandsValue) {
+    return formatCurrency(thousandsValue, currency);
+  }
+
   // -------------------------------------------------------------- scenes
 
   var scenes = {
     hook: function () {
-      var isSurplus = typeof hero.tradeBalanceSek === 'number' && hero.tradeBalanceSek >= 0;
+      var isSurplus = typeof hero.tradeBalanceValue === 'number' && hero.tradeBalanceValue >= 0;
       renderBars([
-        { label: 'Imports', value: hero.totalImportsSek || 0, valueLabel: formatSek(hero.totalImportsSek), highlight: !isSurplus },
-        { label: 'Exports', value: hero.totalExportsSek || 0, valueLabel: formatSek(hero.totalExportsSek), highlight: isSurplus }
+        { label: 'Imports', value: hero.totalImportsValue || 0, valueLabel: fmt(hero.totalImportsValue), highlight: !isSurplus },
+        { label: 'Exports', value: hero.totalExportsValue || 0, valueLabel: fmt(hero.totalExportsValue), highlight: isSurplus }
       ]);
-      setStat(formatSek(hero.totalImportsSek));
+      setStat(fmt(hero.totalImportsValue));
       setAnnotation(
-        (isSurplus ? 'Trade surplus of ' : 'Trade deficit of ') + formatSek(Math.abs(hero.tradeBalanceSek)) + ' in ' + hero.year + '.'
+        (isSurplus ? 'Trade surplus of ' : 'Trade deficit of ') + fmt(Math.abs(hero.tradeBalanceValue)) + ' in ' + hero.year + '.'
       );
-      setCaption('Source: SCB, ' + hero.year + ' total goods trade');
-      svgEl.setAttribute('aria-label', 'Bar chart comparing total Swedish imports and exports for ' + hero.year);
+      setCaption('Source: ' + (meta.source || '') + ', ' + hero.year + ' total goods trade');
+      svgEl.setAttribute('aria-label', 'Bar chart comparing total ' + countryName + ' imports and exports for ' + hero.year);
     },
 
     goods: function () {
@@ -273,13 +296,13 @@
       var top10 = topGoods.slice(0, 10);
       renderBars(
         top10.map(function (g, i) {
-          return { label: g.label, value: g.importValueSek, valueLabel: formatSek(g.importValueSek), highlight: i === 0 };
+          return { label: g.label, value: g.importValue, valueLabel: fmt(g.importValue), highlight: i === 0 };
         })
       );
       setStat(formatPct(top10[0].share));
-      setAnnotation(top10[0].label + ' is Sweden’s largest import category, ' + formatPct(top10[0].share) + ' of the total.');
-      setCaption('Source: SCB, top ' + top10.length + ' import categories by value, ' + hero.year);
-      svgEl.setAttribute('aria-label', 'Bar chart ranking Sweden’s top import goods categories by value');
+      setAnnotation(top10[0].label + ' is ' + countryName + '’s largest import category, ' + formatPct(top10[0].share) + ' of the total.');
+      setCaption('Source: ' + (meta.source || '') + ', top ' + top10.length + ' import categories by value, ' + hero.year);
+      svgEl.setAttribute('aria-label', 'Bar chart ranking ' + countryName + '’s top import goods categories by value');
     },
 
     partners: function () {
@@ -287,13 +310,13 @@
       var top10 = topPartners.slice(0, 10);
       renderBars(
         top10.map(function (p, i) {
-          return { label: p.label, value: p.importValueSek, valueLabel: formatSek(p.importValueSek), highlight: i === 0 };
+          return { label: p.label, value: p.importValue, valueLabel: fmt(p.importValue), highlight: i === 0 };
         })
       );
       setStat(formatPct(top10[0].share));
-      setAnnotation(top10[0].label + ' alone supplies ' + formatPct(top10[0].share) + ' of everything Sweden imports.');
-      setCaption('Source: SCB, top ' + top10.length + ' import partners by value, ' + hero.year);
-      svgEl.setAttribute('aria-label', 'Bar chart ranking Sweden’s top import trading partners by value');
+      setAnnotation(top10[0].label + ' alone supplies ' + formatPct(top10[0].share) + ' of everything ' + countryName + ' imports.');
+      setCaption('Source: ' + (meta.source || '') + ', top ' + top10.length + ' import partners by value, ' + hero.year);
+      svgEl.setAttribute('aria-label', 'Bar chart ranking ' + countryName + '’s top import trading partners by value');
     },
 
     concentration: function () {
@@ -305,9 +328,9 @@
       ]);
       setStat(formatPct(concentration.top5PartnerImportShare));
       var hhiNote = typeof concentration.hhiPartners === 'number' ? ' HHI ' + Math.round(concentration.hhiPartners) + '.' : '';
-      setAnnotation('5 countries account for ' + formatPct(concentration.top5PartnerImportShare) + ' of Swedish imports.' + hhiNote);
-      setCaption('Source: SCB, import-value share by partner, ' + hero.year);
-      svgEl.setAttribute('aria-label', 'Bar chart showing the share of Swedish imports held by the top 5 trading partners versus all others');
+      setAnnotation('5 countries account for ' + formatPct(concentration.top5PartnerImportShare) + ' of ' + countryName + ' imports.' + hhiNote);
+      setCaption('Source: ' + (meta.source || '') + ', import-value share by partner, ' + hero.year);
+      svgEl.setAttribute('aria-label', 'Bar chart showing the share of ' + countryName + ' imports held by the top 5 trading partners versus all others');
     },
 
     balance: function () {
@@ -316,18 +339,18 @@
         return balance.years.map(function (year, i) { return { x: year, y: (arr && arr[i]) || 0 }; });
       };
       renderLines([
-        { name: 'imports', className: 'story-line--imports', points: points(balance.importsSek) },
-        { name: 'exports', className: 'story-line--exports', points: points(balance.exportsSek) }
+        { name: 'imports', className: 'story-line--imports', points: points(balance.importsValue) },
+        { name: 'exports', className: 'story-line--exports', points: points(balance.exportsValue) }
       ]);
       var lastIndex = balance.years.length - 1;
-      var lastBalance = Array.isArray(balance.balanceSek) ? balance.balanceSek[lastIndex] : null;
-      setStat(formatSek(lastBalance));
+      var lastBalance = Array.isArray(balance.balanceValue) ? balance.balanceValue[lastIndex] : null;
+      setStat(fmt(lastBalance));
       setAnnotation(
         'Imports (grey) vs. exports (cyan), ' + balance.years[0] + '–' + balance.years[lastIndex] + '. ' +
           (typeof lastBalance === 'number' && lastBalance >= 0 ? 'Latest year: surplus.' : 'Latest year: deficit.')
       );
-      setCaption('Source: SCB, annual trade balance');
-      svgEl.setAttribute('aria-label', 'Line chart of Swedish imports and exports over time');
+      setCaption('Source: ' + (meta.source || '') + ', annual trade balance');
+      svgEl.setAttribute('aria-label', 'Line chart of ' + countryName + ' imports and exports over time');
     },
 
     trend: function () {
@@ -343,8 +366,8 @@
       var lastImportGrowth = Array.isArray(trend.importGrowthPct) ? trend.importGrowthPct[lastIndex] : null;
       setStat(typeof lastImportGrowth === 'number' ? (lastImportGrowth >= 0 ? '+' : '') + lastImportGrowth.toFixed(1) + '%' : '—');
       setAnnotation('Year-over-year change in imports (grey) vs. exports (cyan), ' + trend.years[0] + '–' + trend.years[lastIndex] + '.');
-      setCaption('Source: SCB, YoY % change');
-      svgEl.setAttribute('aria-label', 'Line chart of year-over-year percentage change in Swedish imports and exports');
+      setCaption('Source: ' + (meta.source || '') + ', YoY % change');
+      svgEl.setAttribute('aria-label', 'Line chart of year-over-year percentage change in ' + countryName + ' imports and exports');
     },
 
     sowhat: function () {

@@ -1,0 +1,1 @@
+{"@odata.context":"https://api.uktradeinfo.com/$metadata#OTS(FlowTypeId,TotalValue)","value":[{"@odata.id":null,"FlowTypeId":1,"TotalValue":327870927952.0},{"@odata.id":null,"FlowTypeId":2,"TotalValue":180607698550.0},{"@odata.id":null,"FlowTypeId":3,"TotalValue":395137398909.0},{"@odata.id":null,"FlowTypeId":4,"TotalValue":245633993280.0}]}

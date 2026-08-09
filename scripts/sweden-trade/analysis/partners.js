@@ -1,44 +1,54 @@
 'use strict';
 
-// Partner rankings and concentration from TAB3195 rows (trading partner x
-// import/export value, one year). "TOT" is the all-partners aggregate row
-// SCB includes -- excluded from rankings so it never masquerades as a real
+// Partner rankings and concentration from TAB3195-shaped rows (trading
+// partner x import/export value, one year). "TOT" is the all-partners
+// aggregate row every source table used here includes (SCB's TAB3195, DST's
+// KN8Y) -- excluded from rankings so it never masquerades as a real
 // country, but used as the reconciliation total.
+//
+// `partnerDim`/`contentsCodeDim` are the row keys holding the partner code
+// and the import/export selector, respectively -- SCB's PxWebApi tables
+// literally call these "Handelspartner"/"ContentsCode" (the defaults below,
+// preserving every existing call site unchanged), but they're real,
+// source-specific dimension ids, not universal constants: DST's tables use
+// "LAND"/"INDUD" instead (see countries/denmark.config.js's partnerDim/
+// contentsCodeDim). A second source with yet another naming convention
+// passes its own via these options -- never hardcode a third literal here.
 
 const { share, herfindahlHirschmanIndex } = require('./concentration');
 
 const TOTAL_PARTNER_CODE = 'TOT';
 
-function findTotalImports(rows, importContentsCode) {
-  const totRow = rows.find((r) => r.Handelspartner === TOTAL_PARTNER_CODE && r.ContentsCode === importContentsCode);
+function findTotalImports(rows, importContentsCode, { partnerDim = 'Handelspartner', contentsCodeDim = 'ContentsCode' } = {}) {
+  const totRow = rows.find((r) => r[partnerDim] === TOTAL_PARTNER_CODE && r[contentsCodeDim] === importContentsCode);
   if (!totRow) throw new Error('findTotalImports: no TOT row found for the given import ContentsCode');
   return totRow.value;
 }
 
 // Import value per real (non-aggregate) partner, keyed by ISO country code.
-function extractImportValuesByPartner(rows, importContentsCode) {
+function extractImportValuesByPartner(rows, importContentsCode, { partnerDim = 'Handelspartner', contentsCodeDim = 'ContentsCode' } = {}) {
   const byCountry = new Map();
   for (const row of rows) {
-    if (row.Handelspartner === TOTAL_PARTNER_CODE) continue;
-    if (row.ContentsCode !== importContentsCode) continue;
+    if (row[partnerDim] === TOTAL_PARTNER_CODE) continue;
+    if (row[contentsCodeDim] !== importContentsCode) continue;
     if (row.value == null) continue;
-    byCountry.set(row.Handelspartner, row.value);
+    byCountry.set(row[partnerDim], row.value);
   }
   return byCountry;
 }
 
 // Import + export value per real partner, keyed by ISO country code.
-function extractPartnerValues(rows, { importContentsCode, exportContentsCode }) {
+function extractPartnerValues(rows, { importContentsCode, exportContentsCode, partnerDim = 'Handelspartner', contentsCodeDim = 'ContentsCode' }) {
   const byCountry = new Map();
   for (const row of rows) {
-    if (row.Handelspartner === TOTAL_PARTNER_CODE) continue;
-    if (row.ContentsCode !== importContentsCode && row.ContentsCode !== exportContentsCode) continue;
-    if (!byCountry.has(row.Handelspartner)) {
-      byCountry.set(row.Handelspartner, { importValueSek: null, exportValueSek: null });
+    if (row[partnerDim] === TOTAL_PARTNER_CODE) continue;
+    if (row[contentsCodeDim] !== importContentsCode && row[contentsCodeDim] !== exportContentsCode) continue;
+    if (!byCountry.has(row[partnerDim])) {
+      byCountry.set(row[partnerDim], { importValue: null, exportValue: null });
     }
-    const entry = byCountry.get(row.Handelspartner);
-    if (row.ContentsCode === importContentsCode) entry.importValueSek = row.value;
-    if (row.ContentsCode === exportContentsCode) entry.exportValueSek = row.value;
+    const entry = byCountry.get(row[partnerDim]);
+    if (row[contentsCodeDim] === importContentsCode) entry.importValue = row.value;
+    if (row[contentsCodeDim] === exportContentsCode) entry.exportValue = row.value;
   }
   return byCountry;
 }
@@ -46,13 +56,13 @@ function extractPartnerValues(rows, { importContentsCode, exportContentsCode }) 
 // Top-N partners by import value, with the label + coordinate lookups the
 // schema requires. Throws rather than inventing a lat/lon if a top-N
 // partner has no configured coordinates.
-function topPartnersByImportValue(rows, { importContentsCode, exportContentsCode, labels, coords, n = 10 }) {
-  const totalImports = findTotalImports(rows, importContentsCode);
-  const byCountry = extractPartnerValues(rows, { importContentsCode, exportContentsCode });
+function topPartnersByImportValue(rows, { importContentsCode, exportContentsCode, labels, coords, n = 10, partnerDim = 'Handelspartner', contentsCodeDim = 'ContentsCode' }) {
+  const totalImports = findTotalImports(rows, importContentsCode, { partnerDim, contentsCodeDim });
+  const byCountry = extractPartnerValues(rows, { importContentsCode, exportContentsCode, partnerDim, contentsCodeDim });
 
   const ranked = [...byCountry.entries()]
-    .filter(([, v]) => v.importValueSek != null)
-    .sort((a, b) => b[1].importValueSek - a[1].importValueSek)
+    .filter(([, v]) => v.importValue != null)
+    .sort((a, b) => b[1].importValue - a[1].importValue)
     .slice(0, n);
 
   return ranked.map(([code, v]) => {
@@ -69,9 +79,9 @@ function topPartnersByImportValue(rows, { importContentsCode, exportContentsCode
       // of the Netherlands " has a trailing space in the source) -- this is
       // formatting hygiene on a real label, never a rewording of it.
       label: (labels[code] || code).trim(),
-      importValueSek: v.importValueSek,
-      exportValueSek: v.exportValueSek,
-      share: share(v.importValueSek, totalImports),
+      importValue: v.importValue,
+      exportValue: v.exportValue,
+      share: share(v.importValue, totalImports),
       lat: coord.lat,
       lon: coord.lon
     };
@@ -80,9 +90,9 @@ function topPartnersByImportValue(rows, { importContentsCode, exportContentsCode
 
 // Concentration over ALL real partners (not just the top N), per
 // SWEDEN_TRADE_SCHEMA.md.
-function partnerConcentration(rows, { importContentsCode, top5N = 5, top10N = 10 }) {
-  const totalImports = findTotalImports(rows, importContentsCode);
-  const importValues = [...extractImportValuesByPartner(rows, importContentsCode).values()];
+function partnerConcentration(rows, { importContentsCode, top5N = 5, top10N = 10, partnerDim = 'Handelspartner', contentsCodeDim = 'ContentsCode' }) {
+  const totalImports = findTotalImports(rows, importContentsCode, { partnerDim, contentsCodeDim });
+  const importValues = [...extractImportValuesByPartner(rows, importContentsCode, { partnerDim, contentsCodeDim }).values()];
   const sorted = [...importValues].sort((a, b) => b - a);
 
   const top5Sum = sorted.slice(0, top5N).reduce((sum, v) => sum + v, 0);

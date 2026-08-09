@@ -31,17 +31,17 @@ test('resolveSelection throws if a mandatory dimension has no selection (mirrors
 // Runs the full ingest pipeline against the committed TAB3195 fixture, with
 // no live network call (fixture mode forces every fetch to read from disk).
 test('ingestTable replays a real fixture end to end and produces parsed rows', async (t) => {
-  const original = process.env.SWEDEN_TRADE_USE_FIXTURE;
-  process.env.SWEDEN_TRADE_USE_FIXTURE = '1';
+  const original = process.env.TRADE_USE_FIXTURE;
+  process.env.TRADE_USE_FIXTURE = '1';
   t.after(() => {
-    if (original === undefined) delete process.env.SWEDEN_TRADE_USE_FIXTURE;
-    else process.env.SWEDEN_TRADE_USE_FIXTURE = original;
+    if (original === undefined) delete process.env.TRADE_USE_FIXTURE;
+    else process.env.TRADE_USE_FIXTURE = original;
   });
 
   const result = await ingestTable(
     'TAB3195',
     { Handelspartner: '*', ContentsCode: '*', Tid: ['2024'] },
-    { metadataFixture: 'tab3195-metadata.json', chunkFixtures: ['tab3195-2024-raw.json'] }
+    { metadataFixture: 'se/tab3195-metadata.json', chunkFixtures: ['se/tab3195-2024-raw.json'] }
   );
 
   assert.equal(result.chunkCount, 1);

@@ -8,7 +8,7 @@ const { parseJsonStat, dimensionLabels } = require('./jsonStatParser');
 const { topPartnersByImportValue, partnerConcentration, findTotalImports } = require('./analysis/partners');
 const coords = require('./coords');
 
-const FIXTURE_PATH = path.join(__dirname, 'fixtures', 'tab3195-2024-raw.json');
+const FIXTURE_PATH = path.join(__dirname, 'fixtures', 'se', 'tab3195-2024-raw.json');
 const IMPORT_CODE = 'HA0201J8';
 const EXPORT_CODE = 'HA0201J9';
 
@@ -30,8 +30,8 @@ test('topPartnersByImportValue reproduces the already-verified 2024 top 10', () 
   assert.deepEqual(top.map((p) => p.code), ['DE', 'NL', 'NO', 'DK', 'CN', 'FI', 'BE', 'PL', 'GB', 'US']);
 
   assert.equal(top[0].label, 'Germany');
-  assert.equal(top[0].importValueSek, 322527320);
-  assert.equal(top[0].exportValueSek, 211056386);
+  assert.equal(top[0].importValue, 322527320);
+  assert.equal(top[0].exportValue, 211056386);
   assert.ok(Math.abs(top[0].share - 0.1607) < 0.0001);
   assert.equal(top[0].lat, 52.52);
   assert.equal(top[0].lon, 13.405);
@@ -41,14 +41,14 @@ test('topPartnersByImportValue reproduces the already-verified 2024 top 10', () 
   // been in the pre-Stage-2 content/sweden-trade-data.json; that null did
   // not match the underlying TAB3195 data.
   const china = top.find((p) => p.code === 'CN');
-  assert.equal(china.exportValueSek, 76215988);
+  assert.equal(china.exportValue, 76215988);
 });
 
 test('topPartnersByImportValue is sorted strictly descending by import value', () => {
   const { rows, labels } = loadRows();
   const top = topPartnersByImportValue(rows, { importContentsCode: IMPORT_CODE, exportContentsCode: EXPORT_CODE, labels, coords, n: 10 });
   for (let i = 1; i < top.length; i++) {
-    assert.ok(top[i].importValueSek <= top[i - 1].importValueSek);
+    assert.ok(top[i].importValue <= top[i - 1].importValue);
   }
 });
 
