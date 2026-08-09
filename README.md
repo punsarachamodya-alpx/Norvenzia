@@ -8,13 +8,12 @@ Plain Node.js. No build step, no bundler, no CSS framework. Edit a file, restart
 ![Homepage](public/img/readme/homepage.jpg)
 
 **Intelligence pages** — `/live`'s global disruption map, feed search/sort, and the
-War Room AI-investigation feature (see "Intelligence" below), all real screenshots
-of the running site:
+War Room AI-investigation feature (see "Intelligence" below). The map below is a
+real screenshot of the running site; the War Room result panels on `/live` itself
+are the product's own real UI classes rendered with illustrative sample data, not
+screenshots — see the comments in `views/live.ejs` and `public/css/styles.css`:
 
-| | |
-|---|---|
-| ![Live disruption map](public/img/warroom/warroom-map-overview.jpg) | ![Feed search and sort](public/img/warroom/warroom-search-sort.jpg) |
-| ![Real severity verdict](public/img/warroom/warroom-severe-impact.jpg) | ![Cited sources and actions](public/img/warroom/warroom-sources-panel.jpg) |
+![Live disruption map](public/img/warroom/warroom-map-overview.jpg)
 
 ## Run it
 

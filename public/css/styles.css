@@ -3028,10 +3028,12 @@ button {
    (section 29) -- a visitor who never clicks a marker has no way to know
    it exists. This section makes the capability visible on the page itself,
    in the site's normal light editorial register. The preview card on the
-   right is deliberately a dark surface (same --navy-deep as the real
-   popup, section 28) so the real .warroom-impact-badge/-strip/-sources
-   classes nested inside it render pixel-identical to production instead of
-   needing a screenshot or any stock imagery (this site's "No photography"
+   right holds a 4-slide carousel: slide 1 is a real screenshot of the live
+   disruption map. Slides 2-4 (.warroom-slider__slide--panel) are a dark
+   surface (same --navy-deep as the real popup, section 28) so the real
+   .warroom-impact-badge/-strip/-sources/-table/-actions classes nested
+   inside them render pixel-identical to production instead of needing more
+   screenshots or any stock imagery (this site's "No photography"
    constraint applies here too) -- it's the product's own real UI with
    static, clearly-labeled illustrative content. */
 .section--warroom-intro {
@@ -3091,21 +3093,15 @@ button {
   box-shadow: 0 16px 32px -16px rgba(6, 15, 38, 0.6);
 }
 
-.warroom-intro__preview-label {
-  margin: 0 0 0.85rem;
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.45);
-}
-
-/* Real product screenshots (not stock imagery -- see live.ejs's comment on
-   this block), scroll-snap carousel so it works with zero JS as a bare
-   swipeable/scrollable strip; the prev/next buttons (wired in live.js) are
-   a progressive enhancement on top, not load-bearing. Slides are plain
-   white cards floating on the dark preview surface -- most of these
-   screenshots have their own white chrome (browser/page background), so a
-   white card frame reads as intentional, not a mismatched background. */
+/* Slide 1 is a real product screenshot (not stock imagery -- see live.ejs's
+   comment on this block); slides 2-4 are illustrative UI panels, not
+   screenshots (see .warroom-slider__slide--panel below). Scroll-snap
+   carousel so it works with zero JS as a bare swipeable/scrollable strip;
+   the prev/next buttons (wired in live.js) are a progressive enhancement on
+   top, not load-bearing. The image slide is a plain white card floating on
+   the dark preview surface -- it has its own white chrome (browser/page
+   background), so a white card frame reads as intentional, not a
+   mismatched background. */
 .warroom-slider {
   display: flex;
   align-items: center;
@@ -3148,6 +3144,36 @@ button {
   font-size: 0.78rem;
   color: var(--ink-muted);
   border-top: 1px solid var(--rule);
+}
+
+/* Slides 2-4: illustrative UI panels instead of screenshots (see the
+   section comment above and live.ejs). Same dark surface as
+   .warroom-intro__preview/the real popup (--navy-deep, section 28) so the
+   real .warroom-impact-badge/-strip/-sources/-table/-actions classes
+   render pixel-identical to production. min-height matches the image
+   slide's fixed 300px height so the scroll-snap carousel doesn't jump in
+   height when it reaches these slides. */
+.warroom-slider__slide--panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
+  padding: 1.1rem 1.2rem;
+  background: var(--navy-deep, #0a1628);
+}
+
+.warroom-slider__slide-label {
+  margin: 0 0 0.85rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.warroom-slider__slide--panel figcaption {
+  margin-top: auto;
+  padding: 0.65rem 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.55);
 }
 
 .warroom-slider__nav {
