@@ -11,7 +11,7 @@
 <section class="section">
   <div class="shell">
     <% if (submitted) { %>
-      <div class="success-panel">
+      <div class="success-panel reveal">
         <span class="eyebrow">Message sent</span>
         <h2 class="display-2" style="font-size:clamp(1.7rem,3vw,2.4rem);"><%= page.success.headline %></h2>
         <p class="lede" style="margin-top:1.2rem;"><%= page.success.body %></p>
@@ -21,7 +21,7 @@
       </div>
     <% } else { %>
       <div class="contact-grid">
-        <div>
+        <div class="reveal">
           <% if (Object.keys(errors).length) { %>
             <p class="form-error-summary" role="alert">
               Please check the highlighted fields and try again.
@@ -65,7 +65,7 @@
           </form>
         </div>
 
-        <aside>
+        <aside class="reveal">
           <%# Omitted entirely until a real booking URL is configured — no
               placeholder, and never a broken iframe. %>
           <% if (page.bookingEmbedUrl) { %>
