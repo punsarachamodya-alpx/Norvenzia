@@ -50,7 +50,9 @@
     <div class="service-rows">
       <% page.services.items.forEach(function (item, i) { %>
         <article class="service-row <%= i % 2 === 1 ? 'service-row--reverse' : '' %>">
-          <div class="service-row__media photo-slot" data-photo-hint="<%= item.photoHint %>" role="img" aria-label="<%= item.name %>"></div>
+          <div class="service-row__media">
+            <img src="<%= item.photo %>" alt="<%= item.name %>" width="1024" height="768">
+          </div>
           <div class="service-row__copy">
             <span class="service-row__category"><%= item.category %></span>
             <h3 class="service-row__name"><%= item.name %></h3>

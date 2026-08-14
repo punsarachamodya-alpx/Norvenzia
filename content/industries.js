@@ -19,7 +19,7 @@ module.exports = {
     {
       slug: 'manufacturing',
       name: 'Manufacturing',
-      image: '/img/industries/manufacturing.svg',
+      image: '/img/photos/industry-manufacturing.jpg',
       icon: '', // optional: overrides the built-in line icon
       painPoints: [
         'Purchasing spread across plant-level spreadsheets with no consolidated spend view.',
@@ -30,7 +30,7 @@ module.exports = {
     {
       slug: 'medical-devices',
       name: 'Medical Devices',
-      image: '/img/industries/medical-devices.svg',
+      image: '/img/photos/industry-medical-devices.jpg',
       icon: '', // optional: overrides the built-in line icon
       painPoints: [
         'Supplier qualification and documentation overhead that outpaces a lean procurement team.',
@@ -41,7 +41,7 @@ module.exports = {
     {
       slug: 'renewable-energy',
       name: 'Renewable Energy',
-      image: '/img/industries/renewable-energy.svg',
+      image: '/img/photos/industry-renewable-energy.jpg',
       icon: '', // optional: overrides the built-in line icon
       painPoints: [
         'Fast-scaling procurement volume outpacing the internal team that originally set it up.',
@@ -52,7 +52,7 @@ module.exports = {
     {
       slug: 'automotive-suppliers',
       name: 'Automotive Suppliers',
-      image: '/img/industries/automotive-suppliers.svg',
+      image: '/img/photos/industry-automotive-suppliers.jpg',
       icon: '', // optional: overrides the built-in line icon
       painPoints: [
         'Tier-2/3 supplier management stretched thin against OEM delivery windows.',
@@ -63,7 +63,7 @@ module.exports = {
     {
       slug: 'electronics-ems',
       name: 'Electronics / EMS',
-      image: '/img/industries/electronics-ems.svg',
+      image: '/img/photos/industry-electronics-ems.jpg',
       icon: '', // optional: overrides the built-in line icon
       painPoints: [
         'Component sourcing across volatile lead times with no dedicated analyst tracking it.',
@@ -74,7 +74,7 @@ module.exports = {
     {
       slug: 'fmcg',
       name: 'FMCG',
-      image: '/img/industries/fmcg.svg',
+      image: '/img/photos/industry-fmcg.jpg',
       icon: '', // optional: overrides the built-in line icon
       painPoints: [
         'High SKU count driving procurement admin a lean team can’t keep pace with.',
@@ -85,7 +85,7 @@ module.exports = {
     {
       slug: 'food-production',
       name: 'Food Production',
-      image: '/img/industries/food-production.svg',
+      image: '/img/photos/industry-food-production.jpg',
       icon: '', // optional: overrides the built-in line icon
       painPoints: [
         'Supplier onboarding and documentation cycles competing with seasonal production pressure.',
@@ -96,7 +96,7 @@ module.exports = {
     {
       slug: 'e-commerce',
       name: 'E-commerce',
-      image: '/img/industries/e-commerce.svg',
+      image: '/img/photos/industry-e-commerce.jpg',
       icon: '', // optional: overrides the built-in line icon
       painPoints: [
         'Inventory and demand planning that hasn’t kept pace with order volume growth.',

@@ -67,7 +67,7 @@ module.exports = {
           'RFQ and RFP support',
           'Master data upkeep'
         ],
-        photoHint: 'Photo: a procurement analyst reviewing PO documents at a desk — /img/photos/service-core.jpg'
+        photo: '/img/photos/service-core.jpg'
       },
       {
         category: 'MOVE',
@@ -77,7 +77,7 @@ module.exports = {
           'Order management, tracked end to end',
           'Carrier and freight follow-up'
         ],
-        photoHint: 'Photo: a logistics coordinator checking inventory in a warehouse — /img/photos/service-flow.jpg'
+        photo: '/img/photos/service-flow.jpg'
       },
       {
         category: 'RECORD',
@@ -87,7 +87,7 @@ module.exports = {
           'Data cleanup and structuring',
           'One source of truth across your stack'
         ],
-        photoHint: 'Photo: a clean modern data/server environment — /img/photos/service-link.jpg'
+        photo: '/img/photos/service-link.jpg'
       },
       {
         category: 'REPORT',
@@ -97,7 +97,7 @@ module.exports = {
           'Built around how your operation actually runs',
           'Weekly reporting, not a static template'
         ],
-        photoHint: 'Photo: an analyst reviewing dashboards on a large monitor — /img/photos/service-pulse.jpg'
+        photo: '/img/photos/service-pulse.jpg'
       },
       {
         category: 'TRACK',
@@ -109,7 +109,7 @@ module.exports = {
           'A faster warning system, not a forecast',
           'Decision support for your team, not for us'
         ],
-        photoHint: 'Photo: a monitoring setup with maps and data on screens — /img/photos/service-signal.jpg'
+        photo: '/img/photos/service-signal.jpg'
       },
       {
         category: 'STAFF',
@@ -119,7 +119,7 @@ module.exports = {
           'Committed hours, committed output',
           'Reports to you, not to a shared queue'
         ],
-        photoHint: 'Photo: a single dedicated analyst working attentively at a desk — /img/photos/service-desk.jpg'
+        photo: '/img/photos/service-desk.jpg'
       }
     ]
   },
