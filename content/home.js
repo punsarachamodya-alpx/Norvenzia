@@ -1,239 +1,222 @@
 module.exports = {
   meta: {
-    title: 'Norvenzia — Procurement & Supply Chain Operations',
+    title: 'Norvenzia — We run the work.',
     description:
-      'Scale procurement without scaling headcount. An EU engagement point in Sweden paired with senior-led procurement delivery from Colombo.'
+      'Strategy stays with your team in Europe. Execution runs from our delivery hub in Colombo, Sri Lanka. Every day.'
   },
 
+  // 3.1 — Hero. headline is animated by public/js/scramble.js on load
+  // (scrambles into place, then settles — see [data-scramble] in hero.ejs).
   hero: {
-    eyebrow: 'Procurement & supply chain operations',
-    headline: 'Scale procurement without scaling headcount.',
+    eyebrow: '// SUPPLY CHAIN & PROCUREMENT OPERATIONS PARTNER.',
+    headline: 'We run the work.',
     body:
-      'Norvenzia runs the day-to-day of your procurement — purchase orders, supplier follow-up, spend data and reporting — inside the systems you already use. An EU engagement point in Sweden. Senior delivery from Colombo.',
-    // The paid front door of the business is a small, bounded, obviously valuable
-    // purchase — sold directly from the homepage — not an open-ended call.
-    primaryCta: { label: 'Start with a Spend Diagnostic', href: '/contact' },
-    secondaryCta: { label: 'See how it works', href: '/how-we-work' },
-    // Leave empty to keep the built-in animated diagram (views/partials/hero-figure.ejs).
-    // Set this to replace it with an uploaded image instead.
-    figureImage: ''
+      'Strategy stays with your team in Europe. Execution runs from our delivery hub in Colombo, Sri Lanka. Every day.',
+    primaryCta: { label: 'Start a conversation', href: '#contact' },
+    secondaryCta: { label: 'See what we run', href: '#services' },
+    routeLine: { from: 'GOTHENBURG', to: 'COLOMBO' }
   },
 
-  // The full-bleed band beneath the value props. Points at the shipped image
-  // by default; change the path to swap in different artwork.
-  motionBand: {
-    image: '/img/generated-data-tunnel.jpg'
+  // 3.2 — Social proof strip. Plain-text chips, no client logos (§4 rule).
+  socialProof: {
+    eyebrow: 'SERVING MID-MARKET INDUSTRIAL COMPANIES ACROSS',
+    verticals: [
+      'Manufacturing',
+      'Medical Devices',
+      'Renewable Energy',
+      'Automotive Suppliers',
+      'Electronics & EMS',
+      'FMCG & Food Production',
+      'E-commerce'
+    ],
+    markets: 'Scandinavia · Germany · Netherlands · UK · Australia'
   },
 
-  problem: {
-    eyebrow: 'The situation.',
-    headline: 'Procurement outgrew the person who set it up.',
-    points: [
-      'Purchase orders chased one email at a time.',
-      'Spend data sitting in an ERP export nobody has time to open.',
-      'Supplier problems found at delivery, not before it.'
+  // 3.3 — Six product modules, tabbed (public/js/tabs.js).
+  services: {
+    eyebrow: '// WHAT WE RUN',
+    headline: 'Six modules. One delivery team.',
+    body: 'Start with what you need most. Add the rest when the case builds.',
+    tabs: [
+      {
+        category: 'BUY',
+        name: 'Core',
+        description:
+          'Procurement operations — PO management, supplier onboarding, RFQ and RFP support. Your ops team’s day-to-day, handled.'
+      },
+      {
+        category: 'MOVE',
+        name: 'Flow',
+        description:
+          'Logistics coordination and order management, tracked end to end so nothing falls between systems.'
+      },
+      {
+        category: 'RECORD',
+        name: 'Link',
+        description:
+          'The data layer underneath it all — supplier, PO, and inventory records kept consistent across your stack.'
+      },
+      {
+        category: 'REPORT',
+        name: 'Pulse',
+        description:
+          'Power BI dashboards and KPI reporting, built around how your operation actually runs, not a template.'
+      },
+      {
+        category: 'TRACK',
+        name: 'Signal',
+        // Kept explicitly as visibility/decision-support language, never
+        // forecasting or prediction — see §4 content rules.
+        description:
+          'Early visibility into supply chain disruption. A faster warning system — not a forecast, decision support.'
+      },
+      {
+        category: 'STAFF',
+        name: 'Desk',
+        description:
+          'A dedicated analyst embedded in your operation. Committed hours, committed output.'
+      }
     ]
   },
 
-  insight: {
-    eyebrow: 'Why it happens.',
-    headline: 'It is not a people problem. It is a capacity problem.',
-    body:
-      'Most mid-market procurement teams are staffed for the volume the company had three years ago. Every hour spent chasing confirmations is an hour not spent on cost, supplier strategy, or risk. Hiring fixes it — at a cost a 50 to 500 person company struggles to justify for the volume involved.'
-  },
-
-  valueProps: [
-    {
-      title: 'Cost structure that works',
-      body:
-        'Senior delivery from Colombo gives you analyst capacity at a cost a local hire can’t match — without cutting the corner most low-cost providers do.'
-    },
-    {
-      title: 'An EU engagement point',
-      body:
-        'Sweden is where you reach us: your time zone, your regulatory context, a real point of contact accountable for the work.'
-    },
-    {
-      title: 'Senior-led, not junior desk work',
-      body:
-        'Your account is run by analysts with genuine supply chain and procurement backgrounds — not a rotating call-centre desk.'
-    }
-  ],
-
-  // The three small, bounded ways every engagement starts, so you can judge the
-  // work before committing to it.
-  solution: {
-    eyebrow: 'What we run.',
-    headline: 'Three ways in. One operation.',
-    body:
-      'Every engagement starts with something small and bounded, so you can judge the work before you commit to it.',
+  // 3.4 — Three entry-point tiers, numbered 01/02/03.
+  tiers: {
+    eyebrow: '// HOW YOU ENGAGE',
+    headline: 'Pick your entry point.',
     items: [
       {
-        name: 'Spend Diagnostic',
-        body:
-          'Five working days. You send twelve months of purchase and spend data. You get a findings pack: where the money goes, where it leaks, and what to do about it. Fixed fee, agreed before we start.'
-      },
-      {
-        name: 'Supplier Risk Screen',
-        body:
-          'Concentration, single-source exposure, geographic clustering and counterparty health across your supply base — from your own data and public company filings.'
-      },
-      {
-        name: 'Freight Invoice Audit',
-        body:
-          'Twelve months of freight invoices checked against your contracted rates — rate mismatch, duplicate billing, unagreed surcharges, re-rating.'
-      }
-    ],
-    thenWeRunIt:
-      'Then we run it: purchase order management, supplier onboarding and follow-up, RFQ support, master data, reporting and KPI dashboards — run by a named team inside your systems, to agreed turnaround and service levels.',
-    cta: { label: 'Explore what we do', href: '/what-we-do' }
-  },
-
-  // How an engagement runs, end to end. The fourth stage is the differentiator:
-  // most firms stop at a recommendation.
-  engagement: {
-    eyebrow: 'How an engagement runs.',
-    headline: 'See. Steady. Sharpen. Scale.',
-    steps: [
-      {
         number: '01',
-        title: 'See',
+        label: 'FAST START',
+        name: 'Launch',
         body:
-          'We baseline the operation — spend, suppliers, exceptions, lead times. Nothing moves until we know what is actually happening.'
+          'One or two modules. Defined scope, fixed deliverables, built to prove the model before you commit further.',
+        link: { label: 'Start here', href: '#contact' }
       },
       {
         number: '02',
-        title: 'Steady',
+        label: 'GROWING',
+        name: 'Scale',
         body:
-          'We absorb the transactional load. Your team stops firefighting.'
+          'Multiple modules working together across procurement, logistics, and reporting. A delivery team that feels like your own.',
+        link: { label: 'See what’s included', href: '#services' }
       },
       {
         number: '03',
-        title: 'Sharpen',
+        label: 'COMMITTED',
+        name: 'Command',
         body:
-          'We use the baseline to cut cost and lift performance — consolidation, payment terms, supplier performance.'
+          'A fully staffed, dedicated operations function. Quoted by engagement. Not signable until we confirm delivery capacity — we’ll tell you honestly where we stand.',
+        link: { label: 'Talk to us', href: '#contact' },
+        // Honest signal, not a weakness — keep this, per the brief (§3.4 note).
+        note: '*Availability subject to delivery capacity. We’ll confirm on enquiry.'
+      }
+    ]
+  },
+
+  // 3.5 — How it works, three steps.
+  how: {
+    eyebrow: '// THREE STEPS',
+    headline: 'No rip-and-replace. No new platform to learn.',
+    steps: [
+      {
+        number: '01',
+        title: 'Scope',
+        body:
+          'We map what’s eating your team’s time. Agree exactly what we take off your plate and what stays with you.'
       },
       {
-        number: '04',
-        title: 'Scale',
+        number: '02',
+        title: 'Onboard',
         body:
-          'We extend into more categories, more geographies, more automation. The engagement deepens rather than ending.'
-      }
-    ],
-    note:
-      'Most firms stop at a recommendation. Our fourth stage is the one they do not have.'
-  },
-
-  // The Sweden / Colombo split, with the honest comparison against hiring
-  // in-house. A design decision, not a cost decision.
-  model: {
-    eyebrow: 'The model.',
-    headline: 'An EU engagement point. A senior delivery team.',
-    panels: [
-      {
-        label: 'EU engagement point — Sweden',
-        body:
-          'Contracting, communication and accountability inside the EU, in your time zone and your regulatory context.'
+          'We plug into your existing ERP, TMS, or spreadsheet stack. Your team keeps working as normal.'
       },
       {
-        label: 'Delivery hub — Colombo',
+        number: '03',
+        title: 'Run',
         body:
-          'Senior analysts with real procurement backgrounds, working inside your existing tools and processes.'
+          'We execute, track KPIs, and flag disruption as it surfaces. You get reporting, not excuses.'
       }
-    ],
-    note:
-      'The split is a design decision, not a cost decision. It exists so you get EU accountability and senior-led delivery in the same engagement — most arrangements ask you to trade one for the other.',
-    comparison: {
-      colLeft: 'Hiring in-house',
-      colRight: 'Norvenzia',
-      rows: [
-        {
-          criterion: 'Time to first output',
-          left: 'Recruitment, notice period, onboarding — weeks',
-          right: 'Days'
-        },
-        {
-          criterion: 'Holiday and sickness cover',
-          left: 'One person, no cover',
-          right: 'Team, with documented SOPs'
-        },
-        {
-          criterion: 'Scope flexibility',
-          left: 'Fixed role',
-          right: 'Scope adjusts by agreement'
-        },
-        {
-          criterion: 'If they leave',
-          left: 'The knowledge leaves with them',
-          right: 'Written SOP and QA loop remain'
-        },
-        {
-          criterion: 'Cost structure',
-          left: 'Full-time salary plus employment cost',
-          right: 'Scoped engagement'
-        }
-      ]
-    }
+    ]
   },
 
-  industriesStrip: {
-    eyebrow: 'Industries we serve',
-    headline: 'Eight verticals, one operating model.',
+  // 3.6 — Stats row. Only real, approved numbers — no fabricated stats (§4).
+  stats: {
+    items: [
+      { value: '8h/week min', label: 'Dedicated delivery time per engagement' },
+      { value: '50% deposit', label: 'Always — protects both sides' },
+      { value: '6 modules', label: 'Across procurement, logistics, reporting' },
+      { value: '5 markets', label: 'Scandinavia, Germany, Netherlands, UK, Australia' }
+    ]
+  },
+
+  // 3.7 — Editorial statement, not a testimonial — no fabricated attribution
+  // (§4). Restyle as real client quotes exist.
+  quote: {
+    headline: 'The hardest part of scaling operations isn’t strategy. It’s execution.',
+    body: 'Built for procurement and supply chain teams that have outgrown their bandwidth.'
+  },
+
+  // 3.8 — About.
+  about: {
+    eyebrow: '// ABOUT NORVENZIA',
+    headline: 'Built to be the operations team you haven’t hired yet.',
+    body: [
+      'Norvenzia (Private) Limited is a supply chain and procurement operations partner registered in Sri Lanka. We give mid-market manufacturers and industrial suppliers across Scandinavia and Europe an operations bench without the overhead of building one in-house.',
+      'Client relationships and strategy stay with you, close to your business. Execution runs from our delivery hub in Colombo — where the operational work gets done, every day.'
+    ]
+  },
+
+  // 3.9 — FAQ accordion (public/js/accordion.js).
+  faq: {
+    eyebrow: '// COMMON QUESTIONS',
+    headline: 'What people ask before they start.',
+    items: [
+      {
+        question: 'What does "KPO" mean in practice?',
+        answer:
+          'Knowledge Process Outsourcing. Unlike BPO (data entry, call centres), KPO covers skilled, judgement-intensive work — procurement negotiations, supplier management, spend analysis. We run the work that needs supply chain expertise, not just bandwidth.'
+      },
+      {
+        question: 'Do we need to change our ERP or TMS?',
+        answer:
+          'No. We plug into whatever you’re already using — SAP, Oracle, Business Central, spreadsheets, email. We don’t sell software.'
+      },
+      {
+        question: 'What’s the minimum engagement?',
+        answer:
+          'We start with a pilot — a scoped diagnostic or one operational module — at a fixed price with a 50% deposit. No long contracts until both sides have proved the model works.'
+      },
+      {
+        question: 'How is this different from hiring a consultant?',
+        answer:
+          'Consultants deliver recommendations. We deliver execution. The work gets done by our team, tracked against agreed KPIs, reported to you weekly.'
+      },
+      {
+        question: 'Are you based in Europe?',
+        answer:
+          'Our client relationships and business development hub is in Gothenburg, Sweden. Delivery runs from Colombo, Sri Lanka — that’s the cost structure that makes this commercially viable for mid-market clients.'
+      },
+      {
+        question: 'What’s the pricing model?',
+        answer:
+          'Fixed-price modules, quoted in outcome units (not hourly rates). Always 50% deposit upfront. Scope is agreed in writing before we start.'
+      }
+    ]
+  },
+
+  // 3.10 — Contact CTA. Email address is intentionally NOT hardcoded here —
+  // the brief's copy said hello@norvenzia.com, but the site's actually
+  // configured address is site.contactEmail (info@norvenzia.com, see
+  // content/site.js). Rendered from site.contactEmail in home.ejs instead, so
+  // there's one real inbox, not two. Flagging this substitution rather than
+  // silently shipping a second, unmonitored address. The site's real contact
+  // form lives at /contact (views/contact.ejs); this section links there
+  // rather than duplicating the form.
+  contactCta: {
+    headline: 'Tell us what’s eating your team’s time.',
     body:
-      'We work with mid-market manufacturers, suppliers, and producers whose procurement volume has outgrown the team that set it up.',
-    cta: { label: 'See all industries', href: '/industries' }
-  },
-
-  // No client logos, no testimonials, no case studies — because we are early,
-  // and inventing them would tell you more about our judgement than our
-  // capability. Point at what can be verified instead.
-  proof: {
-    eyebrow: 'Why believe us.',
-    headline: 'We would rather be checked than believed.',
-    body:
-      'No client logos, no testimonials, no case studies — because we are early, and inventing them would tell you more about our judgement than our capability. Here is what can be verified instead: a founder credentials panel, built as a checkable grid rather than a biography, and Signal — a live supply chain disruption tracker we built and run ourselves. Public, in beta, and the same capability we point at a client’s own supply base in the Risk Screen.',
-    cta: { label: 'Open Signal', href: '/live' }
-  },
-
-  // Deliberately a condensed echo of the How We Work security section rather
-  // than new claims: the point is that a visitor meets the honest posture
-  // before the final CTA, without having to find the other page first.
-  posture: {
-    eyebrow: 'Data security & compliance',
-    headline: 'What’s actually in place today.',
-    body: 'We’d rather tell you what’s real than borrow language we haven’t earned.',
-    inPlaceLabel: 'In place today',
-    inPlace: [
-      'GDPR-aligned data handling across every engagement',
-      'A Data Processing Agreement (DPA) available on request',
-      'Confidentiality terms in every engagement agreement',
-      'Access limited to the analysts assigned to your account'
-    ],
-    roadmapLabel: 'On the roadmap — not yet true',
-    roadmap: [
-      'ISO 27001 certification: planned, not held today',
-      'SOC 2: not claimed until an audit is actually complete'
-    ],
-    cta: { label: 'See the full picture on How We Work', href: '/how-we-work' }
-  },
-
-  founder: {
-    eyebrow: 'Who runs it',
-    headline: 'Senior attention, not scale we don’t have yet.',
-    credentials: [
-      '4+ years across telecom, garments, seafood and logistics',
-      'A documented cost-savings result from a prior role',
-      'MSc Logistics and Transport Management, Sweden'
-    ],
-    name: 'Punsara Wimalasena',
-    role: 'Founder, Norvenzia',
-    cta: { label: 'Meet the founder', href: '/who-we-are' }
-  },
-
-  closing: {
-    headline: 'Start with the smallest useful thing.',
-    body:
-      'A Spend Diagnostic takes five working days and tells you where your money goes and where it leaks. You keep the findings whether or not we work together afterwards.',
-    cta: { label: 'Start with a Spend Diagnostic', href: '/contact' }
+      'One email. We’ll come back with a scoped, honest read on whether Norvenzia is the right fit — not a sales deck.',
+    bookingNote: 'Or book a 30-minute call →',
+    bookingHref: '#'
   }
 };

@@ -1,0 +1,39 @@
+<%# Dark, full-viewport hero. .hero keeps the existing cursor-follow-spotlight
+    behaviour from public/js/main.js (targets .hero/.hero__spotlight via
+    --hero-mx/--hero-my — unchanged), layered under the new dark background,
+    scrambled H1, and Gothenburg->Colombo route line. --header-h top padding
+    keeps content clear of the fixed transparent header (see .header--transparent
+    in styles.css). %>
+<section class="hero hero--dark">
+  <div class="hero__spotlight" aria-hidden="true"></div>
+  <div class="shell hero__dark-inner">
+    <span class="eyebrow eyebrow--mono eyebrow--onDark"><%= page.hero.eyebrow %></span>
+
+    <%# data-scramble carries the real, final text — public/js/scramble.js reads
+        it once on load, then animates the visible text into place. If JS never
+        runs (or prefers-reduced-motion is set), the real text is what's already
+        in the DOM, so nothing is ever lost. %>
+    <h1 class="display-1 hero__headline" data-scramble><%= page.hero.headline %></h1>
+
+    <p class="lede hero__body hero__body--dim"><%= page.hero.body %></p>
+
+    <div class="btn-row">
+      <a class="btn btn--primary" href="<%= page.hero.primaryCta.href %>"><%= page.hero.primaryCta.label %></a>
+      <a class="btn btn--ghost btn--ghost-onDark" href="<%= page.hero.secondaryCta.href %>"><%= page.hero.secondaryCta.label %></a>
+    </div>
+
+    <%# Pure-CSS route line — replaces stock photography with a device that
+        echoes the arrow in the Norvenzia logomark. Decorative: aria-hidden,
+        the two place names are the only meaningful content and are real text
+        (not baked into an image), so they're still announced. %>
+    <div class="route-line" aria-hidden="true">
+      <span class="route-line__label route-line__label--from"><%= page.hero.routeLine.from %></span>
+      <span class="route-line__track">
+        <span class="route-line__dot route-line__dot--start"></span>
+        <span class="route-line__pulse"></span>
+        <span class="route-line__dot route-line__dot--end"></span>
+      </span>
+      <span class="route-line__label route-line__label--to"><%= page.hero.routeLine.to %></span>
+    </div>
+  </div>
+</section>

@@ -41,6 +41,33 @@
     U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+/* Homepage-only typefaces (see body.home in Tokens below). Self-hosted the same
+   way as the three faces above — the brief asked for a Google Fonts <link>, but
+   the CSP (server.js) locks script/connect/default-src to 'self' and touching
+   that middleware is out of scope, so these are fetched once and served locally
+   instead, with identical results and no CSP change. */
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/space-grotesk-var-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/inter-var-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 /* ------------------------------------------------------------- 2. Tokens */
 
 :root {
@@ -100,6 +127,68 @@
 
   /* Motion */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* --------------------------------------------------- 2b. Homepage redesign tokens
+   New tokens for the bynar.io/terminal-industries-inspired homepage sections
+   (dark hero, tabs, tiers, accordion, stats, quote block). Added alongside the
+   tokens above rather than replacing them — --navy/--ink/--rule/etc. above are
+   still what every other page (What We Do, Industries, How We Work, Who We Are,
+   Contact, Legal, Live, Story, /admin) renders with, so this file stays a single
+   shared stylesheet without reskinning pages outside this redesign's scope.
+
+   --font-mono intentionally stays JetBrains Mono (already self-hosted above,
+   already the site's mono face) rather than the brief's Courier New/IBM Plex
+   Mono suggestion — same "coder monospace" register, no second mono typeface
+   to ship. --font-display/--font-body below are Space Grotesk/Inter as
+   specified, but only take effect on the homepage: see `body.home` further
+   down, which is the only place these two get redeclared. */
+:root {
+  /* Backgrounds */
+  --color-bg-dark: #0a0f1a;
+  --color-bg-mid: #0f1b2d;
+  --color-bg-light: #ffffff;
+  --color-bg-paper: #f7f8fa;
+
+  /* Text */
+  --color-text-primary: #10192b;
+  --color-text-secondary: #5b6472;
+  --color-text-white: #ffffff;
+  --color-text-dim: rgba(255, 255, 255, 0.6);
+
+  /* Accent */
+  --color-accent: #2f6fed;
+  --color-accent-dark: #1e4fcb;
+
+  /* Borders */
+  --color-border: #e2e5ea;
+  --color-border-dark: rgba(255, 255, 255, 0.1);
+
+  /* Type scale (homepage-scoped — see body.home) */
+  --font-display-home: 'Space Grotesk', system-ui, sans-serif;
+  --font-body-home: 'Inter', system-ui, sans-serif;
+  --font-mono-home: var(--font-mono);
+
+  /* Spacing */
+  --section-padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem);
+  --max-width: 1120px;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+
+  /* Transitions */
+  --transition-fast: 160ms ease;
+  --transition-base: 280ms ease;
+}
+
+/* Scopes the new display/body typefaces to the homepage only — every other
+   page keeps Montserrat/Manrope from the tokens above unchanged. Added to
+   <body> in layout.ejs only when currentPath === '/'. */
+body.home {
+  --font-display: var(--font-display-home);
+  --font-body: var(--font-body-home);
 }
 
 /* --------------------------------------------------------- 3. Base reset */
@@ -471,6 +560,84 @@ button {
    a wider logo needs a wider viewport before the nav fits on one line — and CSS
    media queries can't reference a custom property, so the breakpoint has to be
    computed server-side and the ruleset rendered with it, together, in one place. */
+
+/* Homepage-only: starts transparent over the dark hero (white text/logo, no
+   border), becomes the standard solid header once nav.js adds .nav--scrolled
+   past 80px of scroll — matching what every other page looks like by default. */
+.header--transparent {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-bottom: 1px solid transparent;
+  transition: background-color var(--transition-base), border-color var(--transition-base),
+    backdrop-filter var(--transition-base);
+}
+
+.header--transparent .header__link {
+  color: var(--color-text-white);
+}
+
+.header--transparent .header__link:hover {
+  color: var(--color-text-dim);
+}
+
+/* The mobile dropdown (views/layout.ejs's inline media query) always renders
+   on a solid white background regardless of header transparency, so its
+   links need dark text even while .header--transparent is still active
+   (i.e. the menu is opened before the visitor has scrolled) — otherwise
+   this is white text on white, invisible. */
+.header--transparent .header__nav.is-open .header__link {
+  color: var(--ink);
+}
+
+.header--transparent .header__nav.is-open .header__link:hover {
+  color: var(--cobalt);
+}
+
+.header--transparent .header__toggle {
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.header--transparent .header__toggle span,
+.header--transparent .header__toggle span::before,
+.header--transparent .header__toggle span::after {
+  background: var(--color-text-white);
+}
+
+.header--transparent.nav--scrolled {
+  position: sticky;
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  border-bottom: 1px solid var(--rule);
+}
+
+.header--transparent.nav--scrolled .header__link {
+  color: var(--ink);
+}
+
+.header--transparent.nav--scrolled .header__link:hover {
+  color: var(--cobalt);
+}
+
+.header--transparent.nav--scrolled .header__toggle {
+  border-color: var(--rule-strong);
+}
+
+.header--transparent.nav--scrolled .header__toggle span,
+.header--transparent.nav--scrolled .header__toggle span::before,
+.header--transparent.nav--scrolled .header__toggle span::after {
+  background: var(--navy);
+}
+
+/* Since .header--transparent starts position:fixed (not sticky, so it can sit
+   over the hero with nothing pushing content down), the homepage needs the
+   hero itself to sit under it rather than get pushed down — handled in the
+   hero's own top padding, not here. */
 
 /* ---------------------------------------------------- 7. Buttons & links */
 
@@ -1731,7 +1898,10 @@ button {
 /* -------------------------------------------------------------- 23. Footer */
 
 .footer {
-  background: var(--navy-deep);
+  /* Already dark with mono-font headings before this redesign — moved to the
+     same near-black tone as the new hero (--color-bg-dark) for consistency
+     across the site's dark sections, structure/content unchanged. */
+  background: var(--color-bg-dark);
   color: rgba(255, 255, 255, 0.72);
   padding-block: clamp(3rem, 6vw, 4.5rem) 2rem;
   font-size: 0.93rem;
@@ -3173,5 +3343,708 @@ button {
 @media (max-width: 900px) {
   .warroom-intro {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ============================================================================
+   31. Homepage redesign — dark hero / bynar.io + terminal-industries mix
+   All net-new component classes for the homepage sections (§3.1-3.10 of the
+   redesign brief). Scoped to new class names throughout, so nothing here
+   changes how any other page renders — see the tokens note in §2b above.
+   ========================================================================== */
+
+/* ---- 31.1 Dark hero ---- */
+
+.hero--dark {
+  background: var(--color-bg-dark);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  /* .header--transparent is position:fixed (removed from flow), so the hero
+     needs its own top padding to clear it instead of relying on layout push. */
+  padding-top: var(--header-h);
+}
+
+.hero__dark-inner {
+  position: relative;
+  z-index: 1;
+  padding-block: clamp(2.5rem, 6vw, 4rem);
+}
+
+.hero--dark .eyebrow {
+  color: var(--color-accent);
+}
+
+.hero__headline {
+  color: var(--color-text-white);
+  font-size: clamp(2.6rem, 7vw, 5.5rem);
+}
+
+/* Reserves layout space equal to the final rendered text before the scramble
+   animation starts, so nothing reflows as characters lock in. */
+.hero__headline[data-scramble] {
+  min-height: 1.04em;
+}
+
+.hero__body--dim {
+  color: var(--color-text-dim);
+  max-width: 46ch;
+}
+
+.hero--dark .btn--primary {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.hero--dark .btn--primary:hover {
+  background: var(--color-accent-dark);
+  border-color: var(--color-accent-dark);
+}
+
+.btn--ghost-onDark {
+  background: transparent;
+  color: var(--color-text-white);
+  border-color: rgba(255, 255, 255, 0.32);
+}
+
+.btn--ghost-onDark:hover {
+  border-color: var(--color-text-white);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-text-white);
+}
+
+/* ---- 31.2 Route line — Gothenburg -> Colombo, replaces stock photography ---- */
+
+.route-line {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: clamp(3rem, 7vw, 5rem);
+  max-width: 30rem;
+}
+
+.route-line__label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: var(--color-text-dim);
+  white-space: nowrap;
+}
+
+.route-line__track {
+  position: relative;
+  flex: 1;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.route-line__dot {
+  position: absolute;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-text-dim);
+  transform: translate(-50%, -50%);
+}
+
+.route-line__dot--start {
+  left: 0;
+}
+
+.route-line__dot--end {
+  left: 100%;
+}
+
+.route-line__pulse {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 10px 2px rgba(47, 111, 237, 0.6);
+  transform: translate(-50%, -50%);
+  animation: route-pulse 3.4s ease-in-out infinite;
+}
+
+@keyframes route-pulse {
+  0% { left: 0%; opacity: 0; }
+  8% { opacity: 1; }
+  92% { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+/* ---- 31.3 Social proof strip ---- */
+
+.social-proof {
+  background: var(--color-bg-light);
+  border-block: 1px solid var(--color-border);
+  padding-block: clamp(2rem, 4vw, 3rem);
+}
+
+.social-proof__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  display: block;
+  margin-bottom: 1.1rem;
+}
+
+.social-proof__chips {
+  display: flex;
+  gap: 0.6rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.social-proof__chip {
+  flex: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  background: var(--color-bg-paper);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 0.5rem 1rem;
+  white-space: nowrap;
+}
+
+.social-proof__markets {
+  margin-top: 1.1rem;
+  font-size: 0.92rem;
+  color: var(--color-text-secondary);
+}
+
+/* ---- 31.4 Services / tabbed modules ---- */
+
+.tabs {
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+.tabs__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 0.75rem;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.tabs__btn {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0.55rem 1.05rem;
+  cursor: pointer;
+  transition: color var(--transition-fast), border-color var(--transition-fast),
+    background var(--transition-fast);
+}
+
+.tabs__btn:hover {
+  color: var(--color-text-primary);
+  border-color: var(--color-accent);
+}
+
+.tabs__btn.tab--active {
+  color: var(--color-text-white);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.tabs__panels {
+  position: relative;
+}
+
+.tabs__panel {
+  display: none;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+}
+
+.tabs__panel.tab-panel--active {
+  display: grid;
+}
+
+.tabs__panel-category {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  display: block;
+  margin-bottom: 0.9rem;
+}
+
+.tabs__panel-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  color: var(--color-text-primary);
+  margin-bottom: 1rem;
+}
+
+.tabs__panel-desc {
+  color: var(--color-text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  max-width: 42ch;
+}
+
+.tabs__panel-link {
+  display: inline-block;
+  margin-top: 1.3rem;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.tabs__panel-visual {
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-paper);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.tabs__panel-visual svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Mobile-only accordion trigger — hidden on desktop, shown at 768px below. */
+.tabs__panel-trigger {
+  display: none;
+}
+
+/* Mobile: horizontal tab strip collapses to a vertical accordion-style stack —
+   every panel's trigger is visible at once, only the active one is expanded. */
+@media (max-width: 768px) {
+  .tabs__list {
+    display: none;
+  }
+
+  .tabs--mobile-accordion .tabs__panel-trigger {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--color-bg-paper);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 0.9rem 1.1rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    margin-bottom: 0.6rem;
+  }
+
+  .tabs__panel {
+    display: none;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+    padding: 0 0.2rem 1.5rem;
+  }
+
+  .tabs__panel.tab-panel--active {
+    display: grid;
+  }
+
+  .tabs__panel-visual {
+    order: -1;
+    aspect-ratio: 16 / 9;
+  }
+}
+
+/* ---- 31.5 Tiers — numbered 01/02/03 entry-point cards ---- */
+
+.tier-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.5rem, 3vw, 2rem);
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+.tier-card {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.75rem, 3vw, 2.25rem);
+  display: flex;
+  flex-direction: column;
+  transition: border-color var(--transition-base), transform var(--transition-base);
+}
+
+.tier-card:hover {
+  border-color: var(--color-accent);
+  transform: translateY(-3px);
+}
+
+.tier-card__number {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--color-accent);
+  letter-spacing: 0.08em;
+}
+
+.tier-card__label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  margin-top: 0.6rem;
+}
+
+.tier-card__name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--color-text-primary);
+  margin-top: 0.7rem;
+}
+
+.tier-card__body {
+  color: var(--color-text-secondary);
+  font-size: 0.98rem;
+  line-height: 1.6;
+  margin-top: 0.9rem;
+  flex: 1;
+}
+
+.tier-card__link {
+  display: inline-block;
+  margin-top: 1.4rem;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.tier-card__note {
+  margin-top: 0.8rem;
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+
+@media (max-width: 860px) {
+  .tier-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---- 31.6 How it works — dark section, three columns ---- */
+
+.section--home-dark {
+  background: var(--color-bg-mid);
+  padding: var(--section-padding);
+}
+
+.section--home-dark .eyebrow {
+  color: var(--color-accent);
+}
+
+.section--home-dark .home-section__heading {
+  color: var(--color-text-white);
+}
+
+.how-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.75rem, 3vw, 2.5rem);
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+.how-step__number {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--color-accent);
+}
+
+.how-step__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--color-text-white);
+  margin-top: 0.7rem;
+}
+
+.how-step__body {
+  color: var(--color-text-dim);
+  font-size: 0.98rem;
+  line-height: 1.6;
+  margin-top: 0.7rem;
+}
+
+@media (max-width: 768px) {
+  .how-steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---- 31.7 Stats row ---- */
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(1.5rem, 3vw, 2rem);
+  margin-top: clamp(1.5rem, 3vw, 2rem);
+}
+
+.stat {
+  text-align: center;
+  padding-block: 1rem;
+}
+
+.stat__value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+  color: var(--navy);
+}
+
+.stat__label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--color-text-secondary);
+  margin-top: 0.6rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 768px) {
+  .stats-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---- 31.8 Quote / editorial block — dark, full-width ---- */
+
+.quote-block {
+  background: var(--color-bg-dark);
+  padding: var(--section-padding);
+  text-align: center;
+}
+
+.quote-block__inner {
+  max-width: 46rem;
+  margin-inline: auto;
+}
+
+.quote-block__headline {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.6rem, 3.4vw, 2.6rem);
+  color: var(--color-text-white);
+  line-height: 1.3;
+}
+
+.quote-block__body {
+  margin-top: 1.3rem;
+  color: var(--color-text-dim);
+  font-size: 1.05rem;
+}
+
+/* ---- 31.9 About ---- */
+
+.about-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: clamp(2.5rem, 5vw, 4rem);
+  align-items: center;
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+.about-grid__body p {
+  color: var(--color-text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin: 0 0 1.3rem;
+}
+
+.about-grid__visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.about-grid__visual img {
+  width: 100%;
+  max-width: 220px;
+}
+
+@media (max-width: 860px) {
+  .about-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .about-grid__visual {
+    order: -1;
+    max-width: 160px;
+    margin-inline: auto;
+  }
+}
+
+/* ---- 31.10 FAQ accordion ---- */
+
+.faq-list {
+  margin-top: clamp(2rem, 4vw, 3rem);
+  border-top: 1px solid var(--color-border);
+}
+
+.faq-item {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.faq-item__trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: none;
+  border: 0;
+  text-align: left;
+  padding: 1.4rem 0.2rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+
+.faq-item__icon {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  position: relative;
+}
+
+.faq-item__icon::before,
+.faq-item__icon::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: var(--color-accent);
+  transform: translate(-50%, -50%);
+  transition: transform var(--transition-fast);
+}
+
+.faq-item__icon::before {
+  width: 14px;
+  height: 2px;
+}
+
+.faq-item__icon::after {
+  width: 2px;
+  height: 14px;
+}
+
+.faq-item__trigger[aria-expanded='true'] .faq-item__icon::after {
+  transform: translate(-50%, -50%) rotate(90deg) scale(0);
+}
+
+.faq-item__panel {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--transition-base);
+}
+
+.faq-item__panel-inner {
+  padding: 0 0.2rem 1.4rem;
+  color: var(--color-text-secondary);
+  font-size: 0.98rem;
+  line-height: 1.65;
+  max-width: 68ch;
+}
+
+/* ---- 31.11 Contact CTA ---- */
+
+.contact-cta {
+  text-align: center;
+}
+
+.contact-cta__body {
+  max-width: 46ch;
+  margin: 1rem auto 0;
+  color: var(--color-text-secondary);
+}
+
+.contact-cta__actions {
+  margin-top: clamp(1.75rem, 3vw, 2.25rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+}
+
+.contact-cta__secondary {
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+.contact-cta__secondary:hover {
+  color: var(--color-accent);
+}
+
+/* ---- 31.12 Shared homepage section scaffolding ---- */
+
+.home-section {
+  padding: var(--section-padding);
+}
+
+.home-section__inner {
+  max-width: var(--max-width);
+  margin-inline: auto;
+}
+
+.home-section__heading {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.9rem, 3.6vw, 2.8rem);
+  color: var(--color-text-primary);
+  margin-top: 0.6rem;
+}
+
+.home-section__body {
+  color: var(--color-text-secondary);
+  font-size: 1.05rem;
+  margin-top: 0.9rem;
+  max-width: 56ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-line__pulse {
+    animation: none;
+    left: 50%;
+    opacity: 1;
+  }
+
+  .tier-card,
+  .faq-item__panel {
+    transition: none;
   }
 }

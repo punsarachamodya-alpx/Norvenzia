@@ -1,273 +1,171 @@
-<section class="hero">
-  <img class="hero__bg" src="/img/generated-data-tunnel.jpg" alt="" aria-hidden="true" width="2752" height="1536">
-  <div class="hero__spotlight" aria-hidden="true"></div>
-  <div class="shell hero__grid">
-    <%# Copy comes first in DOM order: a visitor should read what the company does
-        before meeting an abstract graphic of it. %>
-    <div class="hero__copy">
-      <span class="eyebrow"><%= page.hero.eyebrow %></span>
-      <h1 class="display-1"><%= page.hero.headline %></h1>
-      <p class="lede hero__body"><%= page.hero.body %></p>
-      <div class="btn-row">
-        <a class="btn btn--primary" href="<%= page.hero.primaryCta.href %>"><%= page.hero.primaryCta.label %></a>
-        <a class="btn btn--ghost" href="<%= page.hero.secondaryCta.href %>"><%= page.hero.secondaryCta.label %></a>
+<%- include('partials/hero') %>
+
+<%# 3.2 — Social proof strip %>
+<section class="social-proof">
+  <div class="shell">
+    <span class="social-proof__eyebrow"><%= page.socialProof.eyebrow %></span>
+    <div class="social-proof__chips">
+      <% page.socialProof.verticals.forEach(function (v) { %>
+        <span class="social-proof__chip"><%= v %></span>
+      <% }); %>
+    </div>
+    <p class="social-proof__markets"><%= page.socialProof.markets %></p>
+  </div>
+</section>
+
+<%# 3.3 — Services / six tabbed modules %>
+<section class="home-section" id="services">
+  <div class="shell home-section__inner">
+    <span class="eyebrow"><%= page.services.eyebrow %></span>
+    <h2 class="home-section__heading"><%= page.services.headline %></h2>
+    <p class="home-section__body"><%= page.services.body %></p>
+
+    <div class="tabs tabs--mobile-accordion" data-tabs>
+      <div class="tabs__list" role="tablist">
+        <% page.services.tabs.forEach(function (tab, i) { %>
+          <button type="button" class="tabs__btn <%= i === 0 ? 'tab--active' : '' %>"
+                  role="tab" aria-selected="<%= i === 0 ? 'true' : 'false' %>">
+            <%= tab.category %> — <%= tab.name %>
+          </button>
+        <% }); %>
       </div>
-    </div>
-    <% if (page.hero.figureImage) { %>
-      <div class="hero__figure">
-        <img src="<%= page.hero.figureImage %>" alt="" width="660" height="520">
-      </div>
-    <% } %>
-  </div>
-</section>
 
-<section class="section section--tight">
-  <div class="shell">
-    <div class="factbar">
-      <% page.valueProps.forEach(function (vp) { %>
-        <div class="factbar__item reveal">
-          <h2 class="factbar__title"><%= vp.title %></h2>
-          <p class="factbar__body"><%= vp.body %></p>
-        </div>
-      <% }); %>
-    </div>
-  </div>
-</section>
-
-<%# Full-bleed motion band: the supply-chain thesis in one moving image. %>
-<section class="motion-band" aria-hidden="true">
-  <img src="<%= page.motionBand.image %>" alt="" width="1600" height="420" loading="lazy">
-  <%# Decorative motion layers over the unmodified image. The wave is a second
-      copy of the same image, masked to a narrow travelling window and pushed
-      slightly out of register, so the pixels themselves ripple left to right
-      in step with the sheen. Nothing recolours the artwork. %>
-  <span class="motion-band__wave">
-    <img src="<%= page.motionBand.image %>" alt="" width="1600" height="420" loading="lazy">
-  </span>
-  <span class="motion-band__flow"></span>
-  <span class="motion-band__glow"></span>
-</section>
-
-<%# Problem — the situation a mid-market procurement lead recognises. %>
-<section class="section">
-  <div class="shell shell--narrow">
-    <div class="section-head reveal">
-      <span class="eyebrow"><%= page.problem.eyebrow %></span>
-      <h2 class="display-2"><%= page.problem.headline %></h2>
-    </div>
-    <ul class="capability-list capability-list--lead reveal">
-      <% page.problem.points.forEach(function (p) { %>
-        <li><%= p %></li>
-      <% }); %>
-    </ul>
-  </div>
-</section>
-
-<%# Insight — the reframe. %>
-<section class="section section--alt">
-  <div class="shell shell--narrow">
-    <div class="section-head reveal">
-      <span class="eyebrow"><%= page.insight.eyebrow %></span>
-      <h2 class="display-2"><%= page.insight.headline %></h2>
-      <p class="lede"><%= page.insight.body %></p>
-    </div>
-  </div>
-</section>
-
-<%# Solution — three small, bounded ways in. %>
-<section class="section">
-  <div class="shell">
-    <div class="section-head reveal">
-      <span class="eyebrow"><%= page.solution.eyebrow %></span>
-      <h2 class="display-2"><%= page.solution.headline %></h2>
-      <p class="lede"><%= page.solution.body %></p>
-    </div>
-
-    <div class="grid grid--3">
-      <% page.solution.items.forEach(function (item) { %>
-        <div class="card reveal">
-          <h3 class="card__title"><%= item.name %></h3>
-          <p class="card__body"><%= item.body %></p>
-        </div>
-      <% }); %>
-    </div>
-
-    <p class="lede reveal" style="margin-top:2.5rem;"><%= page.solution.thenWeRunIt %></p>
-    <div style="margin-top:1.5rem;">
-      <a class="arrow-link" href="<%= page.solution.cta.href %>"><%= page.solution.cta.label %></a>
-    </div>
-  </div>
-</section>
-
-<%# Engagement — See. Steady. Sharpen. Scale. The fourth stage is the point. %>
-<section class="section section--alt">
-  <div class="shell">
-    <div class="section-head reveal">
-      <span class="eyebrow"><%= page.engagement.eyebrow %></span>
-      <h2 class="display-2"><%= page.engagement.headline %></h2>
-    </div>
-
-    <div class="steps steps--4">
-      <% page.engagement.steps.forEach(function (step) { %>
-        <div class="step reveal">
-          <div class="step__number"><%= step.number %></div>
-          <h3 class="step__title"><%= step.title %></h3>
-          <p class="step__body"><%= step.body %></p>
-        </div>
-      <% }); %>
-    </div>
-
-    <p class="lede reveal" style="margin-top:2.5rem;"><%= page.engagement.note %></p>
-  </div>
-</section>
-
-<%# Model — the Sweden / Colombo split, with the honest comparison. %>
-<section class="section">
-  <div class="shell">
-    <div class="section-head reveal">
-      <span class="eyebrow"><%= page.model.eyebrow %></span>
-      <h2 class="display-2"><%= page.model.headline %></h2>
-    </div>
-
-    <div class="split">
-      <% page.model.panels.forEach(function (panel) { %>
-        <article class="panel panel--plain reveal">
-          <div class="panel__inner">
-            <span class="panel__label"><%= panel.label %></span>
-            <p class="panel__body"><%= panel.body %></p>
+      <div class="tabs__panels">
+        <% page.services.tabs.forEach(function (tab, i) { %>
+          <button type="button" class="tabs__panel-trigger" aria-expanded="<%= i === 0 ? 'true' : 'false' %>">
+            <span><%= tab.category %> — <%= tab.name %></span>
+            <span aria-hidden="true">+</span>
+          </button>
+          <div class="tabs__panel <%= i === 0 ? 'tab-panel--active' : '' %>">
+            <div class="tabs__panel-copy">
+              <span class="tabs__panel-category"><%= tab.category %></span>
+              <h3 class="tabs__panel-name"><%= tab.name %></h3>
+              <p class="tabs__panel-desc"><%= tab.description %></p>
+              <a class="tabs__panel-link" href="#">Learn more →</a>
+            </div>
+            <div class="tabs__panel-visual">
+              <%- include('partials/module-icon', { slug: tab.name.toLowerCase() }) %>
+            </div>
           </div>
+        <% }); %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%# 3.4 — Three entry-point tiers, numbered 01/02/03 %>
+<section class="home-section" id="tiers">
+  <div class="shell home-section__inner">
+    <span class="eyebrow"><%= page.tiers.eyebrow %></span>
+    <h2 class="home-section__heading"><%= page.tiers.headline %></h2>
+
+    <div class="tier-cards">
+      <% page.tiers.items.forEach(function (tier) { %>
+        <article class="tier-card">
+          <span class="tier-card__number"><%= tier.number %></span>
+          <span class="tier-card__label"><%= tier.label %></span>
+          <h3 class="tier-card__name"><%= tier.name %></h3>
+          <p class="tier-card__body"><%= tier.body %></p>
+          <a class="tier-card__link" href="<%= tier.link.href %>"><%= tier.link.label %> →</a>
+          <% if (tier.note) { %>
+            <p class="tier-card__note"><%= tier.note %></p>
+          <% } %>
         </article>
       <% }); %>
     </div>
-
-    <p class="lede reveal" style="margin-top:2rem;"><%= page.model.note %></p>
-
-    <div class="table-scroll reveal" style="margin-top:2.5rem;">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th scope="col">&nbsp;</th>
-            <th scope="col"><%= page.model.comparison.colLeft %></th>
-            <th scope="col"><%= page.model.comparison.colRight %></th>
-          </tr>
-        </thead>
-        <tbody>
-          <% page.model.comparison.rows.forEach(function (row) { %>
-            <tr>
-              <td><%= row.criterion %></td>
-              <td><%= row.left %></td>
-              <td><%= row.right %></td>
-            </tr>
-          <% }); %>
-        </tbody>
-      </table>
-    </div>
   </div>
 </section>
 
-<%# Industries preview strip. %>
-<section class="section section--alt">
-  <div class="shell">
-    <div class="section-head reveal">
-      <span class="eyebrow"><%= page.industriesStrip.eyebrow %></span>
-      <h2 class="display-2"><%= page.industriesStrip.headline %></h2>
-      <p class="lede"><%= page.industriesStrip.body %></p>
-    </div>
+<%# 3.5 — How it works, three steps (dark) %>
+<section class="section--home-dark" id="how">
+  <div class="shell home-section__inner">
+    <span class="eyebrow"><%= page.how.eyebrow %></span>
+    <h2 class="home-section__heading"><%= page.how.headline %></h2>
 
-    <div class="grid grid--4">
-      <% industries.items.forEach(function (ind) { %>
-        <a class="card card--link reveal" href="/industries#<%= ind.slug %>">
-          <span class="card__icon">
-            <% if (ind.icon) { %>
-              <img src="<%= ind.icon %>" alt="">
-            <% } else { %>
-              <%- include('partials/industry-icon', { slug: ind.slug }) %>
-            <% } %>
-          </span>
-          <h3 class="card__title" style="font-size:1.06rem;"><%= ind.name %></h3>
-        </a>
+    <div class="how-steps">
+      <% page.how.steps.forEach(function (step) { %>
+        <div>
+          <span class="how-step__number"><%= step.number %></span>
+          <h3 class="how-step__title"><%= step.title %></h3>
+          <p class="how-step__body"><%= step.body %></p>
+        </div>
       <% }); %>
     </div>
-
-    <div style="margin-top:2.5rem;">
-      <a class="arrow-link" href="<%= page.industriesStrip.cta.href %>"><%= page.industriesStrip.cta.label %></a>
-    </div>
   </div>
 </section>
 
-<%# Proof — checkable, not claimed. Points at the founder grid and Signal. %>
-<section class="section">
-  <div class="shell shell--narrow">
-    <div class="section-head reveal">
-      <span class="eyebrow"><%= page.proof.eyebrow %></span>
-      <h2 class="display-2"><%= page.proof.headline %></h2>
-      <p class="lede"><%= page.proof.body %></p>
-    </div>
-    <div style="margin-top:1.5rem;">
-      <a class="arrow-link" href="<%= page.proof.cta.href %>"><%= page.proof.cta.label %></a>
-    </div>
-  </div>
-</section>
-
-<%# Security posture — the honest in-place / not-yet-true split, condensed so a
-    visitor meets it before the closing CTA. %>
-<section class="section section--alt">
-  <div class="shell">
-    <div class="section-head reveal">
-      <span class="eyebrow"><%= page.posture.eyebrow %></span>
-      <h2 class="display-2"><%= page.posture.headline %></h2>
-      <p class="lede"><%= page.posture.body %></p>
-    </div>
-
-    <div class="split">
-      <article class="panel panel--plain reveal">
-        <div class="panel__inner">
-          <span class="panel__label"><%= page.posture.inPlaceLabel %></span>
-          <ul class="posture-list posture-list--yes">
-            <% page.posture.inPlace.forEach(function (i) { %>
-              <li><%= i %></li>
-            <% }); %>
-          </ul>
+<%# 3.6 — Stats row %>
+<section class="home-section">
+  <div class="shell home-section__inner">
+    <div class="stats-row">
+      <% page.stats.items.forEach(function (stat) { %>
+        <div class="stat">
+          <div class="stat__value"><%= stat.value %></div>
+          <div class="stat__label"><%= stat.label %></div>
         </div>
-      </article>
-      <article class="panel panel--plain panel--roadmap reveal">
-        <div class="panel__inner">
-          <span class="panel__label"><%= page.posture.roadmapLabel %></span>
-          <ul class="posture-list posture-list--no">
-            <% page.posture.roadmap.forEach(function (i) { %>
-              <li><%= i %></li>
-            <% }); %>
-          </ul>
-        </div>
-      </article>
-    </div>
-
-    <div style="margin-top:2.5rem;">
-      <a class="arrow-link" href="<%= page.posture.cta.href %>"><%= page.posture.cta.label %></a>
-    </div>
-  </div>
-</section>
-
-<%# Founder teaser — the credibility grid lives on Who We Are; this is the
-    checkable summary in front of the closing CTA. %>
-<section class="section">
-  <div class="shell shell--narrow">
-    <div class="section-head reveal">
-      <span class="eyebrow"><%= page.founder.eyebrow %></span>
-      <h2 class="display-2"><%= page.founder.headline %></h2>
-    </div>
-    <ul class="capability-list reveal">
-      <% page.founder.credentials.forEach(function (c) { %>
-        <li><%= c %></li>
       <% }); %>
-    </ul>
-    <p class="reveal" style="margin-top:1.5rem;">
-      <strong><%= page.founder.name %></strong> · <span class="muted"><%= page.founder.role %></span>
-    </p>
-    <div style="margin-top:1.25rem;">
-      <a class="arrow-link" href="<%= page.founder.cta.href %>"><%= page.founder.cta.label %></a>
     </div>
   </div>
 </section>
 
-<%- include('partials/cta-band', { closing: page.closing }) %>
+<%# 3.7 — Editorial quote block (dark) %>
+<section class="quote-block">
+  <div class="shell quote-block__inner">
+    <h3 class="quote-block__headline">&ldquo;<%= page.quote.headline %>&rdquo;</h3>
+    <p class="quote-block__body"><%= page.quote.body %></p>
+  </div>
+</section>
+
+<%# 3.8 — About %>
+<section class="home-section" id="about">
+  <div class="shell home-section__inner">
+    <span class="eyebrow"><%= page.about.eyebrow %></span>
+    <h2 class="home-section__heading"><%= page.about.headline %></h2>
+
+    <div class="about-grid">
+      <div class="about-grid__body">
+        <% page.about.body.forEach(function (para) { %>
+          <p><%= para %></p>
+        <% }); %>
+      </div>
+      <div class="about-grid__visual">
+        <img src="/brand/norvenzia-mark-light.svg" alt="Norvenzia" width="220" height="220">
+      </div>
+    </div>
+  </div>
+</section>
+
+<%# 3.9 — FAQ accordion %>
+<section class="home-section" id="faq">
+  <div class="shell home-section__inner">
+    <span class="eyebrow"><%= page.faq.eyebrow %></span>
+    <h2 class="home-section__heading"><%= page.faq.headline %></h2>
+
+    <div class="faq-list">
+      <% page.faq.items.forEach(function (item, i) { %>
+        <div class="faq-item">
+          <button type="button" class="faq-item__trigger" aria-expanded="false" aria-controls="faq-panel-<%= i %>">
+            <span><%= item.question %></span>
+            <span class="faq-item__icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq-item__panel" id="faq-panel-<%= i %>" aria-hidden="true">
+            <div class="faq-item__panel-inner"><%= item.answer %></div>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+</section>
+
+<%# 3.10 — Contact CTA %>
+<section class="home-section contact-cta" id="contact">
+  <div class="shell home-section__inner">
+    <h2 class="home-section__heading"><%= page.contactCta.headline %></h2>
+    <p class="contact-cta__body"><%= page.contactCta.body %></p>
+
+    <div class="contact-cta__actions">
+      <a class="btn btn--primary" href="mailto:<%= site.contactEmail %>"><%= site.contactEmail %></a>
+      <a class="contact-cta__secondary" href="<%= page.contactCta.bookingHref %>"><%= page.contactCta.bookingNote %></a>
+    </div>
+  </div>
+</section>

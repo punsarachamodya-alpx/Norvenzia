@@ -30,6 +30,12 @@
 
   <link rel="preload" href="/fonts/manrope-var-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/montserrat-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <%# Homepage-only faces (self-hosted — see the CSP note in styles.css §1).
+      Preloaded only on '/' so inner pages don't fetch fonts they never use. %>
+  <% if (currentPath === '/') { %>
+    <link rel="preload" href="/fonts/space-grotesk-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <% } %>
   <link rel="stylesheet" href="/css/styles.css">
   <%
     // Admin-editable sizing (Appearance section). Parsed with a fallback to the
@@ -207,7 +213,7 @@
     </script>
   <% } %>
 </head>
-<body>
+<body class="<%= currentPath === '/' ? 'home' : '' %>">
   <a class="skip-link" href="#main">Skip to content</a>
   <%- include('partials/header') %>
   <main id="main">
@@ -216,5 +222,12 @@
   <%- include('partials/footer') %>
   <%- include('partials/cookie-banner') %>
   <script src="/js/main.js" defer></script>
+  <script src="/js/nav.js" defer></script>
+  <%# Homepage-only behaviours — no point shipping these to every page. %>
+  <% if (currentPath === '/') { %>
+    <script src="/js/scramble.js" defer></script>
+    <script src="/js/tabs.js" defer></script>
+    <script src="/js/accordion.js" defer></script>
+  <% } %>
 </body>
 </html>
