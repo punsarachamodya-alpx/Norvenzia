@@ -3357,16 +3357,26 @@ button {
 
 .hero--dark {
   position: relative;
+  overflow: hidden;
   min-height: 100vh;
   display: flex;
   align-items: center;
+  background: var(--color-bg-dark);
   /* .header--transparent is position:fixed (removed from flow), so the hero
      needs its own top padding to clear it instead of relying on layout push. */
   padding-top: var(--header-h);
 }
 
-/* Darkens the photo slot so the white headline/eyebrow stay legible once a
-   real photo replaces the placeholder — same treatment as .banner-photo__scrim. */
+.hero__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Darkens the photo so the white headline/eyebrow stay legible — same
+   treatment as .banner-photo__scrim. */
 .hero__scrim {
   position: absolute;
   inset: 0;
@@ -3546,6 +3556,13 @@ button {
 .who-serve__media {
   aspect-ratio: 4 / 3;
   border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.who-serve__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .who-serve__aside {
@@ -3590,9 +3607,18 @@ button {
 
 .banner-photo {
   position: relative;
+  overflow: hidden;
   min-height: 62vh;
   display: flex;
   align-items: center;
+}
+
+.banner-photo__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .banner-photo__scrim {

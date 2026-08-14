@@ -19,7 +19,9 @@
     <h2 class="home-section__heading"><%= page.whoServe.headline %></h2>
 
     <div class="who-serve__grid">
-      <div class="who-serve__media photo-slot" data-photo-hint="<%= page.whoServe.photoHint %>" role="img" aria-label="Team reviewing a plan together"></div>
+      <div class="who-serve__media">
+        <img src="/img/photos/who-serve.jpg" alt="A team reviewing a procurement plan together" width="1920" height="1071">
+      </div>
       <div class="who-serve__aside">
         <span class="who-serve__accent" aria-hidden="true"></span>
         <p class="who-serve__body"><%= page.whoServe.body %></p>
@@ -30,7 +32,8 @@
 </section>
 
 <%# Full-bleed photo banner %>
-<section class="banner-photo photo-slot" data-photo-hint="<%= page.banner.photoHint %>" role="img" aria-label="Operations team at work">
+<section class="banner-photo">
+  <img class="banner-photo__img" src="/img/photos/banner-team.jpg" alt="" aria-hidden="true" width="1920" height="1071">
   <span class="banner-photo__scrim" aria-hidden="true"></span>
   <div class="shell banner-photo__inner">
     <h2 class="banner-photo__headline"><%= page.banner.headline %></h2>

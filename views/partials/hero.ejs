@@ -1,13 +1,11 @@
 <%# Full-bleed photographic hero. .hero keeps the existing cursor-follow-
     spotlight behaviour from public/js/main.js (targets .hero/.hero__spotlight
-    via --hero-mx/--hero-my — unchanged), layered over a photo-slot background
-    (real photo TBD — see the .photo-slot comment in styles.css §31.0), with
-    the scrambled H1 and Gothenburg->Colombo route line on top. --header-h top
+    via --hero-mx/--hero-my — unchanged), layered over a real photo with the
+    scrambled H1 and Gothenburg->Colombo route line on top. --header-h top
     padding keeps content clear of the fixed transparent header (see
     .header--transparent in styles.css). %>
-<section class="hero hero--dark photo-slot"
-         data-photo-hint="Photo: a wide landscape or industrial/port scene in cool tones — /img/photos/hero.jpg"
-         role="img" aria-label="">
+<section class="hero hero--dark">
+  <img class="hero__photo" src="/img/photos/hero.jpg" alt="" aria-hidden="true" width="1920" height="1071">
   <span class="hero__scrim" aria-hidden="true"></span>
   <div class="hero__spotlight" aria-hidden="true"></div>
   <div class="shell hero__dark-inner">
