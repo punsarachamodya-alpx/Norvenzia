@@ -3356,13 +3356,21 @@ button {
 /* ---- 31.1 Dark hero ---- */
 
 .hero--dark {
-  background: var(--color-bg-dark);
+  position: relative;
   min-height: 100vh;
   display: flex;
   align-items: center;
   /* .header--transparent is position:fixed (removed from flow), so the hero
      needs its own top padding to clear it instead of relying on layout push. */
   padding-top: var(--header-h);
+}
+
+/* Darkens the photo slot so the white headline/eyebrow stay legible once a
+   real photo replaces the placeholder — same treatment as .banner-photo__scrim. */
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 15, 26, 0.55) 0%, rgba(10, 15, 26, 0.82) 100%);
 }
 
 .hero__dark-inner {
@@ -3521,64 +3529,169 @@ button {
   color: var(--color-text-secondary);
 }
 
-/* ---- 31.4 Services / tabbed modules ---- */
+/* ---- 31.3b Who we serve — asymmetric split with a blurred accent dot ---- */
 
-.tabs {
+.who-serve {
+  background: var(--color-bg-paper);
+}
+
+.who-serve__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(2.5rem, 5vw, 4.5rem);
+  align-items: start;
   margin-top: clamp(2rem, 4vw, 3rem);
 }
 
-.tabs__list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  border-bottom: 1px solid var(--color-border);
-  padding-bottom: 0.75rem;
-  margin-bottom: clamp(2rem, 4vw, 3rem);
+.who-serve__media {
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-lg);
 }
 
-.tabs__btn {
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-weight: 600;
-  color: var(--color-text-secondary);
-  background: transparent;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: 0.55rem 1.05rem;
-  cursor: pointer;
-  transition: color var(--transition-fast), border-color var(--transition-fast),
-    background var(--transition-fast);
+.who-serve__aside {
+  position: relative;
+  padding-left: 1.75rem;
+  border-left: 1px solid var(--color-border);
+  padding-top: clamp(1rem, 6vw, 4rem);
 }
 
-.tabs__btn:hover {
-  color: var(--color-text-primary);
-  border-color: var(--color-accent);
-}
-
-.tabs__btn.tab--active {
-  color: var(--color-text-white);
+.who-serve__accent {
+  position: absolute;
+  top: 0;
+  right: 10%;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
   background: var(--color-accent);
-  border-color: var(--color-accent);
+  filter: blur(38px);
+  opacity: 0.5;
+  pointer-events: none;
 }
 
-.tabs__panels {
+.who-serve__body {
+  color: var(--color-text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
   position: relative;
 }
 
-.tabs__panel {
-  display: none;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(2rem, 5vw, 4rem);
+@media (max-width: 860px) {
+  .who-serve__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .who-serve__aside {
+    padding-top: 1.5rem;
+  }
+}
+
+/* ---- 31.3c Full-bleed photo banner with an overlaid headline ---- */
+
+.banner-photo {
+  position: relative;
+  min-height: 62vh;
+  display: flex;
   align-items: center;
 }
 
-.tabs__panel.tab-panel--active {
-  display: grid;
+.banner-photo__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    rgba(10, 15, 26, 0.78) 0%,
+    rgba(10, 15, 26, 0.4) 55%,
+    rgba(10, 15, 26, 0.15) 100%
+  );
 }
 
-.tabs__panel-category {
+.banner-photo__inner {
+  position: relative;
+  z-index: 1;
+}
+
+.banner-photo__headline {
+  color: var(--color-text-white);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2rem, 4.6vw, 3.4rem);
+  line-height: 1.15;
+  max-width: 34ch;
+}
+
+/* ---- 31.0 Photo placeholder + pill button ----
+   Image generation is unavailable in this environment (network policy blocks
+   the generator's CDN) and no stock-photo source is reachable either, so
+   these sections ship with clearly-labelled placeholder slots instead of
+   broken <img> tags. Each shows what photo belongs there and at what path —
+   drop a real file at that path and swap the markup for an <img> (or a
+   background-image) to replace it; no other CSS needs to change, since the
+   slot is already sized and positioned correctly. */
+.photo-slot {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(145deg, var(--color-bg-mid) 0%, var(--navy) 55%, var(--color-accent-dark) 100%);
+}
+
+.photo-slot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+/* A small corner caption rather than centered overlay text — .hero--dark and
+   .banner-photo both combine a photo-slot with real foreground copy, and
+   centering the hint across the whole box collided with that copy. Pinned
+   to a corner it stays out of the way in every usage, including the plain
+   standalone slots (who-serve/service-row/about) that have no other content
+   to collide with. */
+.photo-slot::after {
+  content: attr(data-photo-hint);
+  position: absolute;
+  left: 0.75rem;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  z-index: 2;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.btn--pill {
+  border-radius: 999px;
+}
+
+/* ---- 31.4 Services — alternating full-photo + bullet-list rows ---- */
+
+.service-rows {
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3.5rem, 7vw, 6rem);
+}
+
+.service-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2.5rem, 5vw, 4.5rem);
+  align-items: center;
+}
+
+.service-row--reverse .service-row__media {
+  order: 2;
+}
+
+.service-row__media {
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-lg);
+}
+
+.service-row__category {
   font-family: var(--font-mono);
   font-size: 0.72rem;
   letter-spacing: 0.14em;
@@ -3588,89 +3701,43 @@ button {
   margin-bottom: 0.9rem;
 }
 
-.tabs__panel-name {
+.service-row__name {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-size: clamp(1.8rem, 3.4vw, 2.5rem);
   color: var(--color-text-primary);
   margin-bottom: 1rem;
 }
 
-.tabs__panel-desc {
-  color: var(--color-text-secondary);
-  font-size: 1.05rem;
-  line-height: 1.6;
-  max-width: 42ch;
+.service-row__list {
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
 }
 
-.tabs__panel-link {
-  display: inline-block;
-  margin-top: 1.3rem;
-  font-weight: 700;
+.service-row__list li {
+  color: var(--color-text-secondary);
+  font-size: 1.02rem;
+  line-height: 1.5;
+  padding-left: 1.2rem;
+  position: relative;
+}
+
+.service-row__list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
   color: var(--color-accent);
 }
 
-.tabs__panel-visual {
-  aspect-ratio: 4 / 3;
-  border-radius: var(--radius-lg);
-  background: var(--color-bg-paper);
-  border: 1px solid var(--color-border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-}
-
-.tabs__panel-visual svg {
-  width: 100%;
-  height: 100%;
-}
-
-/* Mobile-only accordion trigger — hidden on desktop, shown at 768px below. */
-.tabs__panel-trigger {
-  display: none;
-}
-
-/* Mobile: horizontal tab strip collapses to a vertical accordion-style stack —
-   every panel's trigger is visible at once, only the active one is expanded. */
-@media (max-width: 768px) {
-  .tabs__list {
-    display: none;
-  }
-
-  .tabs--mobile-accordion .tabs__panel-trigger {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: space-between;
-    background: var(--color-bg-paper);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    padding: 0.9rem 1.1rem;
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    font-weight: 600;
-    color: var(--color-text-primary);
-    cursor: pointer;
-    margin-bottom: 0.6rem;
-  }
-
-  .tabs__panel {
-    display: none;
+@media (max-width: 860px) {
+  .service-row,
+  .service-row--reverse .service-row__media {
     grid-template-columns: minmax(0, 1fr);
-    gap: 1.5rem;
-    padding: 0 0.2rem 1.5rem;
-  }
-
-  .tabs__panel.tab-panel--active {
-    display: grid;
-  }
-
-  .tabs__panel-visual {
     order: -1;
-    aspect-ratio: 16 / 9;
   }
 }
 
@@ -3884,15 +3951,8 @@ button {
 }
 
 .about-grid__visual {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-}
-
-.about-grid__visual img {
-  width: 100%;
-  max-width: 220px;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-lg);
 }
 
 @media (max-width: 860px) {
@@ -3902,8 +3962,6 @@ button {
 
   .about-grid__visual {
     order: -1;
-    max-width: 160px;
-    margin-inline: auto;
   }
 }
 

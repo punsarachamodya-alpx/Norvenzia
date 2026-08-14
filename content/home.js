@@ -32,49 +32,94 @@ module.exports = {
     markets: 'Scandinavia · Germany · Netherlands · UK · Australia'
   },
 
-  // 3.3 — Six product modules, tabbed (public/js/tabs.js).
+  // Who Norvenzia serves — asymmetric photo + copy split.
+  // photoHint: what real photo belongs in that slot until one is supplied
+  // (image generation/downloads are unavailable in this environment — see
+  // the .photo-slot comment in styles.css).
+  whoServe: {
+    headline: 'Who is Norvenzia for?',
+    photoHint:
+      'Photo: a small cross-functional team reviewing a procurement or logistics plan together in a modern office — /img/photos/who-serve.jpg',
+    body:
+      'We are the delivery partner for mid-market manufacturers and industrial suppliers whose procurement volume has outgrown the team that set it up — companies that need senior-level execution without the overhead of building an in-house bench.',
+    cta: { label: 'See what we run', href: '#services' }
+  },
+
+  // Full-bleed photo banner between the proof strip and the services list.
+  banner: {
+    headline: 'We run procurement and logistics for growing industrial teams, every day.',
+    photoHint:
+      'Photo: an operations team working together over documents and a laptop, warm natural light — /img/photos/banner-team.jpg'
+  },
+
+  // 3.3 — Six product modules, alternating full-photo + bullet-list rows.
   services: {
     eyebrow: '// WHAT WE RUN',
     headline: 'Six modules. One delivery team.',
     body: 'Start with what you need most. Add the rest when the case builds.',
-    tabs: [
+    items: [
       {
         category: 'BUY',
         name: 'Core',
-        description:
-          'Procurement operations — PO management, supplier onboarding, RFQ and RFP support. Your ops team’s day-to-day, handled.'
+        bullets: [
+          'Purchase order management',
+          'Supplier onboarding',
+          'RFQ and RFP support',
+          'Master data upkeep'
+        ],
+        photoHint: 'Photo: a procurement analyst reviewing PO documents at a desk — /img/photos/service-core.jpg'
       },
       {
         category: 'MOVE',
         name: 'Flow',
-        description:
-          'Logistics coordination and order management, tracked end to end so nothing falls between systems.'
+        bullets: [
+          'Logistics coordination',
+          'Order management, tracked end to end',
+          'Carrier and freight follow-up'
+        ],
+        photoHint: 'Photo: a logistics coordinator checking inventory in a warehouse — /img/photos/service-flow.jpg'
       },
       {
         category: 'RECORD',
         name: 'Link',
-        description:
-          'The data layer underneath it all — supplier, PO, and inventory records kept consistent across your stack.'
+        bullets: [
+          'Supplier, PO, and inventory records kept consistent',
+          'Data cleanup and structuring',
+          'One source of truth across your stack'
+        ],
+        photoHint: 'Photo: a clean modern data/server environment — /img/photos/service-link.jpg'
       },
       {
         category: 'REPORT',
         name: 'Pulse',
-        description:
-          'Power BI dashboards and KPI reporting, built around how your operation actually runs, not a template.'
+        bullets: [
+          'Power BI dashboards and KPI reporting',
+          'Built around how your operation actually runs',
+          'Weekly reporting, not a static template'
+        ],
+        photoHint: 'Photo: an analyst reviewing dashboards on a large monitor — /img/photos/service-pulse.jpg'
       },
       {
         category: 'TRACK',
         name: 'Signal',
         // Kept explicitly as visibility/decision-support language, never
         // forecasting or prediction — see §4 content rules.
-        description:
-          'Early visibility into supply chain disruption. A faster warning system — not a forecast, decision support.'
+        bullets: [
+          'Early visibility into supply chain disruption',
+          'A faster warning system, not a forecast',
+          'Decision support for your team, not for us'
+        ],
+        photoHint: 'Photo: a monitoring setup with maps and data on screens — /img/photos/service-signal.jpg'
       },
       {
         category: 'STAFF',
         name: 'Desk',
-        description:
-          'A dedicated analyst embedded in your operation. Committed hours, committed output.'
+        bullets: [
+          'A dedicated analyst embedded in your operation',
+          'Committed hours, committed output',
+          'Reports to you, not to a shared queue'
+        ],
+        photoHint: 'Photo: a single dedicated analyst working attentively at a desk — /img/photos/service-desk.jpg'
       }
     ]
   },
@@ -160,6 +205,7 @@ module.exports = {
   about: {
     eyebrow: '// ABOUT NORVENZIA',
     headline: 'Built to be the operations team you haven’t hired yet.',
+    photoHint: 'Photo: the Norvenzia team or delivery hub, Colombo — /img/photos/about.jpg',
     body: [
       'Norvenzia (Private) Limited is a supply chain and procurement operations partner registered in Sri Lanka. We give mid-market manufacturers and industrial suppliers across Scandinavia and Europe an operations bench without the overhead of building one in-house.',
       'Client relationships and strategy stay with you, close to your business. Execution runs from our delivery hub in Colombo — where the operational work gets done, every day.'

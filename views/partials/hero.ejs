@@ -1,10 +1,14 @@
-<%# Dark, full-viewport hero. .hero keeps the existing cursor-follow-spotlight
-    behaviour from public/js/main.js (targets .hero/.hero__spotlight via
-    --hero-mx/--hero-my — unchanged), layered under the new dark background,
-    scrambled H1, and Gothenburg->Colombo route line. --header-h top padding
-    keeps content clear of the fixed transparent header (see .header--transparent
-    in styles.css). %>
-<section class="hero hero--dark">
+<%# Full-bleed photographic hero. .hero keeps the existing cursor-follow-
+    spotlight behaviour from public/js/main.js (targets .hero/.hero__spotlight
+    via --hero-mx/--hero-my — unchanged), layered over a photo-slot background
+    (real photo TBD — see the .photo-slot comment in styles.css §31.0), with
+    the scrambled H1 and Gothenburg->Colombo route line on top. --header-h top
+    padding keeps content clear of the fixed transparent header (see
+    .header--transparent in styles.css). %>
+<section class="hero hero--dark photo-slot"
+         data-photo-hint="Photo: a wide landscape or industrial/port scene in cool tones — /img/photos/hero.jpg"
+         role="img" aria-label="">
+  <span class="hero__scrim" aria-hidden="true"></span>
   <div class="hero__spotlight" aria-hidden="true"></div>
   <div class="shell hero__dark-inner">
     <span class="eyebrow eyebrow--mono eyebrow--onDark"><%= page.hero.eyebrow %></span>
@@ -18,8 +22,8 @@
     <p class="lede hero__body hero__body--dim"><%= page.hero.body %></p>
 
     <div class="btn-row">
-      <a class="btn btn--primary" href="<%= page.hero.primaryCta.href %>"><%= page.hero.primaryCta.label %></a>
-      <a class="btn btn--ghost btn--ghost-onDark" href="<%= page.hero.secondaryCta.href %>"><%= page.hero.secondaryCta.label %></a>
+      <a class="btn btn--primary btn--pill" href="<%= page.hero.primaryCta.href %>"><%= page.hero.primaryCta.label %></a>
+      <a class="btn btn--ghost btn--ghost-onDark btn--pill" href="<%= page.hero.secondaryCta.href %>"><%= page.hero.secondaryCta.label %></a>
     </div>
 
     <%# Pure-CSS route line — replaces stock photography with a device that

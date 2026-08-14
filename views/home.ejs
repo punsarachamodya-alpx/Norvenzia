@@ -13,42 +13,53 @@
   </div>
 </section>
 
-<%# 3.3 — Services / six tabbed modules %>
+<%# Who Norvenzia serves — asymmetric photo + copy split %>
+<section class="home-section who-serve">
+  <div class="shell home-section__inner">
+    <h2 class="home-section__heading"><%= page.whoServe.headline %></h2>
+
+    <div class="who-serve__grid">
+      <div class="who-serve__media photo-slot" data-photo-hint="<%= page.whoServe.photoHint %>" role="img" aria-label="Team reviewing a plan together"></div>
+      <div class="who-serve__aside">
+        <span class="who-serve__accent" aria-hidden="true"></span>
+        <p class="who-serve__body"><%= page.whoServe.body %></p>
+        <a class="btn btn--primary btn--pill" href="<%= page.whoServe.cta.href %>"><%= page.whoServe.cta.label %> →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%# Full-bleed photo banner %>
+<section class="banner-photo photo-slot" data-photo-hint="<%= page.banner.photoHint %>" role="img" aria-label="Operations team at work">
+  <span class="banner-photo__scrim" aria-hidden="true"></span>
+  <div class="shell banner-photo__inner">
+    <h2 class="banner-photo__headline"><%= page.banner.headline %></h2>
+  </div>
+</section>
+
+<%# 3.3 — Services / six modules, alternating full-photo + bullet-list rows %>
 <section class="home-section" id="services">
   <div class="shell home-section__inner">
     <span class="eyebrow"><%= page.services.eyebrow %></span>
     <h2 class="home-section__heading"><%= page.services.headline %></h2>
     <p class="home-section__body"><%= page.services.body %></p>
 
-    <div class="tabs tabs--mobile-accordion" data-tabs>
-      <div class="tabs__list" role="tablist">
-        <% page.services.tabs.forEach(function (tab, i) { %>
-          <button type="button" class="tabs__btn <%= i === 0 ? 'tab--active' : '' %>"
-                  role="tab" aria-selected="<%= i === 0 ? 'true' : 'false' %>">
-            <%= tab.category %> — <%= tab.name %>
-          </button>
-        <% }); %>
-      </div>
-
-      <div class="tabs__panels">
-        <% page.services.tabs.forEach(function (tab, i) { %>
-          <button type="button" class="tabs__panel-trigger" aria-expanded="<%= i === 0 ? 'true' : 'false' %>">
-            <span><%= tab.category %> — <%= tab.name %></span>
-            <span aria-hidden="true">+</span>
-          </button>
-          <div class="tabs__panel <%= i === 0 ? 'tab-panel--active' : '' %>">
-            <div class="tabs__panel-copy">
-              <span class="tabs__panel-category"><%= tab.category %></span>
-              <h3 class="tabs__panel-name"><%= tab.name %></h3>
-              <p class="tabs__panel-desc"><%= tab.description %></p>
-              <a class="tabs__panel-link" href="#">Learn more →</a>
-            </div>
-            <div class="tabs__panel-visual">
-              <%- include('partials/module-icon', { slug: tab.name.toLowerCase() }) %>
-            </div>
+    <div class="service-rows">
+      <% page.services.items.forEach(function (item, i) { %>
+        <article class="service-row <%= i % 2 === 1 ? 'service-row--reverse' : '' %>">
+          <div class="service-row__media photo-slot" data-photo-hint="<%= item.photoHint %>" role="img" aria-label="<%= item.name %>"></div>
+          <div class="service-row__copy">
+            <span class="service-row__category"><%= item.category %></span>
+            <h3 class="service-row__name"><%= item.name %></h3>
+            <ul class="service-row__list">
+              <% item.bullets.forEach(function (b) { %>
+                <li><%= b %></li>
+              <% }); %>
+            </ul>
+            <a class="btn btn--ghost btn--pill" href="#contact">Talk to us →</a>
           </div>
-        <% }); %>
-      </div>
+        </article>
+      <% }); %>
     </div>
   </div>
 </section>
@@ -128,9 +139,7 @@
           <p><%= para %></p>
         <% }); %>
       </div>
-      <div class="about-grid__visual">
-        <img src="/brand/norvenzia-mark-light.svg" alt="Norvenzia" width="220" height="220">
-      </div>
+      <div class="about-grid__visual photo-slot" data-photo-hint="<%= page.about.photoHint %>" role="img" aria-label="The Norvenzia team"></div>
     </div>
   </div>
 </section>
@@ -164,7 +173,7 @@
     <p class="contact-cta__body"><%= page.contactCta.body %></p>
 
     <div class="contact-cta__actions">
-      <a class="btn btn--primary" href="mailto:<%= site.contactEmail %>"><%= site.contactEmail %></a>
+      <a class="btn btn--primary btn--pill" href="mailto:<%= site.contactEmail %>"><%= site.contactEmail %></a>
       <a class="contact-cta__secondary" href="<%= page.contactCta.bookingHref %>"><%= page.contactCta.bookingNote %></a>
     </div>
   </div>
