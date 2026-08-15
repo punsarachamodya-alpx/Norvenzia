@@ -1535,23 +1535,28 @@ button {
   transform: scale(0.92);
 }
 
-/* Shrinks the Sweden/Sri Lanka row to about half its previous footprint —
-   the cards were stretching edge-to-edge across the full shell width,
-   which read as oversized and left an odd amount of trailing empty space
-   on the right at wide viewports. Capping the grid's own width and
-   tightening the card's inner padding keeps both cards compact and
-   left-aligned instead of stretched. */
-.split--model {
-  max-width: 50%;
-}
-
+/* The cards now sit in their own column beside the copy (see
+   .model-layout below) rather than stretching full-width underneath it,
+   so they no longer need their own width cap — just the tightened inner
+   padding that keeps them compact. */
 .split--model .panel__inner {
   padding: clamp(1.1rem, 1.6vw, 1.4rem);
 }
 
-@media (max-width: 780px) {
-  .split--model {
-    max-width: 100%;
+/* Puts the model copy and the two country cards side by side instead of
+   stacked — stacking left a wide dead strip beside the ~40ch-wide copy
+   block at desktop widths, since the cards only ever needed the same
+   width as the text column above them. */
+.model-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .model-layout {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 

@@ -12,29 +12,34 @@
 
 <section class="section">
   <div class="shell">
-    <div class="section-head reveal">
-      <span class="eyebrow"><%= page.model.eyebrow %></span>
-      <h2 class="display-2"><%= page.model.headline %></h2>
-      <% page.model.body.forEach(function (para) { %>
-        <p class="lede"><%= para %></p>
-      <% }); %>
-    </div>
+    <%# Text and cards side by side instead of stacked — the section-head's
+        copy is only ever ~40ch wide, so stacking the cards underneath it
+        left a wide dead strip beside the text at desktop widths. %>
+    <div class="model-layout">
+      <div class="section-head reveal model-layout__copy" style="margin-bottom:0;">
+        <span class="eyebrow"><%= page.model.eyebrow %></span>
+        <h2 class="display-2"><%= page.model.headline %></h2>
+        <% page.model.body.forEach(function (para) { %>
+          <p class="lede"><%= para %></p>
+        <% }); %>
+      </div>
 
-    <div class="split split--model">
-      <% page.model.panels.forEach(function (p) { %>
-        <article class="panel panel--model reveal">
-          <% if (p.image) { %>
-            <div class="panel__media">
-              <img src="<%= p.image %>" alt="" loading="lazy" width="800" height="450">
+      <div class="split split--model model-layout__cards">
+        <% page.model.panels.forEach(function (p) { %>
+          <article class="panel panel--model reveal">
+            <% if (p.image) { %>
+              <div class="panel__media">
+                <img src="<%= p.image %>" alt="" loading="lazy" width="800" height="450">
+              </div>
+            <% } %>
+            <div class="panel__inner">
+              <span class="panel__label"><%= p.label %></span>
+              <h3 class="panel__place"><%= p.place %></h3>
+              <p class="panel__body"><%= p.body %></p>
             </div>
-          <% } %>
-          <div class="panel__inner">
-            <span class="panel__label"><%= p.label %></span>
-            <h3 class="panel__place"><%= p.place %></h3>
-            <p class="panel__body"><%= p.body %></p>
-          </div>
-        </article>
-      <% }); %>
+          </article>
+        <% }); %>
+      </div>
     </div>
   </div>
 </section>
