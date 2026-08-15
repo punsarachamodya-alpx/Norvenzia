@@ -1136,30 +1136,6 @@ button {
   }
 }
 
-.fit-section {
-  position: relative;
-  overflow: hidden;
-}
-
-.fit-section__bg {
-  position: absolute;
-  inset: 0;
-  left: auto;
-  width: 55%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0.16;
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 65%);
-  mask-image: linear-gradient(to right, transparent 0%, black 65%);
-  pointer-events: none;
-}
-
-@media (max-width: 700px) {
-  .fit-section__bg {
-    display: none;
-  }
-}
-
 /* ---------------------------------------------------------------- 11c. FAQ */
 
 .faq {
