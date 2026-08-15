@@ -3726,16 +3726,24 @@ button {
 }
 
 /* Used on What We Do's two-division section — a fixed-width image column
-   sized to the photo itself, so the copy starts right after it instead of
-   leaving a dead gap the width of a leftover fraction of the row. */
+   sized to the photo itself, paired with a copy column capped to its own
+   readable measure (matching .home-section__body's 56ch) instead of an
+   `1fr` that stretches to the shell's full, uncapped width on wide
+   screens and leaves the short copy stranded far from the photo. The row
+   itself shrinks to fit those two columns (width: fit-content) rather
+   than stretching, and the reversed row is pushed to the right edge with
+   margin-left: auto so image and copy stay adjacent either way. */
 .service-row--compact {
-  grid-template-columns: 340px minmax(0, 1fr);
+  grid-template-columns: 340px minmax(0, 38rem);
   gap: clamp(2rem, 4vw, 3rem);
   align-items: start;
+  width: fit-content;
+  max-width: 100%;
 }
 
 .service-row--compact.service-row--reverse {
-  grid-template-columns: minmax(0, 1fr) 340px;
+  grid-template-columns: minmax(0, 38rem) 340px;
+  margin-left: auto;
 }
 
 .service-row--compact .service-row__media {
@@ -3747,6 +3755,8 @@ button {
   .service-row--compact,
   .service-row--compact.service-row--reverse {
     grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+    margin-left: 0;
   }
 
   .service-row--compact .service-row__media {
