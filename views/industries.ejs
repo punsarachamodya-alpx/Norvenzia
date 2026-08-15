@@ -41,8 +41,14 @@
   </div>
 </section>
 
-<section class="section section--alt">
-  <div class="shell">
+<%# The plain section--alt background felt empty above/around the fit
+    cards — a faint, right-bleeding architectural photo (same image as Who We
+    Are's statement-split) fills that space without competing with the
+    checklist, since it fades to transparent behind the cards' solid
+    background and sits at low opacity everywhere else. %>
+<section class="section section--alt fit-section">
+  <img class="fit-section__bg" src="/img/photos/architectural.jpg" alt="" aria-hidden="true">
+  <div class="shell" style="position:relative;">
     <div class="section-head reveal">
       <span class="eyebrow"><%= page.fit.eyebrow %></span>
       <h2 class="display-2"><%= page.fit.headline %></h2>
