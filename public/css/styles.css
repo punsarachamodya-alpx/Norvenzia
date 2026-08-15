@@ -4513,7 +4513,12 @@ button {
 .contact-photo-hero {
   position: relative;
   overflow: hidden;
-  padding-block: clamp(3rem, 6vw, 5rem);
+  /* .header--transparent is position:fixed (removed from flow) on this
+     page now, so the section needs its own top clearance instead of
+     relying on the header pushing it down — same reasoning as the other
+     dark-hero pages. */
+  padding-top: calc(var(--header-h) + clamp(2.5rem, 5vw, 4rem));
+  padding-bottom: clamp(4rem, 8vw, 7rem);
 }
 
 .contact-photo-hero__img {
@@ -4538,8 +4543,12 @@ button {
 .contact-card {
   background: var(--color-bg-light);
   border-radius: var(--radius-lg);
-  padding: clamp(2rem, 5vw, 3.5rem);
-  box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.5);
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  margin-inline: clamp(0, 4vw, 3rem);
+  /* A tighter, less diffuse shadow than before — the old 80px blur radius
+     read as a soft halo against the busy photo backdrop; this keeps just
+     enough lift to separate the card from the photo. */
+  box-shadow: 0 10px 28px -10px rgba(0, 0, 0, 0.4);
 }
 
 .contact-card .eyebrow {
