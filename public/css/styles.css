@@ -1066,7 +1066,77 @@ button {
   background: var(--cobalt);
 }
 
-/* ---------------------------------------------------------------- 11b. FAQ */
+/* ------------------------------------------- 11b. Industries — fit criteria
+   A 2x2 grid of checklist cards instead of a plain bordered list — each
+   criterion reads as a self-contained "yes, this is you" card rather than a
+   row in a table. */
+.fit-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+.fit-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.1rem;
+  padding: clamp(1.5rem, 2.5vw, 2rem);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  background: var(--bg, #fff);
+  transition: border-color 0.25s var(--ease), transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+
+.fit-card:hover {
+  border-color: var(--cobalt);
+  transform: translateY(-3px);
+  box-shadow: 0 22px 40px -28px rgba(0, 45, 92, 0.35);
+}
+
+.fit-card__check {
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: var(--ice);
+  color: var(--cobalt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  font-weight: 700;
+  transition: background 0.25s var(--ease), color 0.25s var(--ease);
+}
+
+.fit-card:hover .fit-card__check {
+  background: var(--cobalt);
+  color: #fff;
+}
+
+.fit-card__number {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--ink-muted);
+  margin-bottom: 0.35rem;
+}
+
+.fit-card__text {
+  font-weight: 500;
+  color: var(--ink);
+  font-size: 1.02rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 700px) {
+  .fit-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------------------------------------------------------------- 11c. FAQ */
 
 .faq {
   border-top: 1px solid var(--rule);
