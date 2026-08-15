@@ -4370,8 +4370,8 @@ button {
 
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(1.5rem, 3vw, 2rem);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(1.25rem, 2.5vw, 1.75rem);
 }
 
 .product-card {
@@ -4380,8 +4380,10 @@ button {
   overflow: hidden;
 }
 
+/* Shorter than the old 4/3 crop and one column narrower per row, so each
+   photo reads as a small identifying image rather than a competing hero. */
 .product-card__media {
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 10;
 }
 
 .product-card__media img {
@@ -4411,7 +4413,7 @@ button {
   line-height: 1.55;
 }
 
-@media (max-width: 860px) {
+@media (max-width: 960px) {
   .product-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
