@@ -12,9 +12,14 @@
 
 <%# Same alternating full-photo + bullet-list pattern as the homepage
     services section, reusing the same two module photos since Operations
-    maps to Core (procurement) and Analytics maps to Pulse (dashboards). %>
-<section class="section">
-  <div class="shell">
+    maps to Core (procurement) and Analytics maps to Pulse (dashboards).
+    The compact photo column (see .service-row--compact) leaves a lot of
+    plain white space beside the copy — a faint architectural backdrop
+    fills that without competing with the text, since it sits at low
+    opacity behind everything rather than as a foreground element. %>
+<section class="section division-section">
+  <img class="division-section__bg" src="/img/photos/architectural.jpg" alt="" aria-hidden="true">
+  <div class="shell" style="position:relative;">
     <div class="service-rows">
       <% var divisionPhotos = { Operations: '/img/photos/service-core.jpg', Analytics: '/img/photos/service-pulse.jpg' }; %>
       <% page.divisions.forEach(function (d, i) { %>
