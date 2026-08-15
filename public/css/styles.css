@@ -4374,7 +4374,11 @@ button {
 
 .hero--collage {
   background: var(--color-bg-dark);
-  padding-block: clamp(3.5rem, 7vw, 6rem);
+  /* .header--transparent is position:fixed (removed from flow) on this
+     page, so the hero needs its own top clearance instead of relying on
+     the header pushing it down — same reasoning as .hero--dark. */
+  padding-top: calc(var(--header-h) + clamp(2.5rem, 5vw, 4rem));
+  padding-bottom: clamp(3.5rem, 7vw, 6rem);
 }
 
 .hero-collage__inner {
