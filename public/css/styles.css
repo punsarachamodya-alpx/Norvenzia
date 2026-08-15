@@ -561,11 +561,9 @@ button {
    media queries can't reference a custom property, so the breakpoint has to be
    computed server-side and the ruleset rendered with it, together, in one place. */
 
-/* Homepage-only: starts fully transparent over the dark hero (white
-   text/logo, no border/blur). Past 80px of scroll (nav.js adds
-   .nav--scrolled) it gains a translucent dark-navy tint + blur so it stays
-   legible over whatever's now behind it — but it never becomes a solid
-   opaque bar the way it used to. */
+/* Homepage-only: starts transparent over the dark hero (white text/logo, no
+   border), becomes the standard solid header once nav.js adds .nav--scrolled
+   past 80px of scroll — matching what every other page looks like by default. */
 .header--transparent {
   position: fixed;
   top: 0;
@@ -610,16 +608,30 @@ button {
   background: var(--color-text-white);
 }
 
-/* Stays see-through the whole way down instead of flipping to a solid
-   opaque bar — only the tint deepens slightly past the hero so the white
-   nav text keeps enough contrast over whatever section is now behind it.
-   position stays fixed (not sticky) the entire time: it never needs to be
-   pushed back into flow because it's never opaque. */
 .header--transparent.nav--scrolled {
-  background: rgba(0, 29, 60, 0.62);
-  backdrop-filter: saturate(180%) blur(16px);
-  -webkit-backdrop-filter: saturate(180%) blur(16px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  position: sticky;
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  border-bottom: 1px solid var(--rule);
+}
+
+.header--transparent.nav--scrolled .header__link {
+  color: var(--ink);
+}
+
+.header--transparent.nav--scrolled .header__link:hover {
+  color: var(--cobalt);
+}
+
+.header--transparent.nav--scrolled .header__toggle {
+  border-color: var(--rule-strong);
+}
+
+.header--transparent.nav--scrolled .header__toggle span,
+.header--transparent.nav--scrolled .header__toggle span::before,
+.header--transparent.nav--scrolled .header__toggle span::after {
+  background: var(--navy);
 }
 
 /* Since .header--transparent starts position:fixed (not sticky, so it can sit
