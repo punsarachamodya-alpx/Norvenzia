@@ -21,7 +21,7 @@
       <div>
         <h2 class="footer__heading">Contact</h2>
         <ul class="footer__list">
-          <li><a href="mailto:<%= site.contactEmail %>"><%= site.contactEmail %></a></li>
+          <li><a href="mailto:<%= site.footerEmail %>"><%= site.footerEmail %></a></li>
           <% if (site.phone) { %>
             <li><a href="tel:<%= site.phone.replace(/[^+\d]/g, '') %>"><%= site.phone %></a></li>
           <% } %>

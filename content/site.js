@@ -12,7 +12,12 @@ module.exports = {
   tagline: 'We run the work.',
   description:
     'Norvenzia runs procurement and supply chain operations for mid-market companies — an EU engagement point in Sweden with senior-led delivery from Colombo.',
-  contactEmail: 'contact@norvenzia.com',
+  // Two genuinely separate inboxes — contactEmail is the contact-form
+  // destination and the address shown on the contact page / home CTA;
+  // footerEmail is a distinct address that only ever appears in the
+  // footer. Do not merge these.
+  contactEmail: 'info@norvenzia.com',
+  footerEmail: 'contact@norvenzia.com',
   phone: '+46 73 779 5741',
   registrationLine: 'Norvenzia (Private) Limited. All rights reserved.',
   engagementPoint: 'Sweden',
