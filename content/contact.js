@@ -2,12 +2,12 @@ module.exports = {
   meta: {
     title: 'Contact — Norvenzia',
     description:
-      'Book a call. Tell us what your procurement operation looks like today and we’ll come back with an honest read on whether we can help.'
+      'Submit an inquiry. Tell us what your procurement operation looks like today and we’ll come back with an honest read on whether we can help.'
   },
 
   hero: {
     eyebrow: 'Contact',
-    headline: 'Book a call.',
+    headline: 'Submit an Inquiry.',
     body:
       'Tell us what your procurement operation looks like today. We’ll come back with an honest read on whether we can help — and if we can’t, we’ll say so.'
   },
