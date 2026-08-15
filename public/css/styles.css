@@ -1805,7 +1805,7 @@ button {
 }
 
 .field {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.05rem;
 }
 
 .field__label {
@@ -1816,7 +1816,7 @@ button {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--ink-faint);
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.4rem;
 }
 
 .field__req {
@@ -1833,7 +1833,7 @@ button {
   background: #fff;
   border: 1px solid var(--rule-strong);
   border-radius: 2px;
-  padding: 0.85rem 1rem;
+  padding: 0.55rem 0.8rem;
   transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
 }
 
@@ -1846,7 +1846,7 @@ button {
 }
 
 .field textarea {
-  min-height: 150px;
+  min-height: 110px;
   resize: vertical;
 }
 
@@ -4517,8 +4517,8 @@ button {
      page now, so the section needs its own top clearance instead of
      relying on the header pushing it down — same reasoning as the other
      dark-hero pages. */
-  padding-top: calc(var(--header-h) + clamp(2.5rem, 5vw, 4rem));
-  padding-bottom: clamp(4rem, 8vw, 7rem);
+  padding-top: calc(var(--header-h) + clamp(1.5rem, 3vw, 2.5rem));
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
 }
 
 .contact-photo-hero__img {
