@@ -3735,11 +3735,13 @@ button {
 
 .service-row--compact .service-row__media {
   max-width: 340px;
+  margin-inline: auto;
 }
 
 @media (max-width: 860px) {
   .service-row--compact .service-row__media {
     max-width: 100%;
+    margin-inline: 0;
   }
 }
 
