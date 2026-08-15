@@ -1,10 +1,21 @@
-<section class="hero hero--inner">
-  <div class="shell">
-    <div class="hero__copy">
+<%# Collage hero: two overlapping real photos instead of stock art or an
+    illustration, paired with the copy rather than sitting behind it (keeps
+    contrast/legibility solid). %>
+<section class="hero hero--collage">
+  <div class="shell hero-collage__inner">
+    <div class="hero-collage__copy">
       <span class="eyebrow"><%= page.hero.eyebrow %></span>
-      <h1 class="display-1"><%= page.hero.headline %></h1>
+      <h1 class="display-1 hero-collage__headline"><%= page.hero.headline %></h1>
+      <p class="lede hero-collage__body"><%= page.hero.body %></p>
     </div>
-    <p class="lede"><%= page.hero.body %></p>
+    <div class="hero-collage__media">
+      <div class="hero-collage__tile hero-collage__tile--a">
+        <img src="/img/photos/collage-a.jpg" alt="" width="1600" height="1194">
+      </div>
+      <div class="hero-collage__tile hero-collage__tile--b">
+        <img src="/img/photos/collage-b.jpg" alt="" width="1600" height="1194">
+      </div>
+    </div>
   </div>
 </section>
 
@@ -83,10 +94,26 @@
 </section>
 <% } %>
 
-<section class="section section--navy">
-  <div class="shell">
-    <span class="eyebrow eyebrow--onNavy">Mission</span>
-    <p class="pullquote pullquote--wide"><%= page.mission.statement %></p>
+<%# Full-bleed photo band, same treatment as the homepage's banner-photo. %>
+<section class="banner-photo">
+  <img class="banner-photo__img" src="/img/photos/conversation-band.jpg" alt="" aria-hidden="true" width="1600" height="1194">
+  <span class="banner-photo__scrim" aria-hidden="true"></span>
+  <div class="shell banner-photo__inner">
+    <h2 class="banner-photo__headline">Small enough that you talk to the person doing the work, not an account manager relaying it.</h2>
+  </div>
+</section>
+
+<%# A bold photo bleeding off the edge, paired with the mission statement —
+    replaces the plain navy pullquote band with a real-photo split. %>
+<section class="statement-split">
+  <div class="statement-split__media">
+    <img src="/img/photos/architectural.jpg" alt="" width="1600" height="893">
+  </div>
+  <div class="statement-split__copy">
+    <div>
+      <span class="eyebrow">Mission</span>
+      <p class="statement-split__text"><%= page.mission.statement %></p>
+    </div>
   </div>
 </section>
 
