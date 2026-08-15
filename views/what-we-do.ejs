@@ -8,25 +8,34 @@
   </div>
 </section>
 
+<%# Same alternating full-photo + bullet-list pattern as the homepage
+    services section, reusing the same two module photos since Operations
+    maps to Core (procurement) and Analytics maps to Pulse (dashboards). %>
 <section class="section">
   <div class="shell">
-    <% page.divisions.forEach(function (d) { %>
-      <div class="division reveal">
-        <div>
-          <span class="division__index"><%= d.index %></span>
-          <h2 class="division__name">
-            <%= d.name %>
-            <%- include('partials/badge', { status: d.status }) %>
-          </h2>
-          <p class="division__summary"><%= d.summary %></p>
-        </div>
-        <ul class="capability-list">
-          <% d.capabilities.forEach(function (c) { %>
-            <li><%= c %></li>
-          <% }); %>
-        </ul>
-      </div>
-    <% }); %>
+    <div class="service-rows">
+      <% var divisionPhotos = { Operations: '/img/photos/service-core.jpg', Analytics: '/img/photos/service-pulse.jpg' }; %>
+      <% page.divisions.forEach(function (d, i) { %>
+        <article class="service-row <%= i % 2 === 1 ? 'service-row--reverse' : '' %>">
+          <div class="service-row__media">
+            <img src="<%= divisionPhotos[d.name] || '/img/photos/service-core.jpg' %>" alt="<%= d.name %>" width="1024" height="768">
+          </div>
+          <div class="service-row__copy">
+            <span class="service-row__category"><%= d.index %></span>
+            <h2 class="service-row__name">
+              <%= d.name %>
+              <%- include('partials/badge', { status: d.status }) %>
+            </h2>
+            <p class="home-section__body" style="margin-bottom:1.2rem;"><%= d.summary %></p>
+            <ul class="service-row__list">
+              <% d.capabilities.forEach(function (c) { %>
+                <li><%= c %></li>
+              <% }); %>
+            </ul>
+          </div>
+        </article>
+      <% }); %>
+    </div>
   </div>
 </section>
 
@@ -38,25 +47,29 @@
       <p class="lede"><%= page.products.body %></p>
     </div>
 
-    <div class="table-scroll reveal">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th scope="col">Product</th>
-            <th scope="col">Status</th>
-            <th scope="col">Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% page.products.items.forEach(function (p) { %>
-            <tr>
-              <td><%= p.name %></td>
-              <td><%- include('partials/badge', { status: p.status }) %></td>
-              <td><%= p.description %></td>
-            </tr>
-          <% }); %>
-        </tbody>
-      </table>
+    <div class="product-grid reveal">
+      <% var productPhotos = {
+        Core: '/img/photos/service-core.jpg',
+        Flow: '/img/photos/service-flow.jpg',
+        Signal: '/img/photos/service-signal.jpg',
+        Pulse: '/img/photos/service-pulse.jpg',
+        Link: '/img/photos/service-link.jpg',
+        Desk: '/img/photos/service-desk.jpg'
+      }; %>
+      <% page.products.items.forEach(function (p) { %>
+        <article class="product-card">
+          <div class="product-card__media">
+            <img src="<%= productPhotos[p.name] || '/img/photos/service-core.jpg' %>" alt="<%= p.name %>" width="1024" height="768">
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__name">
+              <%= p.name %>
+              <%- include('partials/badge', { status: p.status }) %>
+            </h3>
+            <p class="product-card__desc"><%= p.description %></p>
+          </div>
+        </article>
+      <% }); %>
     </div>
   </div>
 </section>
@@ -69,20 +82,20 @@
       <p class="lede"><%= page.tiers.body %></p>
     </div>
 
-    <div class="grid grid--3">
-      <% page.tiers.items.forEach(function (t) { %>
-        <div class="tier reveal">
-          <h3 class="tier__name"><%= t.name %></h3>
-          <p class="tier__summary"><%= t.summary %></p>
-          <ul class="tier__includes">
+    <div class="tier-cards reveal">
+      <% var tierNumbers = ['01', '02', '03']; %>
+      <% page.tiers.items.forEach(function (t, i) { %>
+        <article class="tier-card">
+          <span class="tier-card__number"><%= tierNumbers[i] || String(i + 1).padStart(2, '0') %></span>
+          <h3 class="tier-card__name"><%= t.name %></h3>
+          <p class="tier-card__body"><%= t.summary %></p>
+          <ul class="service-row__list" style="margin-top:0.8rem;">
             <% t.includes.forEach(function (i) { %>
               <li><%= i %></li>
             <% }); %>
           </ul>
-          <div class="tier__cta">
-            <a class="btn btn--ghost" href="/contact"><%= page.tiers.ctaLabel %></a>
-          </div>
-        </div>
+          <a class="tier-card__link" href="/contact"><%= page.tiers.ctaLabel %> →</a>
+        </article>
       <% }); %>
     </div>
   </div>
