@@ -1,7 +1,7 @@
 <%# Full-bleed photo hero with a transparent header overlaid, same
     treatment as the homepage. %>
 <section class="work-hero work-hero--dark-nav">
-  <img class="work-hero__img" src="/img/photos/what-we-do-hero.jpg" alt="" aria-hidden="true" width="1920" height="1072">
+  <img class="work-hero__img" src="/img/photos/what-we-do-hero.jpg" alt="" aria-hidden="true" width="1920" height="1072" data-parallax="36">
   <span class="work-hero__scrim" aria-hidden="true"></span>
   <div class="shell work-hero__inner">
     <span class="eyebrow"><%= page.hero.eyebrow %></span>
@@ -54,7 +54,7 @@
       <p class="lede"><%= page.products.body %></p>
     </div>
 
-    <div class="product-grid reveal">
+    <div class="product-grid reveal-group">
       <% var productPhotos = {
         Core: '/img/photos/service-core.jpg',
         Flow: '/img/photos/service-flow.jpg',
@@ -89,7 +89,7 @@
       <p class="lede"><%= page.tiers.body %></p>
     </div>
 
-    <div class="tier-cards reveal">
+    <div class="tier-cards reveal-group">
       <% var tierNumbers = ['01', '02', '03']; %>
       <% page.tiers.items.forEach(function (t, i) { %>
         <article class="tier-card">

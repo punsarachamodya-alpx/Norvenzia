@@ -29,12 +29,39 @@
 
   // --------------------------------------------------------- scroll reveal
   var revealables = document.querySelectorAll('.reveal');
+  var revealGroups = document.querySelectorAll('.reveal-group');
   var reduced =
     window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Stagger: each .reveal element gets an index among the .reveal siblings
+  // that share its parent, so cards/panels/steps sitting side by side fade
+  // in one after another instead of all at once (see --reveal-i in
+  // styles.css). Elements without such siblings just get index 0 — no delay.
+  var siblingCounts = new Map();
+  for (var s = 0; s < revealables.length; s++) {
+    var parent = revealables[s].parentElement;
+    var count = siblingCounts.has(parent) ? siblingCounts.get(parent) : 0;
+    revealables[s].style.setProperty('--reveal-i', String(count));
+    siblingCounts.set(parent, count + 1);
+  }
+
+  // Same idea one level down, for grids where the *wrapper* carries
+  // .reveal-group and it's the wrapper's own children that should stagger
+  // (product/tier/fit grids — see .reveal-group in styles.css).
+  for (var g = 0; g < revealGroups.length; g++) {
+    var children = revealGroups[g].children;
+    for (var c = 0; c < children.length; c++) {
+      children[c].style.setProperty('--reveal-i', String(c));
+    }
+  }
+
+  var allRevealTargets = [];
+  for (var ri = 0; ri < revealables.length; ri++) allRevealTargets.push(revealables[ri]);
+  for (var gi = 0; gi < revealGroups.length; gi++) allRevealTargets.push(revealGroups[gi]);
+
   function revealAll() {
-    for (var i = 0; i < revealables.length; i++) {
-      revealables[i].classList.add('is-visible');
+    for (var i = 0; i < allRevealTargets.length; i++) {
+      allRevealTargets[i].classList.add('is-visible');
     }
   }
 
@@ -53,11 +80,45 @@
       { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }
     );
 
-    for (var j = 0; j < revealables.length; j++) observer.observe(revealables[j]);
+    for (var j = 0; j < allRevealTargets.length; j++) observer.observe(allRevealTargets[j]);
 
     // Failsafe: reveal everything after 2s regardless of whether the observer
     // fired, so content can never end up permanently invisible.
     window.setTimeout(revealAll, 2000);
+  }
+
+  // -------------------------------------------------------------- parallax
+  // Any element carrying data-parallax drifts a few px as it passes through
+  // the viewport (translate3d via --parallax-y — see [data-parallax] in
+  // styles.css). The attribute's value is the max travel in px either way;
+  // blank/invalid falls back to 24. Skipped entirely under reduced motion,
+  // same as every other motion effect on this page.
+  var parallaxEls = document.querySelectorAll('[data-parallax]');
+
+  if (parallaxEls.length && !reduced) {
+    var parallaxRaf = null;
+
+    function updateParallax() {
+      parallaxRaf = null;
+      var vh = window.innerHeight;
+      for (var p = 0; p < parallaxEls.length; p++) {
+        var el = parallaxEls[p];
+        var rect = el.getBoundingClientRect();
+        var centerOffset = (rect.top + rect.height / 2 - vh / 2) / vh; // ~ -1..1
+        var clamped = Math.max(-1, Math.min(1, centerOffset));
+        var strength = parseFloat(el.getAttribute('data-parallax')) || 24;
+        el.style.setProperty('--parallax-y', (clamped * strength).toFixed(1) + 'px');
+      }
+    }
+
+    function queueParallax() {
+      if (parallaxRaf) return;
+      parallaxRaf = window.requestAnimationFrame(updateParallax);
+    }
+
+    updateParallax();
+    window.addEventListener('scroll', queueParallax, { passive: true });
+    window.addEventListener('resize', queueParallax);
   }
 
   // ------------------------------------------------- hero cursor interaction

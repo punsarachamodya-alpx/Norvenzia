@@ -1,17 +1,16 @@
 <%# The homepage, What We Do, Industries We Serve, How We Work, Who We
     Are, Intelligence (Live), and Contact all start with a transparent
-    header over a dark hero, so they need the white/"dark-bg" logo variant
-    at load; every other page has no dark hero behind it and always
-    renders solid white, so it always gets the navy/"light-bg" variant.
-    nav.js swaps the src on scroll for the dark-starting pages — see
-    public/js/nav.js. %>
+    header over a dark hero, so they need the white/"dark-bg" logo variant —
+    the header stays translucent (never solid) through scroll (see
+    .header--transparent.nav--scrolled in styles.css), so this variant holds
+    for the whole page. Every other page has no dark hero behind it and
+    always renders solid glass, so it always gets the navy/"light-bg"
+    variant. %>
 <% var startsOnDark = ['/', '/what-we-do', '/industries', '/how-we-work', '/who-we-are', '/live', '/contact'].indexOf(currentPath) !== -1; %>
 <header class="header <%= startsOnDark ? 'header--transparent' : '' %>">
   <div class="shell header__inner">
     <a class="header__logo" href="/" aria-label="<%= site.publicName %> — home">
       <img src="<%= startsOnDark ? '/brand/norvenzia-logo-dark.svg' : '/brand/norvenzia-logo-light.svg' %>"
-           data-logo-light="/brand/norvenzia-logo-light.svg"
-           data-logo-dark="/brand/norvenzia-logo-dark.svg"
            alt="Norvenzia" width="337" height="66">
     </a>
 

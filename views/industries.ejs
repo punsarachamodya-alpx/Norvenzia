@@ -1,7 +1,7 @@
 <%# Full-bleed photo hero with a transparent header overlaid, same
     treatment as the homepage and What We Do. %>
 <section class="work-hero work-hero--dark-nav">
-  <img class="work-hero__img" src="/img/photos/industries-hero.jpg" alt="" aria-hidden="true" width="1920" height="1072">
+  <img class="work-hero__img" src="/img/photos/industries-hero.jpg" alt="" aria-hidden="true" width="1920" height="1072" data-parallax="36">
   <span class="work-hero__scrim" aria-hidden="true"></span>
   <div class="shell work-hero__inner">
     <span class="eyebrow"><%= page.hero.eyebrow %></span>
@@ -48,7 +48,7 @@
       <h2 class="display-2"><%= page.fit.headline %></h2>
     </div>
 
-    <div class="fit-grid reveal">
+    <div class="fit-grid reveal-group">
       <% page.fit.criteria.forEach(function (c, i) { %>
         <div class="fit-card">
           <span class="fit-card__check" aria-hidden="true">&#10003;</span>

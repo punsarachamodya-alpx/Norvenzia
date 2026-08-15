@@ -561,9 +561,11 @@ button {
    media queries can't reference a custom property, so the breakpoint has to be
    computed server-side and the ruleset rendered with it, together, in one place. */
 
-/* Homepage-only: starts transparent over the dark hero (white text/logo, no
-   border), becomes the standard solid header once nav.js adds .nav--scrolled
-   past 80px of scroll — matching what every other page looks like by default. */
+/* Homepage-only: starts fully transparent over the dark hero (white
+   text/logo, no border/blur). Past 80px of scroll (nav.js adds
+   .nav--scrolled) it gains a translucent dark-navy tint + blur so it stays
+   legible over whatever's now behind it — but it never becomes a solid
+   opaque bar the way it used to. */
 .header--transparent {
   position: fixed;
   top: 0;
@@ -608,30 +610,16 @@ button {
   background: var(--color-text-white);
 }
 
+/* Stays see-through the whole way down instead of flipping to a solid
+   opaque bar — only the tint deepens slightly past the hero so the white
+   nav text keeps enough contrast over whatever section is now behind it.
+   position stays fixed (not sticky) the entire time: it never needs to be
+   pushed back into flow because it's never opaque. */
 .header--transparent.nav--scrolled {
-  position: sticky;
-  background: rgba(255, 255, 255, 0.86);
-  backdrop-filter: saturate(180%) blur(14px);
-  -webkit-backdrop-filter: saturate(180%) blur(14px);
-  border-bottom: 1px solid var(--rule);
-}
-
-.header--transparent.nav--scrolled .header__link {
-  color: var(--ink);
-}
-
-.header--transparent.nav--scrolled .header__link:hover {
-  color: var(--cobalt);
-}
-
-.header--transparent.nav--scrolled .header__toggle {
-  border-color: var(--rule-strong);
-}
-
-.header--transparent.nav--scrolled .header__toggle span,
-.header--transparent.nav--scrolled .header__toggle span::before,
-.header--transparent.nav--scrolled .header__toggle span::after {
-  background: var(--navy);
+  background: rgba(0, 29, 60, 0.62);
+  backdrop-filter: saturate(180%) blur(16px);
+  -webkit-backdrop-filter: saturate(180%) blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 /* Since .header--transparent starts position:fixed (not sticky, so it can sit
@@ -2211,9 +2199,44 @@ button {
   opacity: 0;
   transform: translateY(18px);
   transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  /* --reveal-i is set per-child by main.js on grid/list containers (cards,
+     columns, etc.) so siblings fade in staggered rather than all at once.
+     Elements without children indexed this way just get 0 — no delay. */
+  transition-delay: calc(var(--reveal-i, 0) * 70ms);
 }
 
 .js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Scroll parallax: main.js sets --parallax-y (in px) on scroll for any
+   element carrying [data-parallax]. Fine-pointer + motion-allowed only,
+   same gating as the hero/motion-band pointer effects — see main.js. */
+.js [data-parallax] {
+  transform: translate3d(0, var(--parallax-y, 0), 0);
+  will-change: transform;
+}
+
+/* Photos need a little overscan so the parallax shift never uncovers an
+   edge of their (overflow: hidden) frame — the scale alone is baked in
+   here rather than left to each photo's own rules. */
+.js img[data-parallax] {
+  transform: scale(1.12) translate3d(0, var(--parallax-y, 0), 0);
+}
+
+/* Grid/list wrappers where the *wrapper* carries the reveal state but it's
+   the individual children (cards/tiers/rows) that should fade in staggered
+   — main.js indexes each child's --reveal-i. Unlike .reveal, the wrapper
+   itself is never hidden; only its children are. */
+.js .reveal-group > * {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  transition-delay: calc(var(--reveal-i, 0) * 70ms);
+}
+
+.js .reveal-group.is-visible > * {
   opacity: 1;
   transform: none;
 }
@@ -2399,10 +2422,20 @@ button {
     scroll-behavior: auto;
   }
 
-  .js .reveal {
+  .js .reveal,
+  .js .reveal-group > * {
     opacity: 1;
     transform: none;
     transition: none;
+    transition-delay: 0s;
+  }
+
+  .js [data-parallax] {
+    transform: none;
+  }
+
+  .who-serve__accent {
+    animation: none;
   }
 
   .hero-figure__pulse,
@@ -2432,11 +2465,14 @@ button {
 
   .btn:hover,
   .card--link:hover,
-  .tier:hover {
+  .tier:hover,
+  .fit-card:hover,
+  .product-card:hover {
     transform: none;
   }
 
-  .card--media:hover .card__media img {
+  .card--media:hover .card__media img,
+  .product-card:hover .product-card__media img {
     transform: none;
   }
 
@@ -3709,6 +3745,10 @@ button {
   padding-top: clamp(1rem, 6vw, 4rem);
 }
 
+/* Drifts and breathes continuously (autonomous, no pointer/scroll needed so
+   it still moves on touch devices), plus a scroll-driven parallax offset
+   layered on top via --parallax-y (see [data-parallax] and main.js) —
+   translate3d composites both without one fighting the other. */
 .who-serve__accent {
   position: absolute;
   top: 0;
@@ -3720,6 +3760,21 @@ button {
   filter: blur(38px);
   opacity: 0.5;
   pointer-events: none;
+  transform: translate3d(0, var(--parallax-y, 0), 0);
+  will-change: transform, opacity;
+  animation: blob-drift 9s ease-in-out infinite;
+}
+
+@keyframes blob-drift {
+  0%,
+  100% {
+    transform: translate3d(0, var(--parallax-y, 0), 0) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate3d(-18px, calc(var(--parallax-y, 0) + 14px), 0) scale(1.18);
+    opacity: 0.72;
+  }
 }
 
 .who-serve__body {
@@ -4473,6 +4528,7 @@ button {
 
 .statement-split__media {
   min-height: 22rem;
+  overflow: hidden;
 }
 
 .statement-split__media img {
@@ -4587,18 +4643,31 @@ button {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   overflow: hidden;
+  transition: border-color 0.25s var(--ease), transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+
+.product-card:hover {
+  border-color: var(--cobalt);
+  transform: translateY(-4px);
+  box-shadow: 0 22px 40px -28px rgba(0, 45, 92, 0.35);
 }
 
 /* Shorter than the old 4/3 crop and one column narrower per row, so each
    photo reads as a small identifying image rather than a competing hero. */
 .product-card__media {
   aspect-ratio: 16 / 10;
+  overflow: hidden;
 }
 
 .product-card__media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.4s var(--ease);
+}
+
+.product-card:hover .product-card__media img {
+  transform: scale(1.06);
 }
 
 .product-card__body {
