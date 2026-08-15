@@ -4544,10 +4544,12 @@ button {
   background: var(--color-bg-light);
   border-radius: var(--radius-lg);
   padding: clamp(1.5rem, 3vw, 2.25rem);
-  margin-inline: clamp(0, 4vw, 3rem);
+  /* Full width within the shell — matches the reference (Actionist-style)
+     contact card: no side margin, just a generous photo reveal above it. */
+  margin-inline: 0;
   /* A tighter, less diffuse shadow than before — the old 80px blur radius
      read as a soft halo against the busy photo backdrop; this keeps just
-     enough lift to separate the card from the photo. */
+     enough lift to separate the card from the photo, with no blur. */
   box-shadow: 0 10px 28px -10px rgba(0, 0, 0, 0.4);
 }
 

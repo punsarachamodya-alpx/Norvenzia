@@ -13,8 +13,6 @@ module.exports = {
   },
 
   responseCommitment: 'We respond within one business day.',
-  engagementNote:
-    'Your point of contact is based in Sweden — inside the EU, working in your business hours.',
 
   // TODO(founder): add a Calendly (or equivalent) embed URL. While empty, the
   // booking panel is omitted entirely rather than showing a placeholder.
