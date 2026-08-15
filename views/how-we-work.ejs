@@ -1,10 +1,12 @@
-<section class="hero hero--inner">
-  <div class="shell">
-    <div class="hero__copy">
-      <span class="eyebrow"><%= page.hero.eyebrow %></span>
-      <h1 class="display-1"><%= page.hero.headline %></h1>
-    </div>
-    <p class="lede"><%= page.hero.body %></p>
+<%# Full-bleed photo hero, same family as the other rebuilt pages —
+    a real operations team in place of the plain text-only inner hero. %>
+<section class="work-hero">
+  <img class="work-hero__img" src="/img/photos/banner-team.jpg" alt="" aria-hidden="true" width="1920" height="1071">
+  <span class="work-hero__scrim" aria-hidden="true"></span>
+  <div class="shell work-hero__inner">
+    <span class="eyebrow"><%= page.hero.eyebrow %></span>
+    <h1 class="display-1 work-hero__headline"><%= page.hero.headline %></h1>
+    <p class="lede work-hero__body"><%= page.hero.body %></p>
   </div>
 </section>
 

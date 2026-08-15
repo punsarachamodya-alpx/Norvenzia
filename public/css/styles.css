@@ -4421,3 +4421,47 @@ button {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* ---- 31.16 How We Work — full-bleed photo hero ---- */
+
+.work-hero {
+  position: relative;
+  overflow: hidden;
+  min-height: 56vh;
+  display: flex;
+  align-items: flex-end;
+}
+
+.work-hero__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.work-hero__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 15, 26, 0.25) 0%, rgba(10, 15, 26, 0.92) 100%);
+}
+
+.work-hero__inner {
+  position: relative;
+  z-index: 1;
+  padding-block: clamp(3rem, 7vw, 5rem);
+}
+
+.work-hero .eyebrow {
+  color: var(--color-accent);
+}
+
+.work-hero__headline {
+  color: var(--color-text-white);
+}
+
+.work-hero__body {
+  color: var(--color-text-dim);
+  margin-top: 1.2rem;
+  max-width: 60ch;
+}
