@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/story.css">
+<link rel="stylesheet" href="/css/story.css?v=<%= v %>">
 
 <% if (!data) { %>
   <section class="hero hero--inner">
@@ -219,6 +219,6 @@
       views/live.ejs's #live-initial-data island. %>
   <script type="application/json" id="story-data"><%- JSON.stringify(data).replace(/</g, '\\u003c') %></script>
   <script src="/js/vendor/d3.v7.min.js" defer></script>
-  <script src="/js/story-engine.js" defer></script>
-  <script src="/js/story.js" defer></script>
+  <script src="/js/story-engine.js?v=<%= v %>" defer></script>
+  <script src="/js/story.js?v=<%= v %>" defer></script>
 <% } %>

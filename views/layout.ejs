@@ -36,7 +36,7 @@
     <link rel="preload" href="/fonts/space-grotesk-var-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
   <% } %>
-  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/styles.css?v=<%= v %>">
   <%
     // Admin-editable sizing (Appearance section). Parsed with a fallback to the
     // shipped defaults, so a blank or corrupted value can never break layout.
@@ -177,7 +177,7 @@
   </style>
   <%# Sets the .js flag before first paint so scroll-reveal can hide content only
       when JavaScript is actually available. External, never inline: script-src is 'self'. %>
-  <script src="/js/js-on.js"></script>
+  <script src="/js/js-on.js?v=<%= v %>"></script>
 
   <%# Homepage only. This is the shared layout, so an unguarded block here would
       emit Organization + WebSite on all nine pages — search engines expect one
@@ -221,12 +221,12 @@
   </main>
   <%- include('partials/footer') %>
   <%- include('partials/cookie-banner') %>
-  <script src="/js/main.js" defer></script>
-  <script src="/js/nav.js" defer></script>
+  <script src="/js/main.js?v=<%= v %>" defer></script>
+  <script src="/js/nav.js?v=<%= v %>" defer></script>
   <%# Homepage-only behaviours — no point shipping these to every page. %>
   <% if (currentPath === '/') { %>
-    <script src="/js/scramble.js" defer></script>
-    <script src="/js/accordion.js" defer></script>
+    <script src="/js/scramble.js?v=<%= v %>" defer></script>
+    <script src="/js/accordion.js?v=<%= v %>" defer></script>
   <% } %>
 </body>
 </html>

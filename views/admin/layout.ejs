@@ -6,7 +6,7 @@
   <meta name="robots" content="noindex, nofollow">
   <title><%= title %> — Norvenzia admin</title>
   <link rel="icon" href="/brand/favicon-32.png" sizes="32x32">
-  <link rel="stylesheet" href="/css/admin.css">
+  <link rel="stylesheet" href="/css/admin.css?v=<%= v %>">
 </head>
 <body>
   <% if (typeof csrfToken !== 'undefined') { %>
@@ -47,6 +47,6 @@
       <%- body %>
     </main>
   <% } %>
-  <script src="/js/admin.js" defer></script>
+  <script src="/js/admin.js?v=<%= v %>" defer></script>
 </body>
 </html>

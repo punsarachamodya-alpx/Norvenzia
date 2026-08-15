@@ -48,6 +48,15 @@ const OG_IMAGE_VERSION = (() => {
   }
 })();
 
+// Cache-busting query param for every CSS/JS asset, derived once at process
+// boot. Static assets are served with a 7-day max-age in production (see
+// express.static below), so without this a visitor's browser (or an
+// upstream CDN) can keep serving a stale bundle for up to a week after a
+// deploy ships a change — every deploy restarts the process (see
+// deploy/README.md's `systemctl restart`), so a boot-time value is already a
+// fresh cache key on every release with nothing to remember to bump.
+const ASSET_VERSION = String(Date.now());
+
 // Correct secure-cookie and req.ip behaviour behind a reverse proxy.
 app.set('trust proxy', 1);
 app.set('view engine', 'ejs');
@@ -198,6 +207,7 @@ app.use((req, res, next) => {
   res.locals.currentPath = req.path;
   res.locals.canonical = store.getSection('site').baseUrl + req.originalUrl.split('?')[0];
   res.locals.ogImageVersion = OG_IMAGE_VERSION;
+  res.locals.v = ASSET_VERSION;
   next();
 });
 
