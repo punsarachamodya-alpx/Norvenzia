@@ -1507,6 +1507,34 @@ button {
   padding-top: clamp(1.6rem, 2.4vw, 2.2rem);
 }
 
+/* How We Work's Sweden/Sri Lanka model cards — the same rounded, lifting
+   card chrome used for tier/product/fit cards elsewhere on the site,
+   scoped so the Security section's intentionally plain panels (no photos,
+   no hover) are untouched. */
+.panel--model {
+  border-radius: var(--radius-lg);
+  transition: border-color 0.25s var(--ease), transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+
+.panel--model:hover {
+  border-color: var(--cobalt);
+  transform: translateY(-4px);
+  box-shadow: 0 22px 40px -28px rgba(0, 45, 92, 0.35);
+}
+
+.panel--model .panel__media {
+  aspect-ratio: 16 / 9;
+}
+
+.panel--model .panel__media img {
+  transform: scale(0.85);
+  transition: transform 0.4s var(--ease);
+}
+
+.panel--model:hover .panel__media img {
+  transform: scale(0.92);
+}
+
 .panel--roadmap {
   background: var(--ice-warm);
   border-style: dashed;
