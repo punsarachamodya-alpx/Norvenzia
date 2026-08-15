@@ -1,9 +1,8 @@
 <%# Full-bleed photographic hero. .hero keeps the existing cursor-follow-
     spotlight behaviour from public/js/main.js (targets .hero/.hero__spotlight
     via --hero-mx/--hero-my — unchanged), layered over a real photo with the
-    scrambled H1 and Gothenburg->Colombo route line on top. --header-h top
-    padding keeps content clear of the fixed transparent header (see
-    .header--transparent in styles.css). %>
+    scrambled H1 on top. --header-h top padding keeps content clear of the
+    fixed transparent header (see .header--transparent in styles.css). %>
 <section class="hero hero--dark">
   <img class="hero__photo" src="/img/photos/hero.jpg" alt="" aria-hidden="true" width="1920" height="1071">
   <span class="hero__scrim" aria-hidden="true"></span>
@@ -22,20 +21,6 @@
     <div class="btn-row">
       <a class="btn btn--primary btn--pill" href="<%= page.hero.primaryCta.href %>"><%= page.hero.primaryCta.label %></a>
       <a class="btn btn--ghost btn--ghost-onDark btn--pill" href="<%= page.hero.secondaryCta.href %>"><%= page.hero.secondaryCta.label %></a>
-    </div>
-
-    <%# Pure-CSS route line — replaces stock photography with a device that
-        echoes the arrow in the Norvenzia logomark. Decorative: aria-hidden,
-        the two place names are the only meaningful content and are real text
-        (not baked into an image), so they're still announced. %>
-    <div class="route-line" aria-hidden="true">
-      <span class="route-line__label route-line__label--from"><%= page.hero.routeLine.from %></span>
-      <span class="route-line__track">
-        <span class="route-line__dot route-line__dot--start"></span>
-        <span class="route-line__pulse"></span>
-        <span class="route-line__dot route-line__dot--end"></span>
-      </span>
-      <span class="route-line__label route-line__label--to"><%= page.hero.routeLine.to %></span>
     </div>
   </div>
 </section>

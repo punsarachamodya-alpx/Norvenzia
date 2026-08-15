@@ -1898,10 +1898,11 @@ button {
 /* -------------------------------------------------------------- 23. Footer */
 
 .footer {
-  /* Already dark with mono-font headings before this redesign — moved to the
-     same near-black tone as the new hero (--color-bg-dark) for consistency
-     across the site's dark sections, structure/content unchanged. */
-  background: var(--color-bg-dark);
+  /* Abstract data-wave photo instead of flat black — a dark gradient sits
+     between the photo and the text so contrast holds regardless of where
+     the image's brighter bands land. */
+  background: linear-gradient(180deg, rgba(10, 15, 26, 0.82) 0%, rgba(10, 15, 26, 0.94) 100%),
+    var(--color-bg-dark) url('/img/photos/footer-bg.jpg') center/cover no-repeat;
   color: rgba(255, 255, 255, 0.72);
   padding-block: clamp(3rem, 6vw, 4.5rem) 2rem;
   font-size: 0.93rem;

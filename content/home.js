@@ -13,8 +13,7 @@ module.exports = {
     body:
       'Strategy stays with your team in Europe. Execution runs from our delivery hub in Colombo, Sri Lanka. Every day.',
     primaryCta: { label: 'Start a conversation', href: '#contact' },
-    secondaryCta: { label: 'See what we run', href: '#services' },
-    routeLine: { from: 'GOTHENBURG', to: 'COLOMBO' }
+    secondaryCta: { label: 'See what we run', href: '#services' }
   },
 
   // 3.2 — Social proof strip. Plain-text chips, no client logos (§4 rule).
@@ -187,16 +186,6 @@ module.exports = {
     ]
   },
 
-  // 3.6 — Stats row. Only real, approved numbers — no fabricated stats (§4).
-  stats: {
-    items: [
-      { value: '8h/week min', label: 'Dedicated delivery time per engagement' },
-      { value: '50% deposit', label: 'Always — protects both sides' },
-      { value: '6 modules', label: 'Across procurement, logistics, reporting' },
-      { value: '5 markets', label: 'Scandinavia, Germany, Netherlands, UK, Australia' }
-    ]
-  },
-
   // 3.7 — Editorial statement, not a testimonial — no fabricated attribution
   // (§4). Restyle as real client quotes exist.
   quote: {
@@ -262,7 +251,7 @@ module.exports = {
   // form lives at /contact (views/contact.ejs); this section links there
   // rather than duplicating the form.
   contactCta: {
-    headline: 'Tell us what’s eating your team’s time.',
+    headline: 'Tell us what’s struggling with your team.',
     body:
       'One email. We’ll come back with a scoped, honest read on whether Norvenzia is the right fit — not a sales deck.',
     bookingNote: 'Or book a 30-minute call →',

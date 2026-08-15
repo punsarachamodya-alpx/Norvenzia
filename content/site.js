@@ -13,7 +13,7 @@ module.exports = {
   description:
     'Norvenzia runs procurement and supply chain operations for mid-market companies — an EU engagement point in Sweden with senior-led delivery from Colombo.',
   contactEmail: 'info@norvenzia.com',
-  registrationLine: 'Norvenzia (Private) Limited, registered in Sri Lanka.',
+  registrationLine: 'Norvenzia (Private) Limited. All rights reserved.',
   engagementPoint: 'Sweden',
   deliveryHub: 'Colombo, Sri Lanka',
   // TODO(founder): add the Norvenzia LinkedIn company page URL. Left empty so
