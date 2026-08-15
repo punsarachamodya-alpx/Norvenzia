@@ -1535,6 +1535,26 @@ button {
   transform: scale(0.92);
 }
 
+/* Shrinks the Sweden/Sri Lanka row to about half its previous footprint —
+   the cards were stretching edge-to-edge across the full shell width,
+   which read as oversized and left an odd amount of trailing empty space
+   on the right at wide viewports. Capping the grid's own width and
+   tightening the card's inner padding keeps both cards compact and
+   left-aligned instead of stretched. */
+.split--model {
+  max-width: 50%;
+}
+
+.split--model .panel__inner {
+  padding: clamp(1.1rem, 1.6vw, 1.4rem);
+}
+
+@media (max-width: 780px) {
+  .split--model {
+    max-width: 100%;
+  }
+}
+
 .panel--roadmap {
   background: var(--ice-warm);
   border-style: dashed;
