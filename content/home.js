@@ -166,18 +166,21 @@ module.exports = {
       {
         number: '01',
         title: 'Scope',
+        photo: '/img/photos/step-scope.jpg',
         body:
           'We map what’s eating your team’s time. Agree exactly what we take off your plate and what stays with you.'
       },
       {
         number: '02',
         title: 'Onboard',
+        photo: '/img/photos/step-onboard.jpg',
         body:
           'We plug into your existing ERP, TMS, or spreadsheet stack. Your team keeps working as normal.'
       },
       {
         number: '03',
         title: 'Run',
+        photo: '/img/photos/step-run.jpg',
         body:
           'We execute, track KPIs, and flag disruption as it surfaces. You get reporting, not excuses.'
       }

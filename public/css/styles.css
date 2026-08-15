@@ -3863,6 +3863,65 @@ button {
   color: var(--color-text-white);
 }
 
+/* Three real photos, circular-cropped and overlapping like a Venn diagram —
+   the physical overlap of the images does the work a hatched-intersection
+   vector diagram would otherwise do, with no lines or shapes needed. */
+.how-visual {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+}
+
+.how-visual__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: clamp(7rem, 14vw, 10rem);
+}
+
+.how-visual__item:not(:first-child) {
+  margin-left: clamp(-2.5rem, -5vw, -1.5rem);
+}
+
+.how-visual__item:nth-child(2) {
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  z-index: 1;
+}
+
+.how-visual__circle {
+  aspect-ratio: 1;
+  width: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--color-bg-mid);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+
+.how-visual__circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.how-visual__label {
+  margin-top: 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+}
+
+@media (max-width: 640px) {
+  .how-visual {
+    gap: 0.5rem;
+  }
+
+  .how-visual__item:not(:first-child) {
+    margin-left: -1.75rem;
+  }
+}
+
 .how-steps {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

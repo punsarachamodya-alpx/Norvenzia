@@ -98,6 +98,20 @@
     <span class="eyebrow"><%= page.how.eyebrow %></span>
     <h2 class="home-section__heading"><%= page.how.headline %></h2>
 
+    <%# Three overlapping circular photos instead of a vector Venn diagram —
+        the physical overlap of real photography carries the "these come
+        together" idea, no lines or shapes. %>
+    <div class="how-visual" aria-hidden="true">
+      <% page.how.steps.forEach(function (step) { %>
+        <div class="how-visual__item">
+          <div class="how-visual__circle">
+            <img src="<%= step.photo %>" alt="">
+          </div>
+          <span class="how-visual__label"><%= step.title %></span>
+        </div>
+      <% }); %>
+    </div>
+
     <div class="how-steps">
       <% page.how.steps.forEach(function (step) { %>
         <div>
