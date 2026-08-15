@@ -17,8 +17,7 @@ module.exports = {
     headline: 'Why this exists.',
     name: 'Punsara Wimalasena',
     role: 'Founder, Norvenzia',
-    // TODO(founder): upload a headshot; initials render until then.
-    photo: '',
+    photo: '/img/photos/founder-punsara.jpg',
     linkedin: 'https://www.linkedin.com/in/punsara-wimalasena',
     // Signed off by the founder — the story below reads as finished, so no
     // visible review marker. Setting this to a non-empty string brings the
