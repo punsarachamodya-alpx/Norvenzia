@@ -3725,23 +3725,33 @@ button {
   object-fit: cover;
 }
 
-/* Used on What We Do's two-division section — a narrower image column than
-   the default 50/50 split, so the photo reads as a supporting portrait next
-   to the longer capability list rather than matching it point for point. */
+/* Used on What We Do's two-division section — a fixed-width image column
+   sized to the photo itself, so the copy starts right after it instead of
+   leaving a dead gap the width of a leftover fraction of the row. */
 .service-row--compact {
-  grid-template-columns: minmax(0, 0.55fr) minmax(0, 1fr);
+  grid-template-columns: 340px minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
   align-items: start;
 }
 
+.service-row--compact.service-row--reverse {
+  grid-template-columns: minmax(0, 1fr) 340px;
+}
+
 .service-row--compact .service-row__media {
+  width: 340px;
   max-width: 340px;
-  margin-inline: auto;
 }
 
 @media (max-width: 860px) {
+  .service-row--compact,
+  .service-row--compact.service-row--reverse {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .service-row--compact .service-row__media {
+    width: 100%;
     max-width: 100%;
-    margin-inline: 0;
   }
 }
 
