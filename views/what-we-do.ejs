@@ -16,7 +16,7 @@
     <div class="service-rows">
       <% var divisionPhotos = { Operations: '/img/photos/service-core.jpg', Analytics: '/img/photos/service-pulse.jpg' }; %>
       <% page.divisions.forEach(function (d, i) { %>
-        <article class="service-row <%= i % 2 === 1 ? 'service-row--reverse' : '' %>">
+        <article class="service-row service-row--compact <%= i % 2 === 1 ? 'service-row--reverse' : '' %>">
           <div class="service-row__media">
             <img src="<%= divisionPhotos[d.name] || '/img/photos/service-core.jpg' %>" alt="<%= d.name %>" width="1024" height="768">
           </div>

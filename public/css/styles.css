@@ -3725,6 +3725,24 @@ button {
   object-fit: cover;
 }
 
+/* Used on What We Do's two-division section — a narrower image column than
+   the default 50/50 split, so the photo reads as a supporting portrait next
+   to the longer capability list rather than matching it point for point. */
+.service-row--compact {
+  grid-template-columns: minmax(0, 0.55fr) minmax(0, 1fr);
+  align-items: start;
+}
+
+.service-row--compact .service-row__media {
+  max-width: 340px;
+}
+
+@media (max-width: 860px) {
+  .service-row--compact .service-row__media {
+    max-width: 100%;
+  }
+}
+
 .service-row__category {
   font-family: var(--font-mono);
   font-size: 0.72rem;
