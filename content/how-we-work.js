@@ -84,6 +84,7 @@ module.exports = {
     inPlace: [
       'GDPR-aligned data handling practices across the engagement.',
       'A Data Processing Agreement (DPA) available on request.',
+      'A Non-Disclosure Agreement (NDA) signed before any sensitive data or documentation changes hands.',
       'Confidentiality terms in every engagement agreement.',
       'Access limited to the analysts assigned to your account.'
     ],
