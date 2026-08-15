@@ -4508,3 +4508,17 @@ button {
   margin-top: 1.2rem;
   max-width: 60ch;
 }
+
+/* ---- 31.17 What We Do — same full-bleed hero, but with a transparent
+   header overlaid (like the homepage), so it needs its own top padding to
+   clear the now-fixed header, and a stronger, uniform scrim so the nav
+   stays legible against the photo from the very first pixel rather than
+   the 25%-opacity top edge that's fine when the header is solid. ---- */
+.work-hero--dark-nav {
+  min-height: 72vh;
+  padding-top: var(--header-h);
+}
+
+.work-hero--dark-nav .work-hero__scrim {
+  background: linear-gradient(180deg, rgba(10, 15, 26, 0.6) 0%, rgba(10, 15, 26, 0.92) 100%);
+}

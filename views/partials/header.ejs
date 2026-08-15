@@ -1,9 +1,9 @@
-<%# The homepage starts with a transparent header over the dark hero, so it
-    needs the white/"dark-bg" logo variant at load; every other page has no
-    dark hero behind it and always renders solid white, so it always gets the
-    navy/"light-bg" variant. nav.js swaps the src on scroll for the homepage
-    case only — see public/js/nav.js. %>
-<% var startsOnDark = currentPath === '/'; %>
+<%# The homepage and What We Do both start with a transparent header over a
+    dark full-bleed photo hero, so they need the white/"dark-bg" logo variant
+    at load; every other page has no dark hero behind it and always renders
+    solid white, so it always gets the navy/"light-bg" variant. nav.js swaps
+    the src on scroll for the dark-starting pages — see public/js/nav.js. %>
+<% var startsOnDark = currentPath === '/' || currentPath === '/what-we-do'; %>
 <header class="header <%= startsOnDark ? 'header--transparent' : '' %>">
   <div class="shell header__inner">
     <a class="header__logo" href="/" aria-label="<%= site.publicName %> — home">
