@@ -34,6 +34,20 @@ const WARROOM_BASE_URL = process.env.WARROOM_BASE_URL || '';
 // an unset WARROOM_BASE_URL already does — no separate failure mode to add.
 const WARROOM_API_KEY = process.env.WARROOM_API_KEY || '';
 
+// Cache-busting query param for the social-share preview image, derived from
+// the file's own mtime so it changes automatically whenever og-image.png is
+// replaced -- no manual version bump to remember. Read once at boot: social
+// crawlers (WhatsApp, Facebook, LinkedIn, iMessage) cache og:image per exact
+// URL indefinitely, so a same-URL image swap would otherwise stay stuck with
+// whatever they fetched first.
+const OG_IMAGE_VERSION = (() => {
+  try {
+    return String(Math.floor(fs.statSync(path.join(__dirname, 'public', 'og-image.png')).mtimeMs));
+  } catch {
+    return '1';
+  }
+})();
+
 // Correct secure-cookie and req.ip behaviour behind a reverse proxy.
 app.set('trust proxy', 1);
 app.set('view engine', 'ejs');
@@ -183,6 +197,7 @@ app.use((req, res, next) => {
   res.locals.appearance = store.getSection('appearance');
   res.locals.currentPath = req.path;
   res.locals.canonical = store.getSection('site').baseUrl + req.originalUrl.split('?')[0];
+  res.locals.ogImageVersion = OG_IMAGE_VERSION;
   next();
 });
 
