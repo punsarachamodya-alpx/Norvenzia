@@ -13,7 +13,7 @@ module.exports = {
   legal: [
     { label: 'Privacy Policy', href: '/privacy' },
     { label: 'Cookie Policy', href: '/cookies' },
-    { label: 'Terms of Use', href: '/terms' }
+    { label: 'Terms', href: '/terms' }
   ],
   // CTA label throughout the site (Brief §9). Lands on the contact form, which
   // sets the right expectation until a real calendar link is wired up

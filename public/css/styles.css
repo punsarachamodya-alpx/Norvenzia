@@ -2021,10 +2021,11 @@ button {
 /* -------------------------------------------------------------- 23. Footer */
 
 .footer {
-  /* Abstract data-wave photo instead of flat black — a dark gradient sits
-     between the photo and the text so contrast holds regardless of where
-     the image's brighter bands land. */
-  background: linear-gradient(180deg, rgba(10, 15, 26, 0.82) 0%, rgba(10, 15, 26, 0.94) 100%),
+  /* Abstract data-wave photo instead of flat black — a lighter gradient
+     than before sits between the photo and the text, so the image reads
+     more clearly while contrast still holds regardless of where the
+     image's brighter bands land. */
+  background: linear-gradient(180deg, rgba(10, 15, 26, 0.6) 0%, rgba(10, 15, 26, 0.78) 100%),
     var(--color-bg-dark) url('/img/photos/footer-bg.jpg') center/cover no-repeat;
   color: rgba(255, 255, 255, 0.72);
   padding-block: clamp(3rem, 6vw, 4.5rem) 2rem;
@@ -2033,8 +2034,8 @@ button {
 
 .footer__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(2rem, 4vw, 3.5rem);
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
   padding-bottom: 2.5rem;
 }
 
@@ -2099,13 +2100,25 @@ button {
   color: #fff;
 }
 
-@media (max-width: 820px) {
+@media (max-width: 1100px) {
   .footer__grid {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .footer__brand {
     grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 820px) {
+  .footer__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .footer__grid {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 

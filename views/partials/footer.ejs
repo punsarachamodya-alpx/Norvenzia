@@ -10,7 +10,7 @@
       </div>
 
       <div>
-        <h2 class="footer__heading">Explore</h2>
+        <h2 class="footer__heading">Quick links</h2>
         <ul class="footer__list">
           <% nav.primary.forEach(function (item) { %>
             <li><a href="<%= item.href %>"><%= item.label %></a></li>
@@ -19,15 +19,30 @@
       </div>
 
       <div>
-        <h2 class="footer__heading">Legal &amp; contact</h2>
+        <h2 class="footer__heading">Contact</h2>
+        <ul class="footer__list">
+          <li><a href="mailto:<%= site.contactEmail %>"><%= site.contactEmail %></a></li>
+          <% if (site.phone) { %>
+            <li><a href="tel:<%= site.phone.replace(/[^+\d]/g, '') %>"><%= site.phone %></a></li>
+          <% } %>
+        </ul>
+      </div>
+
+      <% if (site.linkedinUrl) { %>
+        <div>
+          <h2 class="footer__heading">Follow</h2>
+          <ul class="footer__list">
+            <li><a href="<%= site.linkedinUrl %>" rel="noopener noreferrer" target="_blank">LinkedIn</a></li>
+          </ul>
+        </div>
+      <% } %>
+
+      <div>
+        <h2 class="footer__heading">Legal</h2>
         <ul class="footer__list">
           <% nav.legal.forEach(function (item) { %>
             <li><a href="<%= item.href %>"><%= item.label %></a></li>
           <% }); %>
-          <li><a href="mailto:<%= site.contactEmail %>"><%= site.contactEmail %></a></li>
-          <% if (site.linkedinUrl) { %>
-            <li><a href="<%= site.linkedinUrl %>" rel="noopener noreferrer" target="_blank">LinkedIn</a></li>
-          <% } %>
         </ul>
       </div>
     </div>
