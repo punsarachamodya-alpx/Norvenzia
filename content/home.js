@@ -1,6 +1,6 @@
 module.exports = {
   meta: {
-    title: 'Norvenzia — We run the work.',
+    title: 'Norvenzia - Supply Chain & Procurement Operations Partner',
     description:
       'Strategy stays with your team in Europe. Execution runs from our delivery hub in Colombo, Sri Lanka. Every day.'
   },
