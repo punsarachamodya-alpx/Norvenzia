@@ -2230,6 +2230,16 @@ button {
   will-change: transform;
 }
 
+/* Section cross-fade: main.js sets --section-fade (opacity, floor 0.35) on
+   every top-level <section>, ramping only near the viewport edges — see the
+   main.js comment for the full mechanic and why this is opacity-only (no
+   scale/transform, to stay safe for /live's map canvas). No CSS transition
+   here on purpose: main.js recomputes every rAF tick while scrolling, so
+   the value itself is already the animation. */
+.js main > section {
+  opacity: var(--section-fade, 1);
+}
+
 /* Photos need a little overscan so the parallax shift never uncovers an
    edge of their (overflow: hidden) frame — the scale alone is baked in
    here rather than left to each photo's own rules. */
@@ -2444,6 +2454,10 @@ button {
 
   .js [data-parallax] {
     transform: none;
+  }
+
+  .js main > section {
+    opacity: 1;
   }
 
   .who-serve__accent {
