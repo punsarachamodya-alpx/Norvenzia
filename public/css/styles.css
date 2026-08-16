@@ -3643,11 +3643,20 @@ button {
   }
 }
 
+/* top/left/right instead of inset: 0 (no forced bottom edge), plus
+   max-height, so main.js can cap this at the photo's own native
+   resolution -- see .no-upscale in main.js. Below that cap the image
+   just doesn't reach the bottom of the section; the section's own dark
+   background (already close to the scrim's own darkest value) shows
+   through rather than the photo being stretched past its real pixels. */
 .hero__photo {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   width: 100%;
   height: 100%;
+  max-height: var(--photo-cap-h, 100%);
   object-fit: cover;
 }
 
@@ -3908,11 +3917,16 @@ button {
   align-items: center;
 }
 
+/* See .hero__photo above for why this isn't inset: 0 + why max-height is
+   here -- same native-resolution cap, applied by main.js. */
 .banner-photo__img {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   width: 100%;
   height: 100%;
+  max-height: var(--photo-cap-h, 100%);
   object-fit: cover;
 }
 
@@ -4656,11 +4670,16 @@ button {
   padding-bottom: clamp(1rem, 2vw, 1.5rem);
 }
 
+/* See .hero__photo above for why this isn't inset: 0 + why max-height is
+   here -- same native-resolution cap, applied by main.js. */
 .contact-photo-hero__img {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   width: 100%;
   height: 100%;
+  max-height: var(--photo-cap-h, 100%);
   object-fit: cover;
 }
 
@@ -4753,11 +4772,16 @@ button {
   overflow: hidden;
 }
 
+/* See .hero__photo above for why this isn't inset: 0 + why max-height is
+   here -- same native-resolution cap, applied by main.js. */
 .division-section__bg {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   width: 100%;
   height: 100%;
+  max-height: var(--photo-cap-h, 100%);
   object-fit: cover;
   opacity: 0.15;
   pointer-events: none;
@@ -4845,11 +4869,16 @@ button {
   align-items: flex-end;
 }
 
+/* See .hero__photo above for why this isn't inset: 0 + why max-height is
+   here -- same native-resolution cap, applied by main.js. */
 .work-hero__img {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   width: 100%;
   height: 100%;
+  max-height: var(--photo-cap-h, 100%);
   object-fit: cover;
 }
 

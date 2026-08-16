@@ -27,6 +27,47 @@
     });
   }
 
+  // ------------------------------------------------ native-resolution cap
+  // Full-bleed hero/backdrop photos are absolutely positioned to fill
+  // their section (see .hero__photo etc. in styles.css). On a tall
+  // section -- a content-driven hero, or one with min-height: 100vh --
+  // that forces object-fit: cover to upscale the photo well past its own
+  // native resolution, worst on high-density mobile screens (a 1920x1072
+  // source stretched to a ~900px-tall, 3x-density phone hero needs ~2700
+  // physical px -- 2.5x the pixels the photo actually has). Caps each
+  // one's max-height to its own naturalHeight / devicePixelRatio, so the
+  // browser only ever crops it, never stretches it past the resolution it
+  // actually has -- the section's own background (already close to the
+  // scrim's own darkest value) shows through below the cap instead of the
+  // photo being stretched to reach it. Not gated by prefers-reduced-motion
+  // -- this is a static sizing constraint, not an animation.
+  var noUpscaleEls = document.querySelectorAll(
+    '.hero__photo, .work-hero__img, .banner-photo__img, .contact-photo-hero__img, .division-section__bg'
+  );
+
+  function applyNativeCap(el) {
+    if (!el.naturalHeight) return;
+    var dpr = window.devicePixelRatio || 1;
+    el.style.setProperty('--photo-cap-h', (el.naturalHeight / dpr).toFixed(1) + 'px');
+  }
+
+  for (var nu = 0; nu < noUpscaleEls.length; nu++) {
+    var nuEl = noUpscaleEls[nu];
+    if (nuEl.complete) {
+      applyNativeCap(nuEl);
+    } else {
+      nuEl.addEventListener('load', function () {
+        applyNativeCap(this);
+      });
+    }
+  }
+
+  // devicePixelRatio changes on browser zoom (rare, but cheap to handle) --
+  // naturalHeight is already known by now so no need to wait on 'load' again.
+  window.addEventListener('resize', function () {
+    for (var ri = 0; ri < noUpscaleEls.length; ri++) applyNativeCap(noUpscaleEls[ri]);
+  });
+
   // --------------------------------------------------------- scroll reveal
   // .reveal-left/-right/-up/-pop are directional variants (see styles.css)
   // for images that should slide/pop into place instead of the generic
