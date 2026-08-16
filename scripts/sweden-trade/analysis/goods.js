@@ -7,7 +7,7 @@
 // category x country.
 //
 // Shares here are computed against the sum of the fetched sections, not
-// against hero.totalImportsSek (a different SCB table): TAB3197 explicitly
+// against hero.totalImportsValue (a different SCB table): TAB3197 explicitly
 // excludes confidential data (see its own metadata note), so its total runs
 // a few percent below TAB3195's adjusted total. build.js's validation step
 // checks that gap stays within a known, sane bound rather than silently
@@ -19,23 +19,28 @@ function totalGoodsImports(importRows) {
   return importRows.reduce((sum, r) => sum + r.value, 0);
 }
 
-function topGoodsCategoriesByImportValue(rows, { importContentsCode, labels, n = 10 }) {
-  const importRows = rows.filter((r) => r.ContentsCode === importContentsCode && r.value != null);
+// `contentsCodeDim`/`goodsGroupDim` name the row keys holding the import/
+// export selector and the goods-category code -- SCB's TAB3197 calls these
+// "ContentsCode"/"VarugruppSITCrev3" (the defaults below, unchanged for
+// every existing call site); DST's UHM calls them "INDUD"/"POST" instead
+// (see countries/denmark.config.js).
+function topGoodsCategoriesByImportValue(rows, { importContentsCode, labels, n = 10, contentsCodeDim = 'ContentsCode', goodsGroupDim = 'VarugruppSITCrev3' }) {
+  const importRows = rows.filter((r) => r[contentsCodeDim] === importContentsCode && r.value != null);
   const total = totalGoodsImports(importRows);
 
   return [...importRows]
     .sort((a, b) => b.value - a.value)
     .slice(0, n)
     .map((r) => ({
-      code: r.VarugruppSITCrev3,
-      label: (labels[r.VarugruppSITCrev3] || r.VarugruppSITCrev3).trim(),
-      importValueSek: r.value,
+      code: r[goodsGroupDim],
+      label: (labels[r[goodsGroupDim]] || r[goodsGroupDim]).trim(),
+      importValue: r.value,
       share: share(r.value, total)
     }));
 }
 
-function top5GoodsImportShare(rows, { importContentsCode, n = 5 }) {
-  const importRows = rows.filter((r) => r.ContentsCode === importContentsCode && r.value != null);
+function top5GoodsImportShare(rows, { importContentsCode, n = 5, contentsCodeDim = 'ContentsCode' }) {
+  const importRows = rows.filter((r) => r[contentsCodeDim] === importContentsCode && r.value != null);
   const total = totalGoodsImports(importRows);
   const topSum = [...importRows]
     .sort((a, b) => b.value - a.value)

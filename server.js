@@ -380,36 +380,71 @@ app.get('/live/investigate/:jobId', requireWarroomUnlock, async (req, res) => {
   res.json(result);
 });
 
-// ---------------------------------------------------- sweden trade story
+// ------------------------------------------------------------ trade story
 
 // Part 2 of the "Intelligence" umbrella (part 1 is /live above) — see
-// docs/internal/SWEDEN_TRADE_BUILD_INSTRUCTIONS.md. Renders entirely from
-// the committed, pre-baked content/sweden-trade-data.json; the live site has
-// zero runtime dependency on SCB (§3 of that doc — the data updates monthly,
-// so a static file is strictly better than a live call here). The file is
-// owned/refreshed by a separate offline job; this route only ever reads it.
+// docs/internal/SWEDEN_TRADE_BUILD_INSTRUCTIONS.md. Renders entirely from a
+// committed, pre-baked content/trade-data/<code>.json; the live site has
+// zero runtime dependency on the source statistics API (§3 of that doc — the
+// data updates monthly, so a static file is strictly better than a live call
+// here). Each file is owned/refreshed by a separate offline job
+// (scripts/sweden-trade/build.js --country=<code>); this route only ever
+// reads it. Sweden is the only populated country as of this writing — the
+// manifest below is what makes a second country "just add a JSON file",
+// with no route change needed.
 // Deliberately not in PUBLIC_ROUTES / sitemap.xml yet — same first-launch
 // precedent as /live above.
-const SWEDEN_TRADE_DATA_PATH = path.join(__dirname, 'content', 'sweden-trade-data.json');
+const TRADE_DATA_DIR = path.join(__dirname, 'content', 'trade-data');
+const TRADE_MANIFEST_PATH = path.join(TRADE_DATA_DIR, 'manifest.json');
 
-app.get('/insights/sweden-trade', (req, res) => {
-  let tradeData = null;
+function loadTradeManifest() {
   try {
-    tradeData = JSON.parse(fs.readFileSync(SWEDEN_TRADE_DATA_PATH, 'utf8'));
+    const manifest = JSON.parse(fs.readFileSync(TRADE_MANIFEST_PATH, 'utf8'));
+    return Array.isArray(manifest) ? manifest : [];
   } catch (err) {
-    // Committed static file should always parse; fail closed to the page's
-    // own "unavailable" state (views/story.ejs) rather than a 500.
-    tradeData = null;
+    // Same fail-closed posture as the per-country data read below — an
+    // unparsable manifest degrades to "no countries available" rather than
+    // a 500.
+    return [];
   }
+}
+
+app.get('/insights/trade/:country', (req, res) => {
+  const manifest = loadTradeManifest();
+  const countrySlug = String(req.params.country || '').toLowerCase();
+  const entry = manifest.find((c) => c.slug === countrySlug);
+
+  let tradeData = null;
+  if (entry) {
+    try {
+      tradeData = JSON.parse(fs.readFileSync(path.join(TRADE_DATA_DIR, entry.dataPath), 'utf8'));
+    } catch (err) {
+      // Committed static file should always parse; fail closed to the page's
+      // own "unavailable" state (views/story.ejs) rather than a 500.
+      tradeData = null;
+    }
+  }
+
+  const countryName = entry ? entry.name : 'Trade';
 
   res.render('story', {
     meta: {
-      title: `Sweden Trade Intelligence — ${res.locals.site.publicName}`,
+      title: `${countryName} Trade Intelligence — ${res.locals.site.publicName}`,
       description:
-        "A scroll-driven look at what Sweden imports, who from, and what that concentration means — the same analytical rigor Norvenzia applies to a single company's supplier base."
+        `A scroll-driven look at what ${countryName} imports, who from, and what that concentration means — the same analytical rigor Norvenzia applies to a single company's supplier base.`
     },
-    data: tradeData
+    data: tradeData,
+    countries: manifest,
+    currentCountry: countrySlug
   });
+});
+
+// Legacy single-country URL from before the /insights/trade/:country
+// generalization — 302 (not 301) since this route isn't in the
+// sitemap/PUBLIC_ROUTES yet and the redirect target may still move during
+// this experimental phase.
+app.get('/insights/sweden-trade', (req, res) => {
+  res.redirect(302, '/insights/trade/se');
 });
 
 // ------------------------------------------------------------- contact form

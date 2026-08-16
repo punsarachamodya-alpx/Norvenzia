@@ -7,7 +7,7 @@
 
 const { parseJsonStat } = require('./jsonStatParser');
 const { planChunks, cellCount } = require('./chunker');
-const { fetchTableMetadata, fetchTableDataChunk } = require('./scbClient');
+const scbClient = require('./scbClient'); // default client (see the `client` option below) -- preserves every pre-multi-country call site unchanged
 const { wait, MIN_CALL_INTERVAL_MS } = require('./httpClient');
 
 const DEFAULT_CELL_CAP = 150000;
@@ -37,18 +37,26 @@ function buildLabelsByDimension(metadata) {
   return labels;
 }
 
-// Fetches one SCB table for a given selection, chunking automatically if
-// it's over the cell cap, pacing calls between chunks, and parsing every
-// chunk into flat rows. Returns { rows, labels, chunkCount, totalCells }.
+// Fetches one table for a given selection, chunking automatically if it's
+// over the cell cap, pacing calls between chunks, and parsing every chunk
+// into flat rows. Returns { rows, labels, chunkCount, totalCells }.
 async function ingestTable(tableId, selection, options = {}) {
   const {
     cellCap = DEFAULT_CELL_CAP,
     preferredChunkDim,
     metadataFixture,
-    chunkFixtures // optional array of fixture names, one per expected chunk (tests / replay)
+    chunkFixtures, // optional array of fixture names, one per expected chunk (tests / replay)
+    baseUrl, // per-country API base URL (see countries/*.config.js); undefined uses the client's own default
+    // Which client module drives this pull -- an object shaped like
+    // scbClient.js/statbankDkClient.js (fetchTableMetadata + fetchTableDataChunk).
+    // Defaults to scbClient so every pre-multi-country call site (including
+    // this module's own tests) keeps working unchanged; build.js resolves
+    // the right one from country.client (see countries/*.config.js) and
+    // passes it in explicitly for every country but Sweden's implicit default.
+    client = scbClient
   } = options;
 
-  const metadata = await fetchTableMetadata(tableId, { fixtureName: metadataFixture });
+  const metadata = await client.fetchTableMetadata(tableId, { fixtureName: metadataFixture, baseUrl });
   const dimensionCodes = resolveSelection(metadata, selection);
   const chunks = planChunks({ dimensionCodes, cellCap, preferredChunkDim });
   const labels = buildLabelsByDimension(metadata);
@@ -57,7 +65,7 @@ async function ingestTable(tableId, selection, options = {}) {
   for (let i = 0; i < chunks.length; i++) {
     if (i > 0) await wait(MIN_CALL_INTERVAL_MS);
     const fixtureName = chunkFixtures ? chunkFixtures[i] : undefined;
-    const dataset = await fetchTableDataChunk(tableId, chunks[i], { fixtureName });
+    const dataset = await client.fetchTableDataChunk(tableId, chunks[i], { fixtureName, baseUrl });
     rows.push(...parseJsonStat(dataset));
   }
 

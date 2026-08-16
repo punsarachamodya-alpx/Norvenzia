@@ -7,7 +7,7 @@ const path = require('path');
 const { parseJsonStat, dimensionLabels } = require('./jsonStatParser');
 const { topGoodsCategoriesByImportValue, top5GoodsImportShare } = require('./analysis/goods');
 
-const FIXTURE_PATH = path.join(__dirname, 'fixtures', 'tab3197-2024-raw.json');
+const FIXTURE_PATH = path.join(__dirname, 'fixtures', 'se', 'tab3197-2024-raw.json');
 const IMPORT_CODE = 'HA0201CE';
 
 function loadRows() {
@@ -22,7 +22,7 @@ test('topGoodsCategoriesByImportValue ranks machinery and transport equipment fi
   assert.equal(top.length, 10);
   assert.equal(top[0].code, '7');
   assert.equal(top[0].label, 'Machinery and transport equipment');
-  assert.equal(top[0].importValueSek, 740225499);
+  assert.equal(top[0].importValue, 740225499);
   assert.ok(Math.abs(top[0].share - 0.3848) < 0.0001);
 });
 
@@ -30,7 +30,7 @@ test('topGoodsCategoriesByImportValue is sorted strictly descending', () => {
   const { rows, labels } = loadRows();
   const top = topGoodsCategoriesByImportValue(rows, { importContentsCode: IMPORT_CODE, labels, n: 10 });
   for (let i = 1; i < top.length; i++) {
-    assert.ok(top[i].importValueSek <= top[i - 1].importValueSek);
+    assert.ok(top[i].importValue <= top[i - 1].importValue);
   }
 });
 

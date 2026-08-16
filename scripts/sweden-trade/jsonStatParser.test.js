@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const { parseJsonStat, dimensionLabels } = require('./jsonStatParser');
 
-const FIXTURE_PATH = path.join(__dirname, 'fixtures', 'tab3195-2024-raw.json');
+const FIXTURE_PATH = path.join(__dirname, 'fixtures', 'se', 'tab3195-2024-raw.json');
 
 function loadFixture() {
   return JSON.parse(fs.readFileSync(FIXTURE_PATH, 'utf8'));

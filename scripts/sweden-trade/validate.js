@@ -40,16 +40,16 @@ function isFiniteNumber(v) {
 function validateHero(data, errors) {
   const { hero } = data;
   if (!hero) { errors.push('hero is missing'); return; }
-  if (!isFiniteNumber(hero.totalImportsSek) || hero.totalImportsSek < 0) {
-    errors.push('hero.totalImportsSek must be a non-negative number');
+  if (!isFiniteNumber(hero.totalImportsValue) || hero.totalImportsValue < 0) {
+    errors.push('hero.totalImportsValue must be a non-negative number');
   }
-  if (!isFiniteNumber(hero.totalExportsSek) || hero.totalExportsSek < 0) {
-    errors.push('hero.totalExportsSek must be a non-negative number');
+  if (!isFiniteNumber(hero.totalExportsValue) || hero.totalExportsValue < 0) {
+    errors.push('hero.totalExportsValue must be a non-negative number');
   }
-  const expectedBalance = hero.totalExportsSek - hero.totalImportsSek;
-  if (!isFiniteNumber(hero.tradeBalanceSek) || Math.abs(hero.tradeBalanceSek - expectedBalance) > 1) {
+  const expectedBalance = hero.totalExportsValue - hero.totalImportsValue;
+  if (!isFiniteNumber(hero.tradeBalanceValue) || Math.abs(hero.tradeBalanceValue - expectedBalance) > 1) {
     errors.push(
-      `hero.tradeBalanceSek (${hero.tradeBalanceSek}) does not equal totalExportsSek - totalImportsSek (${expectedBalance})`
+      `hero.tradeBalanceValue (${hero.tradeBalanceValue}) does not equal totalExportsValue - totalImportsValue (${expectedBalance})`
     );
   }
 }
@@ -60,11 +60,11 @@ function validateTopPartners(data, errors) {
 
   let prevImport = Infinity;
   for (const p of partners) {
-    if (!isFiniteNumber(p.importValueSek) || p.importValueSek < 0) {
-      errors.push(`topPartners[${p.code}].importValueSek must be a non-negative number`);
+    if (!isFiniteNumber(p.importValue) || p.importValue < 0) {
+      errors.push(`topPartners[${p.code}].importValue must be a non-negative number`);
     }
-    if (p.exportValueSek != null && (!isFiniteNumber(p.exportValueSek) || p.exportValueSek < 0)) {
-      errors.push(`topPartners[${p.code}].exportValueSek must be null or a non-negative number`);
+    if (p.exportValue != null && (!isFiniteNumber(p.exportValue) || p.exportValue < 0)) {
+      errors.push(`topPartners[${p.code}].exportValue must be null or a non-negative number`);
     }
     if (!isFiniteNumber(p.share) || p.share < 0 || p.share > 1) {
       errors.push(`topPartners[${p.code}].share must be between 0 and 1`);
@@ -75,10 +75,10 @@ function validateTopPartners(data, errors) {
     if (!isFiniteNumber(p.lon) || p.lon < -180 || p.lon > 180) {
       errors.push(`topPartners[${p.code}].lon must be a valid longitude`);
     }
-    if (p.importValueSek > prevImport) {
-      errors.push(`topPartners is not sorted descending by importValueSek at "${p.code}"`);
+    if (p.importValue > prevImport) {
+      errors.push(`topPartners is not sorted descending by importValue at "${p.code}"`);
     }
-    prevImport = p.importValueSek;
+    prevImport = p.importValue;
   }
 }
 
@@ -88,19 +88,19 @@ function validateTopGoodsCategories(data, errors) {
 
   let prevImport = Infinity;
   for (const g of goods) {
-    if (!isFiniteNumber(g.importValueSek) || g.importValueSek < 0) {
-      errors.push(`topGoodsCategories[${g.code}].importValueSek must be a non-negative number`);
+    if (!isFiniteNumber(g.importValue) || g.importValue < 0) {
+      errors.push(`topGoodsCategories[${g.code}].importValue must be a non-negative number`);
     }
     if (!isFiniteNumber(g.share) || g.share < 0 || g.share > 1) {
       errors.push(`topGoodsCategories[${g.code}].share must be between 0 and 1`);
     }
-    if (g.importValueSek > prevImport) {
-      errors.push(`topGoodsCategories is not sorted descending by importValueSek at "${g.code}"`);
+    if (g.importValue > prevImport) {
+      errors.push(`topGoodsCategories is not sorted descending by importValue at "${g.code}"`);
     }
-    prevImport = g.importValueSek;
+    prevImport = g.importValue;
   }
 
-  const goodsTotal = goods.reduce((sum, g) => sum + (g.importValueSek || 0), 0);
+  const goodsTotal = goods.reduce((sum, g) => sum + (g.importValue || 0), 0);
   return goodsTotal;
 }
 
@@ -131,7 +131,7 @@ function validateConcentration(data, errors, warnings) {
   // Self-consistency: top5/top10 partner share should match the same sum
   // computed independently from topPartners itself (both come from the
   // same underlying values, so this should agree almost exactly).
-  const partners = [...(data.topPartners || [])].sort((a, b) => b.importValueSek - a.importValueSek);
+  const partners = [...(data.topPartners || [])].sort((a, b) => b.importValue - a.importValue);
   const shareSum = (n) => partners.slice(0, n).reduce((sum, p) => sum + p.share, 0);
   if (partners.length >= 5 && isFiniteNumber(c.top5PartnerImportShare)) {
     if (Math.abs(shareSum(5) - c.top5PartnerImportShare) > 1e-6) {
@@ -151,22 +151,22 @@ function validateBalanceAndTrend(data, errors) {
     errors.push('balance.years is missing or empty');
     return;
   }
-  if (b.importsSek.length !== b.years.length || b.exportsSek.length !== b.years.length || b.balanceSek.length !== b.years.length) {
+  if (b.importsValue.length !== b.years.length || b.exportsValue.length !== b.years.length || b.balanceValue.length !== b.years.length) {
     errors.push('balance array lengths do not match balance.years');
   }
   for (let i = 0; i < b.years.length; i++) {
     if (i > 0 && b.years[i] <= b.years[i - 1]) {
       errors.push(`balance.years is not strictly ascending at index ${i} (${b.years[i - 1]} -> ${b.years[i]})`);
     }
-    if (!isFiniteNumber(b.importsSek[i]) || b.importsSek[i] < 0) {
-      errors.push(`balance.importsSek[${b.years[i]}] must be a non-negative number`);
+    if (!isFiniteNumber(b.importsValue[i]) || b.importsValue[i] < 0) {
+      errors.push(`balance.importsValue[${b.years[i]}] must be a non-negative number`);
     }
-    if (!isFiniteNumber(b.exportsSek[i]) || b.exportsSek[i] < 0) {
-      errors.push(`balance.exportsSek[${b.years[i]}] must be a non-negative number`);
+    if (!isFiniteNumber(b.exportsValue[i]) || b.exportsValue[i] < 0) {
+      errors.push(`balance.exportsValue[${b.years[i]}] must be a non-negative number`);
     }
-    const expected = b.exportsSek[i] - b.importsSek[i];
-    if (!isFiniteNumber(b.balanceSek[i]) || Math.abs(b.balanceSek[i] - expected) > 1) {
-      errors.push(`balance.balanceSek[${b.years[i]}] does not equal exportsSek - importsSek`);
+    const expected = b.exportsValue[i] - b.importsValue[i];
+    if (!isFiniteNumber(b.balanceValue[i]) || Math.abs(b.balanceValue[i] - expected) > 1) {
+      errors.push(`balance.balanceValue[${b.years[i]}] does not equal exportsValue - importsValue`);
     }
   }
 
@@ -206,26 +206,26 @@ function validateReconciliation(data, errors, warnings, goodsTotal) {
   if (latestIdx === -1) {
     warnings.push(`meta.latestYear (${meta.latestYear}) is not present in balance.years -- cross-table reconciliation skipped`);
   } else {
-    const importsDiff = relativeDiff(balance.importsSek[latestIdx], hero.totalImportsSek);
-    const exportsDiff = relativeDiff(balance.exportsSek[latestIdx], hero.totalExportsSek);
+    const importsDiff = relativeDiff(balance.importsValue[latestIdx], hero.totalImportsValue);
+    const exportsDiff = relativeDiff(balance.exportsValue[latestIdx], hero.totalExportsValue);
     if (importsDiff > RECONCILE_TOLERANCE.CROSS_TABLE_ERROR) {
-      errors.push(`balance.importsSek for ${meta.latestYear} diverges ${(importsDiff * 100).toFixed(2)}% from hero.totalImportsSek -- check table/unit`);
+      errors.push(`balance.importsValue for ${meta.latestYear} diverges ${(importsDiff * 100).toFixed(2)}% from hero.totalImportsValue -- check table/unit`);
     } else if (importsDiff > RECONCILE_TOLERANCE.CROSS_TABLE_WARN) {
-      warnings.push(`balance.importsSek for ${meta.latestYear} diverges ${(importsDiff * 100).toFixed(2)}% from hero.totalImportsSek (TAB5390 vs TAB3195 methodology difference)`);
+      warnings.push(`balance.importsValue for ${meta.latestYear} diverges ${(importsDiff * 100).toFixed(2)}% from hero.totalImportsValue (TAB5390 vs TAB3195 methodology difference)`);
     }
     if (exportsDiff > RECONCILE_TOLERANCE.CROSS_TABLE_ERROR) {
-      errors.push(`balance.exportsSek for ${meta.latestYear} diverges ${(exportsDiff * 100).toFixed(2)}% from hero.totalExportsSek -- check table/unit`);
+      errors.push(`balance.exportsValue for ${meta.latestYear} diverges ${(exportsDiff * 100).toFixed(2)}% from hero.totalExportsValue -- check table/unit`);
     } else if (exportsDiff > RECONCILE_TOLERANCE.CROSS_TABLE_WARN) {
-      warnings.push(`balance.exportsSek for ${meta.latestYear} diverges ${(exportsDiff * 100).toFixed(2)}% from hero.totalExportsSek (TAB5390 vs TAB3195 methodology difference)`);
+      warnings.push(`balance.exportsValue for ${meta.latestYear} diverges ${(exportsDiff * 100).toFixed(2)}% from hero.totalExportsValue (TAB5390 vs TAB3195 methodology difference)`);
     }
   }
 
-  if (goodsTotal != null && hero.totalImportsSek) {
-    const goodsDiff = relativeDiff(goodsTotal, hero.totalImportsSek);
+  if (goodsTotal != null && hero.totalImportsValue) {
+    const goodsDiff = relativeDiff(goodsTotal, hero.totalImportsValue);
     if (goodsDiff > RECONCILE_TOLERANCE.GOODS_ERROR) {
-      errors.push(`sum of topGoodsCategories (${goodsTotal}) diverges ${(goodsDiff * 100).toFixed(2)}% from hero.totalImportsSek -- check table/unit`);
+      errors.push(`sum of topGoodsCategories (${goodsTotal}) diverges ${(goodsDiff * 100).toFixed(2)}% from hero.totalImportsValue -- check table/unit`);
     } else if (goodsDiff > RECONCILE_TOLERANCE.GOODS_WARN) {
-      warnings.push(`sum of topGoodsCategories (${goodsTotal}) diverges ${(goodsDiff * 100).toFixed(2)}% from hero.totalImportsSek (TAB3197 excludes confidential data, per its own metadata note)`);
+      warnings.push(`sum of topGoodsCategories (${goodsTotal}) diverges ${(goodsDiff * 100).toFixed(2)}% from hero.totalImportsValue (TAB3197 excludes confidential data, per its own metadata note)`);
     }
   }
 }

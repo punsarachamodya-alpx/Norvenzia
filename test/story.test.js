@@ -1,11 +1,15 @@
 'use strict';
 
-// Boots the real app and asserts /insights/sweden-trade renders 200 from the
-// committed content/sweden-trade-data.json — no network calls, no mocked
-// upstream (unlike /live, this route has zero runtime dependency on
-// anything external). Also asserts the empty-array beats (topGoodsCategories,
-// balance, trend are still pending from the offline job as of this writing)
-// are skipped gracefully rather than rendering broken/empty sections.
+// Boots the real app and asserts:
+//  - /insights/sweden-trade 302-redirects to /insights/trade/se (the legacy
+//    single-country URL from before the multi-country generalization)
+//  - /insights/trade/se renders 200 from the committed
+//    content/trade-data/se.json -- no network calls, no mocked upstream
+//    (unlike /live, this route has zero runtime dependency on anything
+//    external).
+// Also asserts the empty-array beats (topGoodsCategories, balance, trend are
+// still pending from the offline job as of this writing) are skipped
+// gracefully rather than rendering broken/empty sections.
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -31,8 +35,14 @@ test.after(async () => {
   await new Promise((resolve) => server.close(resolve));
 });
 
-test('GET /insights/sweden-trade returns 200 and renders the story shell', async () => {
-  const res = await fetch(`${base}/insights/sweden-trade`);
+test('GET /insights/sweden-trade 302-redirects to /insights/trade/se', async () => {
+  const res = await fetch(`${base}/insights/sweden-trade`, { redirect: 'manual' });
+  assert.equal(res.status, 302);
+  assert.equal(res.headers.get('location'), '/insights/trade/se');
+});
+
+test('GET /insights/trade/se returns 200 and renders the story shell', async () => {
+  const res = await fetch(`${base}/insights/trade/se`);
   const body = await res.text();
   assert.equal(res.status, 200);
   assert.ok(body.includes('Sweden Trade Intelligence'));
@@ -40,8 +50,8 @@ test('GET /insights/sweden-trade returns 200 and renders the story shell', async
   assert.ok(body.includes('id="story-data"'));
 });
 
-test('GET /insights/sweden-trade cross-links back to /live', async () => {
-  const res = await fetch(`${base}/insights/sweden-trade`);
+test('GET /insights/trade/se cross-links back to /live', async () => {
+  const res = await fetch(`${base}/insights/trade/se`);
   const body = await res.text();
   assert.ok(body.includes('href="/live"'));
 });
@@ -52,11 +62,11 @@ test('GET /live cross-links to the Sweden trade story', async () => {
   assert.ok(body.includes('href="/insights/sweden-trade"'));
 });
 
-test('renders real hero figures straight from content/sweden-trade-data.json, never hardcoded', async () => {
-  const dataPath = path.join(__dirname, '..', 'content', 'sweden-trade-data.json');
+test('renders real hero figures straight from content/trade-data/se.json, never hardcoded', async () => {
+  const dataPath = path.join(__dirname, '..', 'content', 'trade-data', 'se.json');
   const tradeData = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
 
-  const res = await fetch(`${base}/insights/sweden-trade`);
+  const res = await fetch(`${base}/insights/trade/se`);
   const body = await res.text();
 
   assert.equal(res.status, 200);
@@ -67,10 +77,10 @@ test('renders real hero figures straight from content/sweden-trade-data.json, ne
 });
 
 test('gracefully skips beats whose backing array is empty rather than rendering a broken section', async () => {
-  const dataPath = path.join(__dirname, '..', 'content', 'sweden-trade-data.json');
+  const dataPath = path.join(__dirname, '..', 'content', 'trade-data', 'se.json');
   const tradeData = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
 
-  const res = await fetch(`${base}/insights/sweden-trade`);
+  const res = await fetch(`${base}/insights/trade/se`);
   const body = await res.text();
 
   assert.equal(res.status, 200);
@@ -85,4 +95,11 @@ test('gracefully skips beats whose backing array is empty rather than rendering 
   }
   // The closing "so what" beat never depends on the pending arrays.
   assert.ok(body.includes('data-scene="sowhat"'));
+});
+
+test('GET /insights/trade/xx (unknown country) renders the unavailable state, not a 500', async () => {
+  const res = await fetch(`${base}/insights/trade/xx`);
+  const body = await res.text();
+  assert.equal(res.status, 200);
+  assert.ok(body.includes('This story is temporarily unavailable'));
 });

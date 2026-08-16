@@ -1,5 +1,8 @@
 {
   "meta": {
+    "country": "Sweden",
+    "countryCode": "SE",
+    "currency": "SEK",
     "source": "Statistics Sweden (SCB)",
     "sourceUrl": "https://www.scb.se/en/services/open-data-api/pxwebapi/",
     "tables": [
@@ -7,7 +10,7 @@
       "TAB3197",
       "TAB5390"
     ],
-    "generatedAt": "2026-08-02T09:46:45.843Z",
+    "generatedAt": "2026-08-09T09:14:37.218Z",
     "latestYear": 2024,
     "yearsCovered": [
       1998,
@@ -41,69 +44,69 @@
   },
   "hero": {
     "year": 2024,
-    "totalImportsSek": 2007233421,
-    "totalExportsSek": 2063027210,
-    "tradeBalanceSek": 55793789
+    "totalImportsValue": 2007233421,
+    "totalExportsValue": 2063027210,
+    "tradeBalanceValue": 55793789
   },
   "topGoodsCategories": [
     {
       "code": "7",
       "label": "Machinery and transport equipment",
-      "importValueSek": 740225499,
+      "importValue": 740225499,
       "share": 0.3848329196204825
     },
     {
       "code": "5",
       "label": "Chemicals and related products, n.e.s.",
-      "importValueSek": 238873805,
+      "importValue": 238873805,
       "share": 0.1241871617813639
     },
     {
       "code": "6",
       "label": "Manufactured goods classif. by material",
-      "importValueSek": 237424565,
+      "importValue": 237424565,
       "share": 0.12343372210496227
     },
     {
       "code": "8",
       "label": "miscellaneous manufactured articles",
-      "importValueSek": 212297235,
+      "importValue": 212297235,
       "share": 0.11037037346427009
     },
     {
       "code": "3",
       "label": "Mineral fuels, lubric. and related materials",
-      "importValueSek": 210207754,
+      "importValue": 210207754,
       "share": 0.10928408141568785
     },
     {
       "code": "0",
       "label": "food and live animals",
-      "importValueSek": 185550836,
+      "importValue": 185550836,
       "share": 0.09646529341716359
     },
     {
       "code": "2",
       "label": "crude materials, inedible, except fuels",
-      "importValueSek": 63990678,
+      "importValue": 63990678,
       "share": 0.033267861586100504
     },
     {
       "code": "1",
       "label": "beverages and tobacco",
-      "importValueSek": 21098701,
+      "importValue": 21098701,
       "share": 0.010968920574876865
     },
     {
       "code": "4",
       "label": "animal and vegetable oils,fats and waxes",
-      "importValueSek": 12614251,
+      "importValue": 12614251,
       "share": 0.006557973276675236
     },
     {
       "code": "9",
       "label": "goods not classified elsewhere",
-      "importValueSek": 1215060,
+      "importValue": 1215060,
       "share": 0.000631692758417207
     }
   ],
@@ -111,8 +114,8 @@
     {
       "code": "DE",
       "label": "Germany",
-      "importValueSek": 322527320,
-      "exportValueSek": 211056386,
+      "importValue": 322527320,
+      "exportValue": 211056386,
       "share": 0.16068251785052357,
       "lat": 52.52,
       "lon": 13.405
@@ -120,8 +123,8 @@
     {
       "code": "NL",
       "label": "Kingdom of the Netherlands",
-      "importValueSek": 223639136,
-      "exportValueSek": 107989626,
+      "importValue": 223639136,
+      "exportValue": 107989626,
       "share": 0.11141660638979566,
       "lat": 52.3676,
       "lon": 4.9041
@@ -129,8 +132,8 @@
     {
       "code": "NO",
       "label": "Norway",
-      "importValueSek": 200533355,
-      "exportValueSek": 201911484,
+      "importValue": 200533355,
+      "exportValue": 201911484,
       "share": 0.0999053487760754,
       "lat": 59.9139,
       "lon": 10.7522
@@ -138,8 +141,8 @@
     {
       "code": "DK",
       "label": "Denmark",
-      "importValueSek": 133437445,
-      "exportValueSek": 140428325,
+      "importValue": 133437445,
+      "exportValue": 140428325,
       "share": 0.06647828977136187,
       "lat": 55.6761,
       "lon": 12.5683
@@ -147,8 +150,8 @@
     {
       "code": "CN",
       "label": "China",
-      "importValueSek": 104944028,
-      "exportValueSek": 76215988,
+      "importValue": 104944028,
+      "exportValue": 76215988,
       "share": 0.05228292180772731,
       "lat": 39.9042,
       "lon": 116.4074
@@ -156,8 +159,8 @@
     {
       "code": "FI",
       "label": "Finland",
-      "importValueSek": 101306130,
-      "exportValueSek": 139056041,
+      "importValue": 101306130,
+      "exportValue": 139056041,
       "share": 0.05047052771248173,
       "lat": 60.1699,
       "lon": 24.9384
@@ -165,8 +168,8 @@
     {
       "code": "BE",
       "label": "Belgium",
-      "importValueSek": 95396347,
-      "exportValueSek": 97887429,
+      "importValue": 95396347,
+      "exportValue": 97887429,
       "share": 0.04752628468714601,
       "lat": 50.8503,
       "lon": 4.3517
@@ -174,8 +177,8 @@
     {
       "code": "PL",
       "label": "Poland",
-      "importValueSek": 91231447,
-      "exportValueSek": 80304205,
+      "importValue": 91231447,
+      "exportValue": 80304205,
       "share": 0.04545133916440504,
       "lat": 52.2297,
       "lon": 21.0122
@@ -183,8 +186,8 @@
     {
       "code": "GB",
       "label": "United Kingdom",
-      "importValueSek": 73968254,
-      "exportValueSek": 110805282,
+      "importValue": 73968254,
+      "exportValue": 110805282,
       "share": 0.036850848150559966,
       "lat": 51.5074,
       "lon": -0.1278
@@ -192,8 +195,8 @@
     {
       "code": "US",
       "label": "United States of America",
-      "importValueSek": 71489027,
-      "exportValueSek": 186505287,
+      "importValue": 71489027,
+      "exportValue": 186505287,
       "share": 0.0356157018172726,
       "lat": 38.9072,
       "lon": -77.0369
@@ -235,7 +238,7 @@
       2023,
       2024
     ],
-    "importsSek": [
+    "importsValue": [
       545000000,
       568100000,
       672400000,
@@ -264,7 +267,7 @@
       2050300000,
       2007400000
     ],
-    "exportsSek": [
+    "exportsValue": [
       675100000,
       700800000,
       804200000,
@@ -293,7 +296,7 @@
       2096200000,
       2063000000
     ],
-    "balanceSek": [
+    "balanceValue": [
       130100000,
       132700000,
       131800000,

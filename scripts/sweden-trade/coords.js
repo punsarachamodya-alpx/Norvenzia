@@ -14,6 +14,7 @@ module.exports = {
   NL: { lat: 52.3676, lon: 4.9041 }, // Amsterdam
   NO: { lat: 59.9139, lon: 10.7522 }, // Oslo
   DK: { lat: 55.6761, lon: 12.5683 }, // Copenhagen
+  SE: { lat: 59.3293, lon: 18.0686 }, // Stockholm -- Sweden is never its own trading partner, but is a real top partner for other Nordic countries (e.g. Denmark, Finland)
   CN: { lat: 39.9042, lon: 116.4074 }, // Beijing
   FI: { lat: 60.1699, lon: 24.9384 }, // Helsinki
   BE: { lat: 50.8503, lon: 4.3517 }, // Brussels

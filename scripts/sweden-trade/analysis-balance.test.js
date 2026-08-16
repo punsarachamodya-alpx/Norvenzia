@@ -5,9 +5,9 @@ const assert = require('node:assert/strict');
 const fs = require('fs');
 const path = require('path');
 const { parseJsonStat } = require('./jsonStatParser');
-const { buildBalanceSeries, buildTrendSeries, SEK_MILLION_TO_THOUSAND } = require('./analysis/balance');
+const { buildBalanceSeries, buildTrendSeries, MILLION_TO_THOUSAND } = require('./analysis/balance');
 
-const FIXTURE_PATH = path.join(__dirname, 'fixtures', 'tab5390-1998-2024-raw.json');
+const FIXTURE_PATH = path.join(__dirname, 'fixtures', 'se', 'tab5390-1998-2024-raw.json');
 const CONTENTS_CODE = 'HA0201A1';
 
 function loadRows() {
@@ -30,15 +30,15 @@ test('buildBalanceSeries converts SEK million (TAB5390\'s native unit) to SEK th
   const rows = loadRows();
   const balance = buildBalanceSeries(rows, { contentsCode: CONTENTS_CODE });
   const idx2024 = balance.years.indexOf(2024);
-  assert.equal(balance.importsSek[idx2024], 2007400 * SEK_MILLION_TO_THOUSAND);
-  assert.equal(balance.exportsSek[idx2024], 2063000 * SEK_MILLION_TO_THOUSAND);
+  assert.equal(balance.importsValue[idx2024], 2007400 * MILLION_TO_THOUSAND);
+  assert.equal(balance.exportsValue[idx2024], 2063000 * MILLION_TO_THOUSAND);
 });
 
-test('buildBalanceSeries.balanceSek always equals exportsSek - importsSek', () => {
+test('buildBalanceSeries.balanceValue always equals exportsValue - importsValue', () => {
   const rows = loadRows();
   const balance = buildBalanceSeries(rows, { contentsCode: CONTENTS_CODE });
   for (let i = 0; i < balance.years.length; i++) {
-    assert.equal(balance.balanceSek[i], balance.exportsSek[i] - balance.importsSek[i]);
+    assert.equal(balance.balanceValue[i], balance.exportsValue[i] - balance.importsValue[i]);
   }
 });
 
@@ -46,7 +46,7 @@ test('buildBalanceSeries 2024 shows Sweden ran a trade surplus (matches the alre
   const rows = loadRows();
   const balance = buildBalanceSeries(rows, { contentsCode: CONTENTS_CODE });
   const idx2024 = balance.years.indexOf(2024);
-  assert.ok(balance.balanceSek[idx2024] > 0, 'expected a 2024 surplus');
+  assert.ok(balance.balanceValue[idx2024] > 0, 'expected a 2024 surplus');
 });
 
 test('buildTrendSeries omits the first year (no prior-year comparison) rather than fabricating a 0', () => {

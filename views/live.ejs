@@ -67,12 +67,16 @@
   <%# War Room feature explainer -- the "Investigate" action only lives
       inside a clicked event's popup, so a visitor who never clicks a
       marker has no way to discover it exists. This section makes the
-      capability visible regardless. The preview below reuses the exact
-      CSS classes public/js/live-warroom.js renders a real result with
-      (warroom-impact-badge, warroom-impact-strip, warroom-sources) with
-      static, clearly-labeled illustrative content -- not a screenshot, not
-      stock photography (this site's "No photography" honesty constraint
-      applies here too), just the product's own real UI with example data. %>
+      capability visible regardless. Slide 1 of the preview below is a real
+      screenshot of the live disruption map. Slides 2-4 are NOT screenshots
+      -- they reuse the exact CSS classes public/js/live-warroom.js renders
+      a real result with (warroom-impact-badge, warroom-impact-strip,
+      warroom-sources, warroom-table, warroom-actions) with static,
+      clearly-labeled illustrative content, each marked "Example output --
+      illustrative" and aria-hidden as decorative (this site's "No
+      photography" honesty constraint applies here too -- no fabricated
+      content passed off as real) -- just the product's own real UI with
+      example data. %>
   <section class="section section--warroom-intro">
     <div class="shell">
       <div class="warroom-intro">
@@ -96,28 +100,84 @@
           <% } %>
         </div>
         <div class="warroom-intro__preview">
-          <p class="warroom-intro__preview-label">Real product screenshots</p>
           <div class="warroom-slider">
-            <button type="button" class="warroom-slider__nav warroom-slider__nav--prev" aria-label="Previous screenshot">&#8249;</button>
+            <button type="button" class="warroom-slider__nav warroom-slider__nav--prev" aria-label="Previous slide">&#8249;</button>
             <div class="warroom-slider__track" id="warroom-slider-track">
               <figure class="warroom-slider__slide">
                 <img src="/img/warroom/warroom-map-overview.jpg" alt="The live global disruption map, showing real-time supply chain incidents plotted worldwide" loading="lazy">
                 <figcaption>Real-time disruptions plotted on the global map</figcaption>
               </figure>
-              <figure class="warroom-slider__slide">
-                <img src="/img/warroom/warroom-search-sort.jpg" alt="The recent events feed, filtered by a search for &quot;flood&quot;, showing a real matching incident" loading="lazy">
-                <figcaption>Search and sort the live event feed</figcaption>
+              <%# Slides 2-4: not screenshots -- the real .warroom-impact-badge/
+                  -strip/-sources/-table/-actions classes buildImpactStrip(),
+                  buildSourcesPanel(), buildCategoryTable() and buildActionsList()
+                  in public/js/live-warroom.js render a live result with, reused
+                  here with static sample data and marked aria-hidden since
+                  they're decorative illustrations, not real findings. %>
+              <figure class="warroom-slider__slide warroom-slider__slide--panel" aria-hidden="true">
+                <p class="warroom-slider__slide-label">Example output — illustrative</p>
+                <div class="warroom-impact-badge warroom-impact-badge--severe">
+                  <span class="warroom-impact-badge__icon">!!</span>
+                  <div class="warroom-impact-badge__text">
+                    <strong class="warroom-impact-badge__label">Severe impact</strong>
+                    <p class="warroom-impact-badge__reason">A key regional port suspended operations, creating significant disruption risk for shipping routes through the area.</p>
+                  </div>
+                </div>
+                <div class="warroom-impact-strip">
+                  <span class="warroom-impact-strip__item">
+                    <span class="warroom-impact-strip__tag">PRT</span>
+                    <span class="warroom-impact-strip__count">1</span>
+                    <span class="warroom-impact-strip__label">Ports</span>
+                  </span>
+                  <span class="warroom-impact-strip__item">
+                    <span class="warroom-impact-strip__tag">SHL</span>
+                    <span class="warroom-impact-strip__count">2</span>
+                    <span class="warroom-impact-strip__label">Shipping lines</span>
+                  </span>
+                </div>
+                <figcaption>Example: an AI-assessed impact verdict, not a guess</figcaption>
               </figure>
-              <figure class="warroom-slider__slide">
-                <img src="/img/warroom/warroom-severe-impact.jpg" alt="A real War Room investigation result showing a severe impact verdict and a grounded assessment reason" loading="lazy">
-                <figcaption>A real AI-assessed impact verdict, not a guess</figcaption>
+              <figure class="warroom-slider__slide warroom-slider__slide--panel" aria-hidden="true">
+                <p class="warroom-slider__slide-label">Example output — illustrative</p>
+                <div class="warroom-sources">
+                  <h4 class="warroom-table__heading">11 sources</h4>
+                  <div class="warroom-sources__chips">
+                    <span class="warroom-sources__chip">6 government</span>
+                    <span class="warroom-sources__chip">5 news</span>
+                  </div>
+                </div>
+                <div class="warroom-table">
+                  <h4 class="warroom-table__heading">Affected ports</h4>
+                  <ul class="warroom-table__list">
+                    <li class="warroom-table__row">
+                      <span class="warroom-table__name">Example Port Authority</span>
+                      <span class="warroom-table__confidence warroom-table__confidence--high">high</span>
+                      <a class="warroom-table__source" href="https://example.com" target="_blank" rel="noopener noreferrer">Source: example.com (illustrative)</a>
+                    </li>
+                  </ul>
+                </div>
+                <figcaption>Example: every claim is cited — never asserted without a source</figcaption>
               </figure>
-              <figure class="warroom-slider__slide">
-                <img src="/img/warroom/warroom-sources-panel.jpg" alt="A real War Room result showing an 11-source breakdown and a recommended action with rationale" loading="lazy">
-                <figcaption>Every claim cited — sources and recommended actions</figcaption>
+              <figure class="warroom-slider__slide warroom-slider__slide--panel" aria-hidden="true">
+                <p class="warroom-slider__slide-label">Example output — illustrative</p>
+                <div class="warroom-actions">
+                  <h4 class="warroom-table__heading">Recommended actions</h4>
+                  <ul class="warroom-actions__list">
+                    <li class="warroom-actions__item">
+                      <span class="warroom-actions__urgency warroom-actions__urgency--high">high</span>
+                      <p class="warroom-actions__action">Line up a backup carrier for the affected route before the current booking window closes.</p>
+                      <p class="warroom-actions__rationale">The primary shipping line has no confirmed alternative routing yet.</p>
+                    </li>
+                    <li class="warroom-actions__item">
+                      <span class="warroom-actions__urgency warroom-actions__urgency--medium">medium</span>
+                      <p class="warroom-actions__action">Notify downstream customers of a likely delay window.</p>
+                      <p class="warroom-actions__rationale">The affected port has no announced reopening date.</p>
+                    </li>
+                  </ul>
+                </div>
+                <figcaption>Example: urgency-ranked next actions, grounded in the research</figcaption>
               </figure>
             </div>
-            <button type="button" class="warroom-slider__nav warroom-slider__nav--next" aria-label="Next screenshot">&#8250;</button>
+            <button type="button" class="warroom-slider__nav warroom-slider__nav--next" aria-label="Next slide">&#8250;</button>
           </div>
         </div>
       </div>
