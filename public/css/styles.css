@@ -3966,6 +3966,24 @@ button {
   min-height: 62vh;
   display: flex;
   align-items: center;
+  /* Matches .banner-photo__scrim's darkest value -- see the native-resolution
+     cap comment on .banner-photo__img above: below the cap the photo stops
+     short of the section's height, and without this the page's white
+     background showed through there as a washed-out grey band. */
+  background: var(--color-bg-dark);
+}
+
+/* Same reasoning as .hero--dark's mobile override: 62vh forces object-fit:
+   cover to stretch banner-team.jpg well past its native resolution on a
+   tall, high-density phone screen, and the native-resolution cap above then
+   leaves a tall empty gap below the photo (the headline sitting in it,
+   nothing but background below). Letting the section size to its own
+   content instead keeps the photo close to native resolution and removes
+   the gap entirely, rather than just recoloring it. */
+@media (max-width: 640px) {
+  .banner-photo {
+    min-height: 0;
+  }
 }
 
 /* See .hero__photo above for why this isn't inset: 0 + why max-height is
@@ -3995,6 +4013,10 @@ button {
 .banner-photo__inner {
   position: relative;
   z-index: 1;
+  /* Only load-bearing once .banner-photo's mobile min-height: 0 override can
+     apply (see above) -- on desktop 62vh + align-items: center already gives
+     the headline generous room, so this clamp reduces to a no-op there. */
+  padding-block: clamp(2.5rem, 10vw, 4rem);
 }
 
 .banner-photo__headline {
