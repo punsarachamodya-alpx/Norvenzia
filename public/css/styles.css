@@ -199,6 +199,15 @@ p {
   margin: 0;
 }
 
+/* <picture> is inline by default -- with only an absolutely-positioned
+   <img> inside (every hero/backdrop photo, see .hero__photo etc.), an
+   unstyled <picture> still generates a line box from its own font
+   metrics, leaving a few px of stray gap below the image. Block removes
+   that; the img inside is still positioned by its own absolute rules. */
+picture {
+  display: block;
+}
+
 ul,
 ol {
   margin: 0;
@@ -3693,10 +3702,35 @@ button {
   font-size: clamp(2.6rem, 7vw, 5.5rem);
 }
 
-/* Reserves layout space equal to the final rendered text before the scramble
-   animation starts, so nothing reflows as characters lock in. */
-.hero__headline[data-scramble] {
+/* Reserves layout space equal to the final rendered text before the letter
+   reveal starts, so nothing reflows as words wrap in. */
+.hero__headline[data-letter-reveal] {
   min-height: 1.04em;
+}
+
+/* Letter-by-letter reveal (see public/js/letter-reveal.js): each character
+   slides in from the right, staggered left-to-right via --char-i. Words are
+   their own inline-block/nowrap wrapper so the headline still only ever
+   breaks lines at real word boundaries, exactly like the plain text would.
+   Skipped entirely under reduced motion -- the script never touches the DOM
+   in that case, so the plain final text renders with no animation classes
+   to speak of. */
+.letter-reveal__word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.letter-reveal__char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateX(0.6em);
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+  transition-delay: calc(var(--char-i, 0) * 22ms);
+}
+
+[data-letter-reveal].is-revealed .letter-reveal__char {
+  opacity: 1;
+  transform: none;
 }
 
 .hero__body--dim {
