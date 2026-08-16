@@ -4072,6 +4072,8 @@ button {
   transform: translateY(-3px);
 }
 
+/* Still used by What We Do's product-tiers section (views/what-we-do.ejs) —
+   only the homepage's Launch/Scale/Command cards dropped their number. */
 .tier-card__number {
   font-family: var(--font-mono);
   font-size: 0.85rem;
@@ -4081,11 +4083,10 @@ button {
 
 .tier-card__label {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 1.02rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-text-secondary);
-  margin-top: 0.6rem;
 }
 
 .tier-card__name {
