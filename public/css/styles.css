@@ -3629,6 +3629,20 @@ button {
   padding-top: var(--header-h);
 }
 
+/* Forcing the hero to fill the full viewport height on a narrow phone
+   asks object-fit: cover to stretch a 1920x1072 photo across whatever
+   tall box 100vh happens to be there (often 800-950+ CSS px, i.e.
+   2000-2800+ physical px at typical phone pixel density) -- multiple
+   times the source's native resolution, which is what was reading as
+   blur on mobile specifically (desktop viewports rarely need anywhere
+   near that much stretch). Capping it to a shorter, content-appropriate
+   height keeps the photo far closer to its native resolution. */
+@media (max-width: 640px) {
+  .hero--dark {
+    min-height: 0;
+  }
+}
+
 .hero__photo {
   position: absolute;
   inset: 0;
