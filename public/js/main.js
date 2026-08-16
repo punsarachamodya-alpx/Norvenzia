@@ -137,30 +137,64 @@
   var fadeSections = document.querySelectorAll('main > section');
 
   if (fadeSections.length && !reduced) {
-    var fadeRaf = null;
-    var FADE_ZONE = 0.4; // fraction of viewport height used for each edge's ramp
-    var FADE_FLOOR = 0.35; // never fades all the way to invisible
+    var FADE_ZONE = 0.75; // fraction of viewport height used for each edge's ramp -- wide, so the dissolve spans most of the scroll through a section's entry/exit rather than a quick snap at the edge
+    var FADE_FLOOR = 0.4; // never fades all the way to invisible
+    var SMOOTH = 0.07; // per-frame catch-up rate toward the target -- lower is slower/smoother
+    var current = [];
+    var fadeRunning = false;
 
-    function updateSectionFade() {
-      fadeRaf = null;
+    // Smoothstep: eases in and out instead of ramping linearly with scroll
+    // position, which is what actually reads as "fast"/mechanical even
+    // with a wide zone -- the ease is what gives it a slow, settling feel.
+    function ease(t) {
+      return t * t * (3 - 2 * t);
+    }
+
+    function computeTargets() {
       var vh = window.innerHeight;
       var zone = vh * FADE_ZONE;
+      var targets = [];
       for (var i = 0; i < fadeSections.length; i++) {
         var rect = fadeSections[i].getBoundingClientRect();
         var fadeIn = zone ? Math.max(0, Math.min(1, (vh - rect.top) / zone)) : 1;
         var fadeOut = zone ? Math.max(0, Math.min(1, rect.bottom / zone)) : 1;
-        var factor = Math.min(fadeIn, fadeOut);
-        var opacity = FADE_FLOOR + (1 - FADE_FLOOR) * factor;
-        fadeSections[i].style.setProperty('--section-fade', opacity.toFixed(3));
+        var factor = ease(Math.min(fadeIn, fadeOut));
+        targets.push(FADE_FLOOR + (1 - FADE_FLOOR) * factor);
+      }
+      return targets;
+    }
+
+    // Runs its own animation loop (rather than only reacting to scroll
+    // events) so the opacity keeps easing toward its target for a few
+    // frames after scrolling stops, instead of snapping straight to the
+    // scroll-locked value -- that trailing settle is most of what reads as
+    // "smooth" here.
+    function tick() {
+      var targets = computeTargets();
+      var stillMoving = false;
+      for (var i = 0; i < fadeSections.length; i++) {
+        var diff = targets[i] - current[i];
+        if (Math.abs(diff) > 0.001) stillMoving = true;
+        current[i] += diff * SMOOTH;
+        fadeSections[i].style.setProperty('--section-fade', current[i].toFixed(3));
+      }
+      if (stillMoving) {
+        window.requestAnimationFrame(tick);
+      } else {
+        fadeRunning = false;
       }
     }
 
     function queueSectionFade() {
-      if (fadeRaf) return;
-      fadeRaf = window.requestAnimationFrame(updateSectionFade);
+      if (fadeRunning) return;
+      fadeRunning = true;
+      window.requestAnimationFrame(tick);
     }
 
-    updateSectionFade();
+    current = computeTargets();
+    for (var fi = 0; fi < fadeSections.length; fi++) {
+      fadeSections[fi].style.setProperty('--section-fade', current[fi].toFixed(3));
+    }
     window.addEventListener('scroll', queueSectionFade, { passive: true });
     window.addEventListener('resize', queueSectionFade);
   }
