@@ -4072,15 +4072,6 @@ button {
   transform: translateY(-3px);
 }
 
-/* Still used by What We Do's product-tiers section (views/what-we-do.ejs) —
-   only the homepage's Launch/Scale/Command cards dropped their number. */
-.tier-card__number {
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  color: var(--color-accent);
-  letter-spacing: 0.08em;
-}
-
 .tier-card__label {
   font-family: var(--font-mono);
   font-size: 1.02rem;
@@ -4182,7 +4173,7 @@ button {
 .how-visual__label {
   margin-top: 0.9rem;
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 1.02rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--color-text-dim);
@@ -4205,18 +4196,11 @@ button {
   margin-top: clamp(2rem, 4vw, 3rem);
 }
 
-.how-step__number {
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  color: var(--color-accent);
-}
-
 .how-step__title {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 1.3rem;
   color: var(--color-text-white);
-  margin-top: 0.7rem;
 }
 
 .how-step__body {

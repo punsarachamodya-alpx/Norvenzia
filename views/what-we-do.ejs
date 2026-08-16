@@ -28,7 +28,6 @@
             <img src="<%= divisionPhotos[d.name] || '/img/photos/service-core.jpg' %>" alt="<%= d.name %>" width="1024" height="768">
           </div>
           <div class="service-row__copy">
-            <span class="service-row__category"><%= d.index %></span>
             <h2 class="service-row__name">
               <%= d.name %>
               <%- include('partials/badge', { status: d.status }) %>
@@ -90,10 +89,8 @@
     </div>
 
     <div class="tier-cards reveal-group">
-      <% var tierNumbers = ['01', '02', '03']; %>
-      <% page.tiers.items.forEach(function (t, i) { %>
+      <% page.tiers.items.forEach(function (t) { %>
         <article class="tier-card">
-          <span class="tier-card__number"><%= tierNumbers[i] || String(i + 1).padStart(2, '0') %></span>
           <h3 class="tier-card__name"><%= t.name %></h3>
           <p class="tier-card__body"><%= t.summary %></p>
           <ul class="service-row__list" style="margin-top:0.8rem;">
