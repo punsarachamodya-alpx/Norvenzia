@@ -30,61 +30,105 @@
   // --------------------------------------------------------- scroll reveal
   // .reveal-left/-right/-up/-pop are directional variants (see styles.css)
   // for images that should slide/pop into place instead of the generic
-  // fade+lift -- they share every bit of this wiring (stagger, observer,
-  // failsafe) with .reveal, just a different CSS transform per class.
-  var revealables = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-up, .reveal-pop, .reveal-pop-slow');
-  var revealGroups = document.querySelectorAll('.reveal-group, .reveal-group--up');
+  // fade+lift. They share the stagger/failsafe wiring below with .reveal,
+  // but use a *later*-triggering observer (see revealDirectional below):
+  // a small text block fading up 18px is fine triggering the moment it
+  // barely peeks onto screen, but a tall photo sliding in from off-screen
+  // was finishing its whole animation while still mostly below the fold —
+  // by the time it was actually in view there was nothing left to see.
+  var revealables = document.querySelectorAll('.reveal');
+  var revealDirectional = document.querySelectorAll(
+    '.reveal-left, .reveal-right, .reveal-up, .reveal-pop, .reveal-pop-slow'
+  );
+  var revealGroups = document.querySelectorAll('.reveal-group');
+  var revealGroupsDirectional = document.querySelectorAll('.reveal-group--up');
   var reduced =
     window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Stagger: each .reveal element gets an index among the .reveal siblings
-  // that share its parent, so cards/panels/steps sitting side by side fade
-  // in one after another instead of all at once (see --reveal-i in
-  // styles.css). Elements without such siblings just get index 0 — no delay.
-  var siblingCounts = new Map();
-  for (var s = 0; s < revealables.length; s++) {
-    var parent = revealables[s].parentElement;
-    var count = siblingCounts.has(parent) ? siblingCounts.get(parent) : 0;
-    revealables[s].style.setProperty('--reveal-i', String(count));
-    siblingCounts.set(parent, count + 1);
-  }
-
-  // Same idea one level down, for grids where the *wrapper* carries
-  // .reveal-group and it's the wrapper's own children that should stagger
-  // (product/tier/fit grids — see .reveal-group in styles.css).
-  for (var g = 0; g < revealGroups.length; g++) {
-    var children = revealGroups[g].children;
-    for (var c = 0; c < children.length; c++) {
-      children[c].style.setProperty('--reveal-i', String(c));
+  // Stagger: each reveal element gets an index among the siblings of its
+  // same kind that share its parent, so cards/panels/steps sitting side by
+  // side fade in one after another instead of all at once (see --reveal-i
+  // in styles.css). Elements without such siblings just get index 0 — no
+  // delay. Two independent counters (not one shared one) so, e.g., a
+  // .reveal-left row's index isn't thrown off by an unrelated .reveal
+  // sibling.
+  function indexBySibling(list) {
+    var counts = new Map();
+    for (var i = 0; i < list.length; i++) {
+      var parent = list[i].parentElement;
+      var count = counts.has(parent) ? counts.get(parent) : 0;
+      list[i].style.setProperty('--reveal-i', String(count));
+      counts.set(parent, count + 1);
     }
   }
+  indexBySibling(revealables);
+  indexBySibling(revealDirectional);
+
+  // Same idea one level down, for grids where the *wrapper* carries the
+  // reveal state and it's the wrapper's own children that should stagger
+  // (product/tier/fit grids — see .reveal-group/.reveal-group--up in
+  // styles.css).
+  function indexChildren(list) {
+    for (var g = 0; g < list.length; g++) {
+      var children = list[g].children;
+      for (var c = 0; c < children.length; c++) {
+        children[c].style.setProperty('--reveal-i', String(c));
+      }
+    }
+  }
+  indexChildren(revealGroups);
+  indexChildren(revealGroupsDirectional);
 
   var allRevealTargets = [];
   for (var ri = 0; ri < revealables.length; ri++) allRevealTargets.push(revealables[ri]);
   for (var gi = 0; gi < revealGroups.length; gi++) allRevealTargets.push(revealGroups[gi]);
 
+  var allDirectionalTargets = [];
+  for (var di = 0; di < revealDirectional.length; di++) allDirectionalTargets.push(revealDirectional[di]);
+  for (var dgi = 0; dgi < revealGroupsDirectional.length; dgi++) allDirectionalTargets.push(revealGroupsDirectional[dgi]);
+
   function revealAll() {
     for (var i = 0; i < allRevealTargets.length; i++) {
       allRevealTargets[i].classList.add('is-visible');
+    }
+    for (var j = 0; j < allDirectionalTargets.length; j++) {
+      allDirectionalTargets[j].classList.add('is-visible');
     }
   }
 
   if (reduced || !('IntersectionObserver' in window)) {
     revealAll();
   } else {
-    var observer = new IntersectionObserver(
+    // Text/fade-up: triggers as soon as a sliver is on screen — the motion
+    // is small (18px) so there's nothing to miss by starting early.
+    var obs = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
             entry.target.classList.add('is-visible');
-            observer.unobserve(entry.target);
+            obs.unobserve(entry.target);
           }
         });
       },
       { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }
     );
+    for (var k = 0; k < allRevealTargets.length; k++) obs.observe(allRevealTargets[k]);
 
-    for (var j = 0; j < allRevealTargets.length; j++) observer.observe(allRevealTargets[j]);
+    // Directional slides/pops: waits until roughly a third of the element
+    // is genuinely inside the viewport before starting, so the travel
+    // actually happens while it's visible instead of finishing off-screen.
+    var obsDirectional = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            obsDirectional.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: '0px 0px -20% 0px', threshold: 0.3 }
+    );
+    for (var m = 0; m < allDirectionalTargets.length; m++) obsDirectional.observe(allDirectionalTargets[m]);
 
     // Failsafe: reveal everything after 2s regardless of whether the observer
     // fired, so content can never end up permanently invisible.
