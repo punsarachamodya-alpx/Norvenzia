@@ -41,33 +41,6 @@
     U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-/* Homepage-only typefaces (see body.home in Tokens below). Self-hosted the same
-   way as the three faces above — the brief asked for a Google Fonts <link>, but
-   the CSP (server.js) locks script/connect/default-src to 'self' and touching
-   that middleware is out of scope, so these are fetched once and served locally
-   instead, with identical results and no CSP change. */
-@font-face {
-  font-family: 'Space Grotesk';
-  font-style: normal;
-  font-weight: 400 700;
-  font-display: swap;
-  src: url('/fonts/space-grotesk-var-latin.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
-    U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-  font-family: 'Inter';
-  font-style: normal;
-  font-weight: 400 700;
-  font-display: swap;
-  src: url('/fonts/inter-var-latin.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
-    U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
 /* ------------------------------------------------------------- 2. Tokens */
 
 :root {
@@ -137,12 +110,10 @@
    Contact, Legal, Live, Story, /admin) renders with, so this file stays a single
    shared stylesheet without reskinning pages outside this redesign's scope.
 
-   --font-mono intentionally stays JetBrains Mono (already self-hosted above,
-   already the site's mono face) rather than the brief's Courier New/IBM Plex
-   Mono suggestion — same "coder monospace" register, no second mono typeface
-   to ship. --font-display/--font-body below are Space Grotesk/Inter as
-   specified, but only take effect on the homepage: see `body.home` further
-   down, which is the only place these two get redeclared. */
+   The homepage previously ran its own typefaces (Space Grotesk/Inter) via a
+   body.home override, kept separate from --font-display/--font-body above —
+   removed for site-wide font consistency. Montserrat/Manrope/JetBrains Mono
+   from the Tokens block now apply everywhere, the homepage included. */
 :root {
   /* Backgrounds */
   --color-bg-dark: #0a0f1a;
@@ -164,11 +135,6 @@
   --color-border: #e2e5ea;
   --color-border-dark: rgba(255, 255, 255, 0.1);
 
-  /* Type scale (homepage-scoped — see body.home) */
-  --font-display-home: 'Space Grotesk', system-ui, sans-serif;
-  --font-body-home: 'Inter', system-ui, sans-serif;
-  --font-mono-home: var(--font-mono);
-
   /* Spacing */
   --section-padding: clamp(4rem, 8vw, 7rem) clamp(1.5rem, 5vw, 4rem);
   --max-width: 1120px;
@@ -181,14 +147,6 @@
   /* Transitions */
   --transition-fast: 160ms ease;
   --transition-base: 280ms ease;
-}
-
-/* Scopes the new display/body typefaces to the homepage only — every other
-   page keeps Montserrat/Manrope from the tokens above unchanged. Added to
-   <body> in layout.ejs only when currentPath === '/'. */
-body.home {
-  --font-display: var(--font-display-home);
-  --font-body: var(--font-body-home);
 }
 
 /* --------------------------------------------------------- 3. Base reset */

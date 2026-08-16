@@ -30,12 +30,6 @@
 
   <link rel="preload" href="/fonts/manrope-var-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/montserrat-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <%# Homepage-only faces (self-hosted — see the CSP note in styles.css §1).
-      Preloaded only on '/' so inner pages don't fetch fonts they never use. %>
-  <% if (currentPath === '/') { %>
-    <link rel="preload" href="/fonts/space-grotesk-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/fonts/inter-var-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <% } %>
   <link rel="stylesheet" href="/css/styles.css?v=<%= v %>">
   <%
     // Admin-editable sizing (Appearance section). Parsed with a fallback to the
