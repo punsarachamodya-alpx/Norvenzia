@@ -2181,18 +2181,22 @@ button {
 }
 
 /* Scroll parallax: main.js sets --parallax-y (in px) on scroll for any
-   element carrying [data-parallax]. Fine-pointer + motion-allowed only,
-   same gating as the hero/motion-band pointer effects — see main.js. */
+   element carrying [data-parallax]. Desktop/tablet (min-width: 768px) and
+   motion-allowed only — see main.js. */
 .js [data-parallax] {
   transform: translate3d(0, var(--parallax-y, 0), 0);
   will-change: transform;
 }
 
 /* Photos need a little overscan so the parallax shift never uncovers an
-   edge of their (overflow: hidden) frame — the scale alone is baked in
-   here rather than left to each photo's own rules. */
+   edge of their (overflow: hidden) frame. --parallax-scale defaults to 1
+   (no extra scale at all) and is only set to 1.06 by main.js when
+   parallax is actually active (desktop/tablet, motion allowed) — on
+   mobile this rule now applies zero extra scale, so photos render at
+   their normal cover-fit sharpness instead of stacking a second upscale
+   on top of an already-tall portrait crop. */
 .js img[data-parallax] {
-  transform: scale(1.12) translate3d(0, var(--parallax-y, 0), 0);
+  transform: scale(var(--parallax-scale, 1)) translate3d(0, var(--parallax-y, 0), 0);
 }
 
 /* Grid/list wrappers where the *wrapper* carries the reveal state but it's

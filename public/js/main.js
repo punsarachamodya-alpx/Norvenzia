@@ -141,10 +141,30 @@
   // styles.css). The attribute's value is the max travel in px either way;
   // blank/invalid falls back to 24. Skipped entirely under reduced motion,
   // same as every other motion effect on this page.
+  //
+  // Desktop/tablet only (min-width: 768px): the CSS overscan this needs
+  // (a permanent scale() so the translate never uncovers an edge — see
+  // img[data-parallax] in styles.css) is itself an extra upscale on top of
+  // whatever object-fit: cover already has to do, and on a narrow, tall
+  // mobile viewport a landscape photo is already being stretched hard to
+  // cover a portrait-shaped box. Stacking a second scale on top of that
+  // made hero/full-bleed photos visibly softer on phones specifically, for
+  // a scroll effect that's barely perceptible there anyway. Photos still
+  // render at their normal cover-fit sharpness on mobile; they just don't
+  // drift or carry the overscan scale.
   var parallaxEls = document.querySelectorAll('[data-parallax]');
+  var allowParallax = window.matchMedia && window.matchMedia('(min-width: 768px)').matches;
 
-  if (parallaxEls.length && !reduced) {
+  if (parallaxEls.length && !reduced && allowParallax) {
     var parallaxRaf = null;
+
+    // Applied once, not per-frame: this is a fixed overscan margin, not
+    // something that needs to track scroll. Lower than the old flat 1.12 —
+    // safely covers every current --data-parallax strength (max 36px)
+    // against every current photo's rendered height, with room to spare.
+    for (var pi = 0; pi < parallaxEls.length; pi++) {
+      parallaxEls[pi].style.setProperty('--parallax-scale', '1.06');
+    }
 
     function updateParallax() {
       parallaxRaf = null;
