@@ -28,8 +28,12 @@
   }
 
   // --------------------------------------------------------- scroll reveal
-  var revealables = document.querySelectorAll('.reveal');
-  var revealGroups = document.querySelectorAll('.reveal-group');
+  // .reveal-left/-right/-up/-pop are directional variants (see styles.css)
+  // for images that should slide/pop into place instead of the generic
+  // fade+lift -- they share every bit of this wiring (stagger, observer,
+  // failsafe) with .reveal, just a different CSS transform per class.
+  var revealables = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-up, .reveal-pop');
+  var revealGroups = document.querySelectorAll('.reveal-group, .reveal-group--up');
   var reduced =
     window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -119,84 +123,6 @@
     updateParallax();
     window.addEventListener('scroll', queueParallax, { passive: true });
     window.addEventListener('resize', queueParallax);
-  }
-
-  // ---------------------------------------------------------- section cross-fade
-  // Top-level page sections dissolve into one another as they cross the
-  // viewport edges, instead of a hard cut — opacity ramps down only in a
-  // band near the top/bottom of the viewport (see --section-fade in
-  // styles.css), so a section is fully opaque for however long it fills the
-  // middle of the screen and only fades during the handoff to its neighbor.
-  // Opacity only, deliberately no scale/transform: /live's MapLibre map
-  // lives inside one of these sections, and a transform on an ancestor of a
-  // map canvas is a known source of click/resize coordinate bugs in map
-  // libraries -- not worth it for a purely decorative flourish.
-  // Scoped to direct children of <main> so it never reaches into the
-  // scroll-pinned trade-story graphic (that's a <div>, not a <section>, and
-  // has its own dedicated scroll mechanics in story.js).
-  var fadeSections = document.querySelectorAll('main > section');
-
-  if (fadeSections.length && !reduced) {
-    var FADE_ZONE = 0.75; // fraction of viewport height used for each edge's ramp -- wide, so the dissolve spans most of the scroll through a section's entry/exit rather than a quick snap at the edge
-    var FADE_FLOOR = 0.4; // never fades all the way to invisible
-    var SMOOTH = 0.07; // per-frame catch-up rate toward the target -- lower is slower/smoother
-    var current = [];
-    var fadeRunning = false;
-
-    // Smoothstep: eases in and out instead of ramping linearly with scroll
-    // position, which is what actually reads as "fast"/mechanical even
-    // with a wide zone -- the ease is what gives it a slow, settling feel.
-    function ease(t) {
-      return t * t * (3 - 2 * t);
-    }
-
-    function computeTargets() {
-      var vh = window.innerHeight;
-      var zone = vh * FADE_ZONE;
-      var targets = [];
-      for (var i = 0; i < fadeSections.length; i++) {
-        var rect = fadeSections[i].getBoundingClientRect();
-        var fadeIn = zone ? Math.max(0, Math.min(1, (vh - rect.top) / zone)) : 1;
-        var fadeOut = zone ? Math.max(0, Math.min(1, rect.bottom / zone)) : 1;
-        var factor = ease(Math.min(fadeIn, fadeOut));
-        targets.push(FADE_FLOOR + (1 - FADE_FLOOR) * factor);
-      }
-      return targets;
-    }
-
-    // Runs its own animation loop (rather than only reacting to scroll
-    // events) so the opacity keeps easing toward its target for a few
-    // frames after scrolling stops, instead of snapping straight to the
-    // scroll-locked value -- that trailing settle is most of what reads as
-    // "smooth" here.
-    function tick() {
-      var targets = computeTargets();
-      var stillMoving = false;
-      for (var i = 0; i < fadeSections.length; i++) {
-        var diff = targets[i] - current[i];
-        if (Math.abs(diff) > 0.001) stillMoving = true;
-        current[i] += diff * SMOOTH;
-        fadeSections[i].style.setProperty('--section-fade', current[i].toFixed(3));
-      }
-      if (stillMoving) {
-        window.requestAnimationFrame(tick);
-      } else {
-        fadeRunning = false;
-      }
-    }
-
-    function queueSectionFade() {
-      if (fadeRunning) return;
-      fadeRunning = true;
-      window.requestAnimationFrame(tick);
-    }
-
-    current = computeTargets();
-    for (var fi = 0; fi < fadeSections.length; fi++) {
-      fadeSections[fi].style.setProperty('--section-fade', current[fi].toFixed(3));
-    }
-    window.addEventListener('scroll', queueSectionFade, { passive: true });
-    window.addEventListener('resize', queueSectionFade);
   }
 
   // ------------------------------------------------- hero cursor interaction

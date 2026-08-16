@@ -2230,16 +2230,6 @@ button {
   will-change: transform;
 }
 
-/* Section cross-fade: main.js sets --section-fade (opacity, floor 0.35) on
-   every top-level <section>, ramping only near the viewport edges — see the
-   main.js comment for the full mechanic and why this is opacity-only (no
-   scale/transform, to stay safe for /live's map canvas). No CSS transition
-   here on purpose: main.js recomputes every rAF tick while scrolling, so
-   the value itself is already the animation. */
-.js main > section {
-  opacity: var(--section-fade, 1);
-}
-
 /* Photos need a little overscan so the parallax shift never uncovers an
    edge of their (overflow: hidden) frame — the scale alone is baked in
    here rather than left to each photo's own rules. */
@@ -2259,6 +2249,76 @@ button {
 }
 
 .js .reveal-group.is-visible > * {
+  opacity: 1;
+  transform: none;
+}
+
+/* Directional reveals: slide in from a side, from below, or pop from a
+   slight scale-down — for images specifically, so the motion reads as the
+   picture arriving into place rather than the generic fade+lift every
+   other element uses. Same is-visible/IntersectionObserver wiring as
+   .reveal (see main.js) and the same easing curve, just a longer duration
+   and a bigger travel distance so it reads as deliberate motion, not a
+   twitch. */
+.js .reveal-left {
+  opacity: 0;
+  transform: translateX(-70px);
+  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+  transition-delay: calc(var(--reveal-i, 0) * 70ms);
+}
+
+.js .reveal-left.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.js .reveal-right {
+  opacity: 0;
+  transform: translateX(70px);
+  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+  transition-delay: calc(var(--reveal-i, 0) * 70ms);
+}
+
+.js .reveal-right.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.js .reveal-up {
+  opacity: 0;
+  transform: translateY(70px);
+  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+  transition-delay: calc(var(--reveal-i, 0) * 70ms);
+}
+
+.js .reveal-up.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.js .reveal-pop {
+  opacity: 0;
+  transform: scale(0.82);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+
+.js .reveal-pop.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Grid-wrapper variant of .reveal-up, for card grids where the wrapper
+   carries the reveal state and its children are what should rise (see
+   .reveal-group above for the same pattern) — used by What We Do's
+   product-suite "roadmap" cards. */
+.js .reveal-group--up > * {
+  opacity: 0;
+  transform: translateY(70px);
+  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
+  transition-delay: calc(var(--reveal-i, 0) * 90ms);
+}
+
+.js .reveal-group--up.is-visible > * {
   opacity: 1;
   transform: none;
 }
@@ -2445,7 +2505,12 @@ button {
   }
 
   .js .reveal,
-  .js .reveal-group > * {
+  .js .reveal-group > *,
+  .js .reveal-left,
+  .js .reveal-right,
+  .js .reveal-up,
+  .js .reveal-pop,
+  .js .reveal-group--up > * {
     opacity: 1;
     transform: none;
     transition: none;
@@ -2454,10 +2519,6 @@ button {
 
   .js [data-parallax] {
     transform: none;
-  }
-
-  .js main > section {
-    opacity: 1;
   }
 
   .who-serve__accent {

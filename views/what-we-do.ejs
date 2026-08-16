@@ -24,7 +24,7 @@
       <% var divisionPhotos = { Operations: '/img/photos/service-core.jpg', Analytics: '/img/photos/service-pulse.jpg' }; %>
       <% page.divisions.forEach(function (d, i) { %>
         <article class="service-row service-row--compact <%= i % 2 === 1 ? 'service-row--reverse' : '' %>">
-          <div class="service-row__media">
+          <div class="service-row__media <%= i % 2 === 1 ? 'reveal-right' : 'reveal-left' %>">
             <img src="<%= divisionPhotos[d.name] || '/img/photos/service-core.jpg' %>" alt="<%= d.name %>" width="1024" height="768">
           </div>
           <div class="service-row__copy">
@@ -53,7 +53,7 @@
       <p class="lede"><%= page.products.body %></p>
     </div>
 
-    <div class="product-grid reveal-group">
+    <div class="product-grid reveal-group--up">
       <% var productPhotos = {
         Core: '/img/photos/service-core.jpg',
         Flow: '/img/photos/service-flow.jpg',
