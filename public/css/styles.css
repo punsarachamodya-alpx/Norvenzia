@@ -3643,12 +3643,22 @@ button {
   }
 }
 
-/* top/left/right instead of inset: 0 (no forced bottom edge), plus
-   max-height, so main.js can cap this at the photo's own native
-   resolution -- see .no-upscale in main.js. Below that cap the image
-   just doesn't reach the bottom of the section; the section's own dark
-   background (already close to the scrim's own darkest value) shows
-   through rather than the photo being stretched past its real pixels. */
+/* Below 640px the <picture> in hero.ejs swaps in a purpose-shot portrait
+   crop (public/img/photos/*-mobile.jpg) instead of the desktop landscape
+   photo -- real photography framed for a tall mobile viewport, rather
+   than this same rule's native-resolution cap (below) having to crop a
+   landscape source down to a sliver to avoid upscaling it. Every other
+   full-bleed hero/backdrop image in this file (.work-hero__img,
+   .banner-photo__img, .contact-photo-hero__img) gets the same <picture>
+   treatment in its own view.
+
+   top/left/right instead of inset: 0 (no forced bottom edge), plus
+   max-height, so main.js can cap this at whichever photo (desktop or
+   mobile) actually loaded's own native resolution -- see noUpscaleEls in
+   main.js. Below that cap the image just doesn't reach the bottom of the
+   section; the section's own dark background (already close to the
+   scrim's own darkest value) shows through rather than the photo being
+   stretched past its real pixels. */
 .hero__photo {
   position: absolute;
   top: 0;

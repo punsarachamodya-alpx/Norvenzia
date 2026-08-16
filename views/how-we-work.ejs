@@ -1,7 +1,10 @@
 <%# Full-bleed photo hero with a transparent header overlaid, same
     treatment as the homepage, What We Do, and Industries We Serve. %>
 <section class="work-hero work-hero--dark-nav">
-  <img class="work-hero__img" src="/img/photos/banner-team.jpg" alt="" aria-hidden="true" width="1920" height="1071" data-parallax="36">
+  <picture>
+    <source media="(max-width: 640px)" srcset="/img/photos/banner-team-mobile.jpg">
+    <img class="work-hero__img" src="/img/photos/banner-team.jpg" alt="" aria-hidden="true" width="1920" height="1071" data-parallax="36">
+  </picture>
   <span class="work-hero__scrim" aria-hidden="true"></span>
   <div class="shell work-hero__inner">
     <span class="eyebrow"><%= page.hero.eyebrow %></span>

@@ -1,7 +1,10 @@
 <%# Full-bleed textured photo backdrop with a light card floating on top —
     holds the hero copy and the whole contact-grid (form + aside) below. %>
 <section class="contact-photo-hero">
-  <img class="contact-photo-hero__img" src="/img/photos/contact-texture.jpg" alt="" aria-hidden="true" width="1600" height="893">
+  <picture>
+    <source media="(max-width: 640px)" srcset="/img/photos/contact-texture-mobile.jpg">
+    <img class="contact-photo-hero__img" src="/img/photos/contact-texture.jpg" alt="" aria-hidden="true" width="1600" height="893">
+  </picture>
   <span class="contact-photo-hero__scrim" aria-hidden="true"></span>
   <div class="shell contact-photo-hero__inner">
     <div class="contact-card reveal-pop-slow">
