@@ -32,7 +32,7 @@
   // for images that should slide/pop into place instead of the generic
   // fade+lift -- they share every bit of this wiring (stagger, observer,
   // failsafe) with .reveal, just a different CSS transform per class.
-  var revealables = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-up, .reveal-pop');
+  var revealables = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-up, .reveal-pop, .reveal-pop-slow');
   var revealGroups = document.querySelectorAll('.reveal-group, .reveal-group--up');
   var reduced =
     window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;

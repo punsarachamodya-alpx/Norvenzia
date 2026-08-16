@@ -2210,11 +2210,11 @@ button {
 .js .reveal {
   opacity: 0;
   transform: translateY(18px);
-  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  transition: opacity 0.875s var(--ease), transform 0.875s var(--ease);
   /* --reveal-i is set per-child by main.js on grid/list containers (cards,
      columns, etc.) so siblings fade in staggered rather than all at once.
      Elements without children indexed this way just get 0 — no delay. */
-  transition-delay: calc(var(--reveal-i, 0) * 70ms);
+  transition-delay: calc(var(--reveal-i, 0) * 88ms);
 }
 
 .js .reveal.is-visible {
@@ -2244,8 +2244,8 @@ button {
 .js .reveal-group > * {
   opacity: 0;
   transform: translateY(18px);
-  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
-  transition-delay: calc(var(--reveal-i, 0) * 70ms);
+  transition: opacity 0.875s var(--ease), transform 0.875s var(--ease);
+  transition-delay: calc(var(--reveal-i, 0) * 88ms);
 }
 
 .js .reveal-group.is-visible > * {
@@ -2263,8 +2263,8 @@ button {
 .js .reveal-left {
   opacity: 0;
   transform: translateX(-70px);
-  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
-  transition-delay: calc(var(--reveal-i, 0) * 70ms);
+  transition: opacity 1.125s var(--ease), transform 1.125s var(--ease);
+  transition-delay: calc(var(--reveal-i, 0) * 88ms);
 }
 
 .js .reveal-left.is-visible {
@@ -2275,8 +2275,8 @@ button {
 .js .reveal-right {
   opacity: 0;
   transform: translateX(70px);
-  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
-  transition-delay: calc(var(--reveal-i, 0) * 70ms);
+  transition: opacity 1.125s var(--ease), transform 1.125s var(--ease);
+  transition-delay: calc(var(--reveal-i, 0) * 88ms);
 }
 
 .js .reveal-right.is-visible {
@@ -2287,8 +2287,8 @@ button {
 .js .reveal-up {
   opacity: 0;
   transform: translateY(70px);
-  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
-  transition-delay: calc(var(--reveal-i, 0) * 70ms);
+  transition: opacity 1.125s var(--ease), transform 1.125s var(--ease);
+  transition-delay: calc(var(--reveal-i, 0) * 88ms);
 }
 
 .js .reveal-up.is-visible {
@@ -2299,10 +2299,23 @@ button {
 .js .reveal-pop {
   opacity: 0;
   transform: scale(0.82);
-  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  transition: opacity 0.875s var(--ease), transform 0.875s var(--ease);
 }
 
 .js .reveal-pop.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Slower, more deliberate pop — for a single standout element (the
+   contact card) rather than the general-purpose .reveal-pop. */
+.js .reveal-pop-slow {
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 1.6s var(--ease), transform 1.6s var(--ease);
+}
+
+.js .reveal-pop-slow.is-visible {
   opacity: 1;
   transform: none;
 }
@@ -2314,8 +2327,8 @@ button {
 .js .reveal-group--up > * {
   opacity: 0;
   transform: translateY(70px);
-  transition: opacity 0.9s var(--ease), transform 0.9s var(--ease);
-  transition-delay: calc(var(--reveal-i, 0) * 90ms);
+  transition: opacity 1.125s var(--ease), transform 1.125s var(--ease);
+  transition-delay: calc(var(--reveal-i, 0) * 112ms);
 }
 
 .js .reveal-group--up.is-visible > * {
@@ -2339,7 +2352,7 @@ button {
 
 /* The hero figure's own animation, paused when motion is reduced */
 .hero-figure__pulse {
-  animation: mx-pulse 4.5s ease-in-out infinite;
+  animation: mx-pulse 5.625s ease-in-out infinite;
   transform-origin: center;
 }
 
@@ -2355,7 +2368,7 @@ button {
 
 .hero-figure__dash {
   stroke-dasharray: 5 7;
-  animation: mx-flow 3.2s linear infinite;
+  animation: mx-flow 4s linear infinite;
 }
 
 @keyframes mx-flow {
@@ -2452,7 +2465,7 @@ button {
     rgba(0, 0, 0, 0.5) calc(-20% + var(--band-t) * 140% + 8%),
     transparent calc(-20% + var(--band-t) * 140% + 16%)
   );
-  animation: band-sweep 9s linear infinite;
+  animation: band-sweep 11.25s linear infinite;
 }
 
 .motion-band__wave img {
@@ -2479,7 +2492,7 @@ button {
     rgba(255, 255, 255, 0.05) calc(-20% + var(--band-t) * 140% + 5%),
     transparent calc(-20% + var(--band-t) * 140% + 11%)
   );
-  animation: band-sweep 9s linear infinite;
+  animation: band-sweep 11.25s linear infinite;
 }
 
 /* Cursor-follow glow, same idea as the hero spotlight. Fades in only once
@@ -2510,6 +2523,7 @@ button {
   .js .reveal-right,
   .js .reveal-up,
   .js .reveal-pop,
+  .js .reveal-pop-slow,
   .js .reveal-group--up > * {
     opacity: 1;
     transform: none;
@@ -3875,7 +3889,7 @@ button {
   pointer-events: none;
   transform: translate3d(0, var(--parallax-y, 0), 0);
   will-change: transform, opacity;
-  animation: blob-drift 9s ease-in-out infinite;
+  animation: blob-drift 11.25s ease-in-out infinite;
 }
 
 @keyframes blob-drift {
@@ -4688,11 +4702,16 @@ button {
 .contact-card {
   background: var(--color-bg-light);
   border-radius: var(--radius-lg);
-  padding: clamp(1.5rem, 3vw, 2.25rem);
-  /* Matches the reference (Actionist-style) contact card: a real side
-     margin (~15% of viewport on wide screens) so the photo shows down
-     both edges, not just above the card. */
-  margin-inline: clamp(1rem, 15vw, 14rem);
+  /* 0.7x the previous padding (was clamp(1.5rem, 3vw, 2.25rem)), to match
+     the card's own smaller footprint below. */
+  padding: clamp(1.05rem, 2.1vw, 1.575rem);
+  /* Capped width + auto margins instead of the old side-margin clamp —
+     the card used to just be the full shell width minus a margin, which
+     on wide screens meant a card over 1400px across. This caps it at
+     roughly 0.7x that. Below the width itself, .shell's own gutter
+     padding keeps it off the edges on narrow screens. */
+  max-width: 960px;
+  margin-inline: auto;
   /* A tighter, less diffuse shadow than before — the old 80px blur radius
      read as a soft halo against the busy photo backdrop; this keeps just
      enough lift to separate the card from the photo, with no blur. */
