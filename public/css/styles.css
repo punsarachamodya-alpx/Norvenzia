@@ -4010,7 +4010,7 @@ button {
 
 .service-row__category {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 1.44rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-accent);
@@ -4039,15 +4039,6 @@ button {
   color: var(--color-text-secondary);
   font-size: 1.02rem;
   line-height: 1.5;
-  padding-left: 1.2rem;
-  position: relative;
-}
-
-.service-row__list li::before {
-  content: '—';
-  position: absolute;
-  left: 0;
-  color: var(--color-accent);
 }
 
 @media (max-width: 860px) {
