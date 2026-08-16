@@ -4676,8 +4676,8 @@ button {
      page now, so the section needs its own top clearance instead of
      relying on the header pushing it down — same reasoning as the other
      dark-hero pages. */
-  padding-top: calc(var(--header-h) + clamp(1.5rem, 3vw, 2.5rem));
-  padding-bottom: clamp(2.5rem, 5vw, 4rem);
+  padding-top: calc(var(--header-h) + clamp(0.75rem, 1.5vw, 1.25rem));
+  padding-bottom: clamp(1rem, 2vw, 1.5rem);
 }
 
 .contact-photo-hero__img {
@@ -4702,15 +4702,13 @@ button {
 .contact-card {
   background: var(--color-bg-light);
   border-radius: var(--radius-lg);
-  /* 0.7x the previous padding (was clamp(1.5rem, 3vw, 2.25rem)), to match
-     the card's own smaller footprint below. */
-  padding: clamp(1.05rem, 2.1vw, 1.575rem);
+  padding: clamp(1.1rem, 1.8vw, 1.4rem);
   /* Capped width + auto margins instead of the old side-margin clamp —
      the card used to just be the full shell width minus a margin, which
-     on wide screens meant a card over 1400px across. This caps it at
-     roughly 0.7x that. Below the width itself, .shell's own gutter
-     padding keeps it off the edges on narrow screens. */
-  max-width: 960px;
+     on wide screens meant a card over 1400px across. Below the width
+     itself, .shell's own gutter padding keeps it off the edges on
+     narrow screens. */
+  max-width: 1000px;
   margin-inline: auto;
   /* A tighter, less diffuse shadow than before — the old 80px blur radius
      read as a soft halo against the busy photo backdrop; this keeps just
@@ -4720,6 +4718,56 @@ button {
 
 .contact-card .eyebrow {
   color: var(--cobalt);
+}
+
+/* Compact vertical rhythm throughout the card -- the goal is the whole
+   thing (headline through the submit button) fitting a normal laptop
+   viewport without scrolling, not just a narrower box. Scoped to this
+   card specifically; .display-1/.lede/.field/.aside-card keep their
+   normal, more generous sizing everywhere else on the site. */
+.contact-card .hero__copy {
+  margin-bottom: 0.3rem;
+}
+
+.contact-card h1.display-1 {
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  line-height: 1.05;
+}
+
+.contact-card .lede {
+  font-size: 0.95rem;
+  line-height: 1.45;
+  margin-top: 0.5rem;
+}
+
+.contact-card .field {
+  margin-bottom: 0.42rem;
+}
+
+.contact-card .field__label {
+  margin-bottom: 0.25rem;
+}
+
+.contact-card .field input,
+.contact-card .field textarea {
+  padding: 0.4rem 0.65rem;
+}
+
+.contact-card .field textarea {
+  min-height: 44px;
+}
+
+.contact-card .contact-grid {
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.contact-card .aside-card {
+  padding: clamp(1rem, 1.4vw, 1.25rem);
+  margin-bottom: 0;
+}
+
+.contact-card .aside-card dt {
+  margin-top: 0.7rem;
 }
 
 /* ---- 31.14b What We Do — faint backdrop behind the division rows ---- */
