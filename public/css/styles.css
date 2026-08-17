@@ -3700,8 +3700,13 @@ button {
   padding-block: clamp(2.5rem, 6vw, 4rem);
 }
 
+/* --color-accent (a mid-saturation blue) reads fine on the flat dark
+   sections elsewhere, but over the busy, often-bright hero photo it loses
+   contrast against the sky/highlight areas. --slate-light is the token the
+   rest of the site already uses for eyebrow text on dark backgrounds (see
+   .eyebrow--onNavy) -- reusing it here instead of introducing a new colour. */
 .hero--dark .eyebrow {
-  color: var(--color-accent);
+  color: var(--slate-light);
 }
 
 .hero__headline {
@@ -3849,12 +3854,60 @@ button {
 }
 
 .social-proof__chips {
+  overflow: hidden;
+  /* Fades the chips out at both edges instead of a hard clip, so the loop
+     point (and the track sliding a chip out of view) reads as a soft edge
+     rather than an abrupt cut. */
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
+}
+
+.social-proof__track {
+  display: flex;
+  width: max-content;
+  animation: social-proof-marquee 26s linear infinite;
+}
+
+/* Paused on hover/keyboard focus so a reader who stops to look at the chips
+   isn't fighting a moving target. */
+.social-proof__chips:hover .social-proof__track,
+.social-proof__chips:focus-within .social-proof__track {
+  animation-play-state: paused;
+}
+
+.social-proof__group {
+  flex: none;
   display: flex;
   gap: 0.6rem;
-  overflow-x: auto;
-  padding-bottom: 0.5rem;
-  scrollbar-width: thin;
-  -webkit-overflow-scrolling: touch;
+  padding-right: 0.6rem;
+}
+
+@keyframes social-proof-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* Exactly one copy's width, since the track holds two identical copies
+       back-to-back -- see the aria-hidden duplicate group in home.ejs. */
+    transform: translateX(-50%);
+  }
+}
+
+/* Static, manually-scrollable fallback -- same behaviour the strip had
+   before the marquee was added. */
+@media (prefers-reduced-motion: reduce) {
+  .social-proof__chips {
+    overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+    padding-bottom: 0.5rem;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .social-proof__track {
+    animation: none;
+  }
 }
 
 .social-proof__chip {

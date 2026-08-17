@@ -4,10 +4,27 @@
 <section class="social-proof">
   <div class="shell">
     <span class="social-proof__eyebrow"><%= page.socialProof.eyebrow %></span>
+
+    <%# Auto-scrolling marquee: the track holds the chip list twice back-to-back
+        and animates to -50%, so the moment it resets it's showing an identical
+        copy of what was already there -- looks like an unbroken loop instead of
+        a visible jump. The second copy is aria-hidden so screen readers only
+        ever hear the list once; see .social-proof__track / @keyframes marquee
+        in styles.css for the reduced-motion fallback (plain manual scrolling,
+        same as before this change). %>
     <div class="social-proof__chips">
-      <% page.socialProof.verticals.forEach(function (v) { %>
-        <span class="social-proof__chip"><%= v %></span>
-      <% }); %>
+      <div class="social-proof__track">
+        <div class="social-proof__group">
+          <% page.socialProof.verticals.forEach(function (v) { %>
+            <span class="social-proof__chip"><%= v %></span>
+          <% }); %>
+        </div>
+        <div class="social-proof__group" aria-hidden="true">
+          <% page.socialProof.verticals.forEach(function (v) { %>
+            <span class="social-proof__chip"><%= v %></span>
+          <% }); %>
+        </div>
+      </div>
     </div>
     <p class="social-proof__markets"><%= page.socialProof.markets %></p>
   </div>

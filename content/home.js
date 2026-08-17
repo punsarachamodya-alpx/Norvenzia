@@ -28,7 +28,7 @@ module.exports = {
       'FMCG & Food Production',
       'E-commerce'
     ],
-    markets: 'Scandinavia · Germany · Netherlands · UK · Australia'
+    markets: 'Europe · Norway · Switzerland · UK · Australia · New Zealand'
   },
 
   // Who Norvenzia serves — asymmetric photo + copy split.
