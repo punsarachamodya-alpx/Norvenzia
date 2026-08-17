@@ -130,24 +130,6 @@
   </div>
 </section>
 
-<%# 3.8 — About %>
-<section class="home-section" id="about">
-  <div class="shell home-section__inner">
-    <span class="eyebrow"><%= page.about.eyebrow %></span>
-    <h2 class="home-section__heading"><%= page.about.headline %></h2>
-
-    <div class="about-grid">
-      <div class="about-grid__body">
-        <% page.about.body.forEach(function (para) { %>
-          <p><%= para %></p>
-        <% }); %>
-      </div>
-      <div class="about-grid__visual">
-        <img src="/img/photos/about.jpg" alt="The Norvenzia team" width="1600" height="1200" data-parallax="20">
-      </div>
-    </div>
-  </div>
-</section>
 
 <%# 3.9 — FAQ accordion %>
 <section class="home-section" id="faq">

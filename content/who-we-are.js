@@ -12,6 +12,16 @@ module.exports = {
       'Norvenzia is early. We’d rather tell you that plainly than dress it up — what we offer is senior attention on your procurement operation, not scale we don’t have yet.'
   },
 
+  about: {
+    eyebrow: '// ABOUT NORVENZIA',
+    headline: 'Built to be the operations team you haven’t hired yet.',
+    photoHint: 'Photo: the Norvenzia team or delivery hub, Colombo — /img/photos/about.jpg',
+    body: [
+      'Norvenzia (Private) Limited is a supply chain and procurement operations partner registered in Sri Lanka. We give mid-market manufacturers and industrial suppliers across Scandinavia and Europe an operations bench without the overhead of building one in-house.',
+      'Client relationships and strategy stay with you, close to your business. Execution runs from our delivery hub in Colombo — where the operational work gets done, every day.'
+    ]
+  },
+
   founder: {
     eyebrow: 'Founder',
     headline: 'Why this exists.',
