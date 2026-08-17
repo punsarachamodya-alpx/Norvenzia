@@ -38,6 +38,63 @@
   </div>
 </section>
 
+<%# Full-bleed photo band, same treatment as the homepage's banner-photo. %>
+<section class="banner-photo">
+  <img class="banner-photo__img" src="/img/photos/conversation-band.jpg" alt="" aria-hidden="true" width="1600" height="1194">
+  <span class="banner-photo__scrim" aria-hidden="true"></span>
+  <div class="shell banner-photo__inner">
+    <h2 class="banner-photo__headline">Small enough that you talk to the person doing the work, not an account manager relaying it.</h2>
+  </div>
+</section>
+
+<%# A bold photo bleeding off the edge, paired with the mission statement —
+    replaces the plain navy pullquote band with a real-photo split. %>
+<section class="statement-split">
+  <div class="statement-split__media">
+    <img src="/img/photos/architectural.jpg" alt="" width="1600" height="893" data-parallax="30">
+  </div>
+  <div class="statement-split__copy">
+    <div>
+      <span class="eyebrow">Mission</span>
+      <p class="statement-split__text"><%= page.mission.statement %></p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="shell">
+    <div class="section-head reveal">
+      <span class="eyebrow"><%= page.roadmap.eyebrow %></span>
+      <h2 class="display-2"><%= page.roadmap.headline %></h2>
+      <p class="lede"><%= page.roadmap.body %></p>
+    </div>
+
+    <div class="table-scroll reveal">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th scope="col">Division</th>
+            <th scope="col">Status</th>
+            <th scope="col">Scope</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% page.roadmap.divisions.forEach(function (d) { %>
+            <tr>
+              <td><%= d.name %></td>
+              <td><%- include('partials/badge', { status: d.status }) %></td>
+              <td><%= d.scope %></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<%# Founder + team -- moved to the bottom of the page, just before the
+    closing CTA, so the roadmap/mission story leads and the "who's behind
+    it" detail closes the page instead of opening it. %>
 <section class="section">
   <div class="shell">
     <div class="section-head reveal">
@@ -112,59 +169,5 @@
   </div>
 </section>
 <% } %>
-
-<%# Full-bleed photo band, same treatment as the homepage's banner-photo. %>
-<section class="banner-photo">
-  <img class="banner-photo__img" src="/img/photos/conversation-band.jpg" alt="" aria-hidden="true" width="1600" height="1194">
-  <span class="banner-photo__scrim" aria-hidden="true"></span>
-  <div class="shell banner-photo__inner">
-    <h2 class="banner-photo__headline">Small enough that you talk to the person doing the work, not an account manager relaying it.</h2>
-  </div>
-</section>
-
-<%# A bold photo bleeding off the edge, paired with the mission statement —
-    replaces the plain navy pullquote band with a real-photo split. %>
-<section class="statement-split">
-  <div class="statement-split__media">
-    <img src="/img/photos/architectural.jpg" alt="" width="1600" height="893" data-parallax="30">
-  </div>
-  <div class="statement-split__copy">
-    <div>
-      <span class="eyebrow">Mission</span>
-      <p class="statement-split__text"><%= page.mission.statement %></p>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="shell">
-    <div class="section-head reveal">
-      <span class="eyebrow"><%= page.roadmap.eyebrow %></span>
-      <h2 class="display-2"><%= page.roadmap.headline %></h2>
-      <p class="lede"><%= page.roadmap.body %></p>
-    </div>
-
-    <div class="table-scroll reveal">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th scope="col">Division</th>
-            <th scope="col">Status</th>
-            <th scope="col">Scope</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% page.roadmap.divisions.forEach(function (d) { %>
-            <tr>
-              <td><%= d.name %></td>
-              <td><%- include('partials/badge', { status: d.status }) %></td>
-              <td><%= d.scope %></td>
-            </tr>
-          <% }); %>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
 
 <%- include('partials/cta-band', { closing: page.closing }) %>
