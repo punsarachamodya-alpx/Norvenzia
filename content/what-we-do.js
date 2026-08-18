@@ -12,6 +12,10 @@ module.exports = {
       'Norvenzia runs Operations and Analytics now. Digital, AI, and Advisory are roadmap divisions for when the company scales — we don’t sell them yet.'
   },
 
+  // Single source of truth for the site's five divisions -- server.js exposes
+  // this as res.locals.divisions (same pattern as site/nav/appearance) so the
+  // homepage and Who We Are's roadmap table read the same live/roadmap facts
+  // instead of each page maintaining its own copy that can drift out of sync.
   divisions: [
     {
       index: '01',
@@ -43,52 +47,32 @@ module.exports = {
         'Master Data Management',
         'ERP Administration'
       ]
+    },
+    {
+      index: '03',
+      name: 'Digital',
+      status: 'roadmap',
+      summary:
+        'Process automation and systems integration across the tools you already run — planned for when the delivery model scales.',
+      capabilities: ['Process Automation', 'Systems Integration']
+    },
+    {
+      index: '04',
+      name: 'AI',
+      status: 'roadmap',
+      summary:
+        'Applied forecasting and document processing layered on top of Operations and Analytics — planned for Year 2 and beyond.',
+      capabilities: ['Applied Forecasting', 'Document Processing']
+    },
+    {
+      index: '05',
+      name: 'Advisory',
+      status: 'roadmap',
+      summary:
+        'Strategic sourcing and procurement transformation for teams planning a bigger operating-model shift — planned for Year 2 and beyond.',
+      capabilities: ['Strategic Sourcing', 'Procurement Transformation']
     }
   ],
-
-  products: {
-    eyebrow: 'Product suite',
-    headline: 'A roadmap, labelled honestly.',
-    body:
-      'Core and Flow describe delivery capabilities that exist today. Signal, Pulse, Link, and Desk are planned platform features — not shipped software. We label them that way so nothing here implies a product you can log into.',
-    items: [
-      {
-        name: 'Core',
-        status: 'live',
-        description:
-          'The foundational delivery engine behind every engagement today.'
-      },
-      {
-        name: 'Flow',
-        status: 'live',
-        description:
-          'Supply Chain workflow and Procurement management, delivered as a service today.'
-      },
-      {
-        name: 'Signal',
-        status: 'roadmap',
-        description:
-          'Vendor and spend analytics platform - planned as engagements scale.'
-      },
-      {
-        name: 'Pulse',
-        status: 'roadmap',
-        description:
-          'Live KPI and demand-planning dashboards - future platform layer.'
-      },
-      {
-        name: 'Link',
-        status: 'roadmap',
-        description:
-          'Client-facing systems integration layer - future platform feature.'
-      },
-      {
-        name: 'Desk',
-        status: 'roadmap',
-        description: 'Self-serve client portal - future platform feature.'
-      }
-    ]
-  },
 
   tiers: {
     eyebrow: 'Engagement tiers',

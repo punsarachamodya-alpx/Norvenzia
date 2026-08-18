@@ -79,11 +79,11 @@
           </tr>
         </thead>
         <tbody>
-          <% page.roadmap.divisions.forEach(function (d) { %>
+          <% divisions.forEach(function (d) { %>
             <tr>
               <td><%= d.name %></td>
               <td><%- include('partials/badge', { status: d.status }) %></td>
-              <td><%= d.scope %></td>
+              <td><%= d.summary %></td>
             </tr>
           <% }); %>
         </tbody>

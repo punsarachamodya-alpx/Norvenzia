@@ -51,76 +51,14 @@ module.exports = {
       'Photo: an operations team working together over documents and a laptop, warm natural light — /img/photos/banner-team.jpg'
   },
 
-  // 3.3 — Six product modules, alternating full-photo + bullet-list rows.
+  // 3.3 — Divisions, alternating full-photo + bullet-list rows. The actual
+  // division data (names/status/summary/capabilities) lives once on the
+  // What We Do page and is exposed here via res.locals.divisions (see
+  // server.js) -- only the section's own intro copy stays here.
   services: {
     eyebrow: '// WHAT WE RUN',
-    headline: 'Six modules. One delivery team.',
-    body: 'Start with what you need most. Add the rest when the case builds.',
-    items: [
-      {
-        category: 'BUY',
-        name: 'Core',
-        bullets: [
-          'Purchase order management',
-          'Supplier onboarding',
-          'RFQ and RFP support',
-          'Master data upkeep'
-        ],
-        photo: '/img/photos/service-core.jpg'
-      },
-      {
-        category: 'MOVE',
-        name: 'Flow',
-        bullets: [
-          'Logistics coordination',
-          'Order management, tracked end to end',
-          'Carrier and freight follow-up'
-        ],
-        photo: '/img/photos/service-flow.jpg'
-      },
-      {
-        category: 'RECORD',
-        name: 'Link',
-        bullets: [
-          'Supplier, PO, and inventory records kept consistent',
-          'Data cleanup and structuring',
-          'One source of truth across your stack'
-        ],
-        photo: '/img/photos/service-link.jpg'
-      },
-      {
-        category: 'REPORT',
-        name: 'Pulse',
-        bullets: [
-          'Power BI dashboards and KPI reporting',
-          'Built around how your operation actually runs',
-          'Weekly reporting, not a static template'
-        ],
-        photo: '/img/photos/service-pulse.jpg'
-      },
-      {
-        category: 'TRACK',
-        name: 'Signal',
-        // Kept explicitly as visibility/decision-support language, never
-        // forecasting or prediction — see §4 content rules.
-        bullets: [
-          'Early visibility into supply chain disruption',
-          'A faster warning system, not a forecast',
-          'Decision support for your team, not for us'
-        ],
-        photo: '/img/photos/service-signal.jpg'
-      },
-      {
-        category: 'STAFF',
-        name: 'Desk',
-        bullets: [
-          'A dedicated analyst embedded in your operation',
-          'Committed hours, committed output',
-          'Reports to you, not to a shared queue'
-        ],
-        photo: '/img/photos/service-desk.jpg'
-      }
-    ]
+    headline: 'Two divisions live today. Three more on the roadmap.',
+    body: 'Start with what’s live. The rest scales as the engagement grows.'
   },
 
   // 3.4 — Three entry-point tiers, numbered 01/02/03.

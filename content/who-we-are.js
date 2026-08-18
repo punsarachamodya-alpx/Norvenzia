@@ -60,39 +60,14 @@ module.exports = {
       'To give mid-market companies senior-led procurement and supply chain operations, without the overhead of building that team in-house.'
   },
 
+  // divisions shown in this section's table come from res.locals.divisions
+  // (the What We Do page's data, see server.js) -- only the section's own
+  // intro copy lives here.
   roadmap: {
     eyebrow: 'Roadmap',
     headline: 'Where this is headed.',
     body:
-      'We publish this so there’s no ambiguity about what you can buy today. Operations and Analytics are live. The rest is direction, not a menu.',
-    divisions: [
-      {
-        name: 'Operations',
-        status: 'live',
-        scope: 'Procurement, PO management, supplier onboarding, reporting.'
-      },
-      {
-        name: 'Analytics',
-        status: 'live',
-        scope:
-          'Spend analysis, vendor dashboards, inventory and demand planning.'
-      },
-      {
-        name: 'Digital',
-        status: 'roadmap',
-        scope: 'Process automation and systems integration — Year 2+.'
-      },
-      {
-        name: 'AI',
-        status: 'roadmap',
-        scope: 'Applied forecasting and document processing — Year 2+.'
-      },
-      {
-        name: 'Advisory',
-        status: 'roadmap',
-        scope: 'Strategic sourcing and procurement transformation — Year 2+.'
-      }
-    ]
+      'We publish this so there’s no ambiguity about what you can buy today. Operations and Analytics are live. The rest is direction, not a menu.'
   },
 
   closing: {

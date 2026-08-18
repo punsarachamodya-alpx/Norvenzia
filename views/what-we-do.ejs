@@ -13,9 +13,10 @@
   </div>
 </section>
 
-<%# Same alternating full-photo + bullet-list pattern as the homepage
-    services section, reusing the same two module photos since Operations
-    maps to Core (procurement) and Analytics maps to Pulse (dashboards).
+<%# Same alternating full-photo + bullet-list pattern as the homepage's
+    divisions section (see #services in home.ejs) — same five divisions,
+    same photos, same status badges, so both pages read as one consistent
+    list instead of two that could drift apart.
     The compact photo column (see .service-row--compact) leaves a lot of
     plain white space beside the copy — a faint architectural backdrop
     fills that without competing with the text, since it sits at low
@@ -24,7 +25,13 @@
   <img class="division-section__bg" src="/img/photos/architectural.jpg" alt="" aria-hidden="true">
   <div class="shell" style="position:relative;">
     <div class="service-rows">
-      <% var divisionPhotos = { Operations: '/img/photos/service-core.jpg', Analytics: '/img/photos/service-pulse.jpg' }; %>
+      <% var divisionPhotos = {
+        Operations: '/img/photos/service-core.jpg',
+        Analytics: '/img/photos/service-pulse.jpg',
+        Digital: '/img/photos/service-link.jpg',
+        AI: '/img/photos/service-signal.jpg',
+        Advisory: '/img/photos/service-desk.jpg'
+      }; %>
       <% page.divisions.forEach(function (d, i) { %>
         <article class="service-row service-row--compact <%= i % 2 === 1 ? 'service-row--reverse' : '' %>">
           <div class="service-row__media <%= i % 2 === 1 ? 'reveal-right' : 'reveal-left' %>">
@@ -48,40 +55,6 @@
   </div>
 </section>
 
-<section class="section section--alt">
-  <div class="shell">
-    <div class="section-head reveal">
-      <span class="eyebrow"><%= page.products.eyebrow %></span>
-      <h2 class="display-2"><%= page.products.headline %></h2>
-      <p class="lede"><%= page.products.body %></p>
-    </div>
-
-    <div class="product-grid reveal-group--up">
-      <% var productPhotos = {
-        Core: '/img/photos/service-core.jpg',
-        Flow: '/img/photos/service-flow.jpg',
-        Signal: '/img/photos/service-signal.jpg',
-        Pulse: '/img/photos/service-pulse.jpg',
-        Link: '/img/photos/service-link.jpg',
-        Desk: '/img/photos/service-desk.jpg'
-      }; %>
-      <% page.products.items.forEach(function (p) { %>
-        <article class="product-card">
-          <div class="product-card__media">
-            <img src="<%= productPhotos[p.name] || '/img/photos/service-core.jpg' %>" alt="<%= p.name %>" width="1024" height="768">
-          </div>
-          <div class="product-card__body">
-            <h3 class="product-card__name">
-              <%= p.name %>
-              <%- include('partials/badge', { status: p.status }) %>
-            </h3>
-            <p class="product-card__desc"><%= p.description %></p>
-          </div>
-        </article>
-      <% }); %>
-    </div>
-  </div>
-</section>
 
 <section class="section">
   <div class="shell">

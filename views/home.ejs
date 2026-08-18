@@ -40,7 +40,10 @@
   </div>
 </section>
 
-<%# 3.3 — Services / six modules, alternating full-photo + bullet-list rows %>
+<%# 3.3 — Divisions, alternating full-photo + bullet-list rows. Same five
+    divisions (and the same live/roadmap facts) as What We Do's divisions
+    section -- both pages read from the shared `divisions` local (see
+    server.js), so this list can't drift out of sync with that page. %>
 <section class="home-section" id="services">
   <div class="shell home-section__inner">
     <span class="eyebrow"><%= page.services.eyebrow %></span>
@@ -48,17 +51,27 @@
     <p class="home-section__body"><%= page.services.body %></p>
 
     <div class="service-rows">
-      <% page.services.items.forEach(function (item, i) { %>
+      <% var divisionPhotos = {
+        Operations: '/img/photos/service-core.jpg',
+        Analytics: '/img/photos/service-pulse.jpg',
+        Digital: '/img/photos/service-link.jpg',
+        AI: '/img/photos/service-signal.jpg',
+        Advisory: '/img/photos/service-desk.jpg'
+      }; %>
+      <% divisions.forEach(function (d, i) { %>
         <article class="service-row <%= i % 2 === 1 ? 'service-row--reverse' : '' %>">
           <div class="service-row__media <%= i % 2 === 1 ? 'reveal-right' : 'reveal-left' %>">
-            <img src="<%= item.photo %>" alt="<%= item.name %>" width="1024" height="768">
+            <img src="<%= divisionPhotos[d.name] || '/img/photos/service-core.jpg' %>" alt="<%= d.name %>" width="1024" height="768">
           </div>
           <div class="service-row__copy">
-            <span class="service-row__category"><%= item.category %></span>
-            <h3 class="service-row__name"><%= item.name %></h3>
+            <h3 class="service-row__name">
+              <%= d.name %>
+              <%- include('partials/badge', { status: d.status }) %>
+            </h3>
+            <p class="home-section__body" style="margin-bottom:1.2rem;"><%= d.summary %></p>
             <ul class="service-row__list">
-              <% item.bullets.forEach(function (b) { %>
-                <li><%= b %></li>
+              <% d.capabilities.forEach(function (c) { %>
+                <li><%= c %></li>
               <% }); %>
             </ul>
             <a class="btn btn--ghost btn--pill" href="#contact">Talk to us →</a>
