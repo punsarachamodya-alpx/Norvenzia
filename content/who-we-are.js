@@ -46,7 +46,7 @@ module.exports = {
     members: [
       {
         name: 'Viraj Bulugahapitiya',
-        role: 'AI Engineer and Data Scientist, At Norvenzia',
+        role: 'AI and Data Engineer, At Norvenzia',
         // TODO(founder): upload a headshot; initials render until then.
         photo: '',
         quote: '',
