@@ -1712,15 +1712,31 @@ button {
   border-top: 1px solid var(--rule);
 }
 
+/* The real source of the large gap: .founder__story p (margin-bottom:
+   1.3rem, further up this file) has higher specificity (class+type) than
+   .person__role (class only) and .founder__meta's name <p> has no class
+   at all, so that 1.3rem bottom margin was winning on BOTH paragraphs
+   and dominating the margin-collapse regardless of what margin-top got
+   set to here -- which is why the first two rounds of shrinking
+   margin-top barely moved the visible gap. Zeroing it here (specificity
+   ties with .founder__story p but this rule comes later in the file, so
+   it wins) is what actually closes it up. */
+.founder__meta p {
+  margin-bottom: 0;
+}
+
 /* Tighter than the shared .person__role/.person__link spacing (which the
    Team section's cards still use as-is) -- scoped here so this only
-   affects the founder's name/role/LinkedIn stack. */
+   affects the founder's name/role/LinkedIn stack. line-height on the role
+   also tightened: at 0.7rem type, the shared 1.5 line-height was adding
+   several px of leading above/below the text on top of the margin. */
 .founder__meta .person__role {
-  margin-top: 0.25rem;
+  margin-top: 0.05rem;
+  line-height: 1.15;
 }
 
 .founder__meta .person__link {
-  margin-top: 0.6rem;
+  margin-top: 0.2rem;
   /* 0.3x larger than the shared .person__link size (0.87rem). */
   font-size: calc(0.87rem * 1.3);
 }
