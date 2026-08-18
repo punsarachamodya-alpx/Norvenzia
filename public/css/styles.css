@@ -732,9 +732,9 @@ button {
 }
 
 .badge--live {
-  color: var(--cobalt-dark);
-  background: rgba(46, 123, 255, 0.1);
-  border-color: rgba(46, 123, 255, 0.28);
+  color: var(--ok);
+  background: rgba(46, 106, 79, 0.1);
+  border-color: rgba(46, 106, 79, 0.28);
 }
 
 .badge--roadmap {
