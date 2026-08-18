@@ -18,13 +18,13 @@ module.exports = {
   items: [
     {
       slug: 'manufacturing',
-      name: 'Manufacturing',
+      name: 'General & Discrete Manufacturing',
       image: '/img/photos/industry-manufacturing.jpg',
       icon: '', // optional: overrides the built-in line icon
       painPoints: [
-        'Purchasing spread across plant-level spreadsheets with no consolidated spend view.',
-        'Supplier onboarding and RFQ cycles that stretch weeks longer than production schedules allow.',
-        'Little visibility into which suppliers drive cost or delivery risk until it’s already late.'
+        'Capex and tooling procurement running through the same ad hoc process as routine MRO spend, with no cost visibility split between the two.',
+        'Contract and private-label production commitments made before supplier capacity and lead-time risk are actually confirmed.',
+        'Machine parts and spares sourced reactively on breakdown, with no consolidated vendor or lead-time data to plan around.'
       ]
     },
     {

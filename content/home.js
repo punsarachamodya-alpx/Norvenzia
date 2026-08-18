@@ -20,7 +20,7 @@ module.exports = {
   socialProof: {
     eyebrow: 'SERVING MID-MARKET INDUSTRIAL COMPANIES ACROSS',
     verticals: [
-      'Manufacturing',
+      'General Manufacturing',
       'Medical Devices',
       'Renewable Energy',
       'Automotive Suppliers',
