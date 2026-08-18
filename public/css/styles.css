@@ -4321,70 +4321,108 @@ button {
   color: var(--color-text-white);
 }
 
-/* Three real photos, circular-cropped and overlapping like a Venn diagram —
-   the physical overlap of the images does the work a hatched-intersection
-   vector diagram would otherwise do, with no lines or shapes needed. */
-.how-visual {
-  display: flex;
-  justify-content: center;
-  margin-top: clamp(2.5rem, 5vw, 4rem);
+/* Vertical connected-spine timeline: a single line down the left with one
+   icon-ring marker per step. Built mobile-first (already a stacked list, no
+   separate breakpoint needed to avoid overlap) and kept as a single centered
+   column on wide screens too -- a narrative flow reads better here than a
+   3-up grid would, since these are ordered/sequential steps. */
+.how-spine {
+  max-width: 34rem;
+  margin: clamp(2.5rem, 5vw, 4rem) auto 0;
+  position: relative;
+  padding-left: 3.1rem;
 }
 
-.how-visual__item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: clamp(7rem, 14vw, 10rem);
+.how-spine::before {
+  content: '';
+  position: absolute;
+  left: 17px;
+  top: 17px;
+  bottom: 17px;
+  width: 1.5px;
+  background: var(--color-border-dark);
 }
 
-.how-visual__item:not(:first-child) {
-  margin-left: clamp(-2.5rem, -5vw, -1.5rem);
+.how-spine__step {
+  position: relative;
+  padding-bottom: clamp(1.75rem, 3vw, 2.4rem);
 }
 
-.how-visual__item:nth-child(2) {
-  margin-top: clamp(1.5rem, 3vw, 2.5rem);
-  z-index: 1;
+.how-spine__step:last-child {
+  padding-bottom: 0;
 }
 
-.how-visual__circle {
-  aspect-ratio: 1;
-  width: 100%;
+.how-spine__marker {
+  position: absolute;
+  left: -3.1rem;
+  top: -1px;
+  width: 35px;
+  height: 35px;
+}
+
+/* Continuous soft ping behind each icon -- reads as "always running," not a
+   one-off entrance effect. Staggered per step so the three don't beat in
+   sync. Off entirely under reduced motion; the icon itself never moves. */
+.how-spine__marker::before {
+  content: '';
+  position: absolute;
+  inset: 0;
   border-radius: 50%;
-  overflow: hidden;
-  border: 3px solid var(--color-bg-mid);
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14);
+  background: var(--color-accent);
+  opacity: 0;
+  animation: how-spine-pulse 2.6s ease-out infinite;
 }
 
-.how-visual__circle img {
+.how-spine__step:nth-child(1) .how-spine__marker::before {
+  animation-delay: 0s;
+}
+
+.how-spine__step:nth-child(2) .how-spine__marker::before {
+  animation-delay: 0.85s;
+}
+
+.how-spine__step:nth-child(3) .how-spine__marker::before {
+  animation-delay: 1.7s;
+}
+
+.how-spine__ring {
+  position: relative;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  border-radius: 50%;
+  background: var(--color-bg-mid);
+  border: 1.5px solid var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.how-visual__label {
-  margin-top: 0.9rem;
-  font-family: var(--font-mono);
-  font-size: 1.02rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-text-dim);
+.how-spine__ring svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--color-accent);
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-@media (max-width: 640px) {
-  .how-visual {
-    gap: 0.5rem;
+@keyframes how-spine-pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.55;
   }
-
-  .how-visual__item:not(:first-child) {
-    margin-left: -1.75rem;
+  100% {
+    transform: scale(2.1);
+    opacity: 0;
   }
 }
 
-.how-steps {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(1.75rem, 3vw, 2.5rem);
-  margin-top: clamp(2rem, 4vw, 3rem);
+@media (prefers-reduced-motion: reduce) {
+  .how-spine__marker::before {
+    animation: none;
+    display: none;
+  }
 }
 
 .how-step__title {
@@ -4392,19 +4430,14 @@ button {
   font-weight: 700;
   font-size: 1.3rem;
   color: var(--color-text-white);
+  margin: 0;
 }
 
 .how-step__body {
   color: var(--color-text-dim);
   font-size: 0.98rem;
   line-height: 1.6;
-  margin-top: 0.7rem;
-}
-
-@media (max-width: 768px) {
-  .how-steps {
-    grid-template-columns: minmax(0, 1fr);
-  }
+  margin-top: 0.6rem;
 }
 
 /* ---- 31.7 Stats row ---- */
