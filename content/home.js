@@ -57,7 +57,7 @@ module.exports = {
   // server.js) -- only the section's own intro copy stays here.
   services: {
     eyebrow: '// WHAT WE DO',
-    headline: 'Two divisions live today. Three more on the roadmap.',
+    headline: 'Two divisions live today. AI in active development.',
     body: 'Start with what’s live. The rest scales as the engagement grows.'
   },
 

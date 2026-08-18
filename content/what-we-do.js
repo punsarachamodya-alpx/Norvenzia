@@ -2,14 +2,14 @@ module.exports = {
   meta: {
     title: 'Services — Norvenzia',
     description:
-      'Two divisions live today: Operations and Analytics. Digital, AI, and Advisory are roadmap divisions — we don’t sell them yet.'
+      'Two divisions live today: Operations and Analytics. AI is in active development (Nexus GeoTracer). Digital and Advisory are roadmap divisions — we don’t sell them yet.'
   },
 
   hero: {
     eyebrow: 'Services',
     headline: 'Two divisions, live today.',
     body:
-      'Norvenzia runs Operations and Analytics now. Digital, AI, and Advisory are roadmap divisions for when the company scales — we don’t sell them yet.'
+      'Norvenzia runs Operations and Analytics now. AI is in active development. Digital and Advisory are roadmap divisions for when the company scales — we don’t sell them yet.'
   },
 
   // Single source of truth for the site's five divisions -- server.js exposes
@@ -59,10 +59,10 @@ module.exports = {
     {
       index: '04',
       name: 'AI',
-      status: 'roadmap',
+      status: 'building',
       summary:
-        'Applied forecasting and document processing layered on top of Operations and Analytics — planned for Year 2 and beyond.',
-      capabilities: ['Applied Forecasting', 'Document Processing']
+        'We’re currently building Nexus GeoTracer — an AI-powered enterprise intelligence tool that monitors global supply chain ecosystems in real time, detecting and analyzing disruptions against real-world conditions to help you act before they cause operational failure.',
+      capabilities: ['Nexus GeoTracer — Global Disruption Monitoring', 'Applied Forecasting', 'Document Processing']
     },
     {
       index: '05',
