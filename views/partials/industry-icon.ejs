@@ -1,4 +1,4 @@
-<%# Eight bespoke line icons, keyed by slug. Drawn for this brand — deliberately not a
+<%# Nine bespoke line icons, keyed by slug. Drawn for this brand — deliberately not a
     stock icon set. Common frame: 32×32, 1.6 stroke, currentColor (cobalt in context). %>
 <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.6"
      stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
@@ -41,6 +41,10 @@
   <circle cx="12.5" cy="26" r="1.8"/>
   <circle cx="21.5" cy="26" r="1.8"/>
   <path d="M17 12.5v5M14.5 15h5"/>
+<% } else if (slug === 'apparel-footwear') { %>
+  <path d="M4 25h24"/>
+  <path d="M6 25v-5.5c0-2.2 1.1-3.7 3.2-4.8l5.6-2.9c1.4-.7 2.9-.7 4.2 0l3.6 1.9c1.9 1 3.6 1.6 5.6 1.6 1.4 0 2.7.6 3.1 2 .5 1.6-.2 3.2-1.3 3.7"/>
+  <path d="M13 15.5l2.8 2.3M17 13.4l2.8 2.3"/>
 <% } else { %>
   <circle cx="16" cy="16" r="11"/>
   <path d="M16 10v12M10 16h12"/>

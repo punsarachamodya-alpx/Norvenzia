@@ -1,16 +1,16 @@
-// Eight verticals. Pain points describe operational patterns we see repeatedly —
+// Nine verticals. Pain points describe operational patterns we see repeatedly —
 // they are not case studies, and no client is named or implied (Brief §11).
 
 module.exports = {
   meta: {
     title: 'Industries — Norvenzia',
     description:
-      'Eight verticals, one operating model. The procurement and supply chain patterns we are built to take on.'
+      'Nine verticals, one operating model. The procurement and supply chain patterns we are built to take on.'
   },
 
   hero: {
     eyebrow: 'Industries',
-    headline: 'Eight verticals, one operating model.',
+    headline: 'Nine verticals, one operating model.',
     body:
       'These are the operational patterns we see repeatedly in mid-market procurement teams. No named clients — just the problems we’re built to take on.'
   },
@@ -102,6 +102,21 @@ module.exports = {
         'Inventory and demand planning that hasn’t kept pace with order volume growth.',
         'Vendor and fulfilment-partner performance with no consolidated dashboard.',
         'Procurement handled reactively between founders and ops leads instead of a dedicated team.'
+      ]
+    },
+    {
+      slug: 'apparel-footwear',
+      name: 'Apparel & Footwear Manufacturing',
+      // TODO(founder): add the real photo at this path, then set it here.
+      // See public/img/photos/industry-*.jpg for the crop this needs to
+      // match (1600x1194, ~4:3 — the card crops it to 16:10 via
+      // object-fit: cover). A generation prompt is in the PR/chat notes.
+      image: '',
+      icon: '', // optional: overrides the built-in line icon
+      painPoints: [
+        'Seasonal style changes multiplying SKUs across sizes, colours, and materials faster than manual purchasing can track.',
+        'Multi-tier sourcing — fabric mills, trims, components — with fragmented supplier data and no consolidated spend view.',
+        'Compliance and factory-audit documentation piling up faster than a lean team can process it.'
       ]
     }
   ],

@@ -26,7 +26,8 @@ module.exports = {
       'Automotive Suppliers',
       'Electronics & EMS',
       'FMCG & Food Production',
-      'E-commerce'
+      'E-commerce',
+      'Apparel & Footwear'
     ],
     markets: 'Europe · Norway · Switzerland · UK · Australia · New Zealand'
   },
