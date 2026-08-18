@@ -4302,11 +4302,18 @@ button {
 }
 
 .section--home-dark .eyebrow {
-  color: var(--slate-light);
+  color: var(--color-accent);
 }
 
 .section--home-dark .home-section__heading {
   color: var(--color-text-white);
+}
+
+/* Only used by the "Three steps" headline (see how.headlineAccent in
+   content/home.js) -- colours just the first sentence, the rest stays the
+   section's plain white. */
+.heading-accent {
+  color: var(--color-accent);
 }
 
 /* Vertical connected-spine timeline: a single line down the left with one
@@ -4356,7 +4363,7 @@ button {
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: var(--slate-light);
+  background: var(--color-accent);
   opacity: 0;
   animation: how-spine-pulse 2.6s ease-out infinite;
 }
@@ -4379,7 +4386,7 @@ button {
   height: 100%;
   border-radius: 50%;
   background: var(--color-bg-mid);
-  border: 1.5px solid var(--slate-light);
+  border: 1.5px solid var(--color-accent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -4388,7 +4395,7 @@ button {
 .how-spine__ring svg {
   width: 16px;
   height: 16px;
-  stroke: var(--slate-light);
+  stroke: var(--color-accent);
   fill: none;
   stroke-width: 1.8;
   stroke-linecap: round;

@@ -98,7 +98,12 @@ module.exports = {
   // 3.5 — How it works, three steps.
   how: {
     eyebrow: '// THREE STEPS',
-    headline: 'No rip-and-replace. No new platform to learn.',
+    // Split so the first sentence renders in the accent colour and the
+    // second stays plain white (see .home-section__heading .heading-accent
+    // in styles.css) -- kept as two fields rather than parsed out of one
+    // string so this doesn't depend on sentence-splitting logic in the view.
+    headlineAccent: 'No rip-and-replace.',
+    headlineRest: 'No new platform to learn.',
     steps: [
       {
         number: '01',
