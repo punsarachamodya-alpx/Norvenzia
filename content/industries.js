@@ -107,11 +107,7 @@ module.exports = {
     {
       slug: 'apparel-footwear',
       name: 'Apparel & Footwear Manufacturing',
-      // TODO(founder): add the real photo at this path, then set it here.
-      // See public/img/photos/industry-*.jpg for the crop this needs to
-      // match (1600x1194, ~4:3 — the card crops it to 16:10 via
-      // object-fit: cover). A generation prompt is in the PR/chat notes.
-      image: '',
+      image: '/img/photos/industry-apparel-footwear.jpg',
       icon: '', // optional: overrides the built-in line icon
       painPoints: [
         'Seasonal style changes multiplying SKUs across sizes, colours, and materials faster than manual purchasing can track.',
