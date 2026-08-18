@@ -223,10 +223,10 @@ app.use('/admin', adminRouter);
 
 const PUBLIC_ROUTES = [
   '/',
-  '/what-we-do',
+  '/services',
   '/industries',
-  '/how-we-work',
-  '/who-we-are',
+  '/the-model',
+  '/about-us',
   '/contact',
   '/privacy',
   '/cookies',
@@ -242,7 +242,7 @@ app.get('/', (req, res) => {
   });
 });
 
-app.get('/what-we-do', (req, res) => {
+app.get('/services', (req, res) => {
   const page = store.getSection('what-we-do');
   res.render('what-we-do', { page, meta: page.meta });
 });
@@ -252,15 +252,24 @@ app.get('/industries', (req, res) => {
   res.render('industries', { page, meta: page.meta });
 });
 
-app.get('/how-we-work', (req, res) => {
+app.get('/the-model', (req, res) => {
   const page = store.getSection('how-we-work');
   res.render('how-we-work', { page, meta: page.meta });
 });
 
-app.get('/who-we-are', (req, res) => {
+app.get('/about-us', (req, res) => {
   const page = store.getSection('who-we-are');
   res.render('who-we-are', { page, meta: page.meta });
 });
+
+// Pages renamed (What We Do -> Services, How We Work -> The Model, Who We
+// Are -> About Us): permanent redirects so existing bookmarks/backlinks/
+// search results still land on the right page instead of a 404. The
+// internal content-store keys and view filenames are unchanged -- only the
+// public-facing URLs and on-page labels moved.
+app.get('/what-we-do', (req, res) => res.redirect(301, '/services'));
+app.get('/how-we-work', (req, res) => res.redirect(301, '/the-model'));
+app.get('/who-we-are', (req, res) => res.redirect(301, '/about-us'));
 
 // ------------------------------------------------------------ live monitor
 

@@ -1,12 +1,12 @@
 module.exports = {
   meta: {
-    title: 'How We Work — Norvenzia',
+    title: 'The Model — Norvenzia',
     description:
       'An EU engagement point in Sweden paired with a senior-led delivery hub in Sri Lanka. Documented process, and a straight account of our security posture today.'
   },
 
   hero: {
-    eyebrow: 'How we work',
+    eyebrow: 'The model',
     headline: 'A deliberate design, not an outsourcing euphemism.',
     body:
       'An EU engagement point paired with a Sri Lanka delivery hub is the whole point of the model — not a detail we hide in the footer.'

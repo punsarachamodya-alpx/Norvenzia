@@ -39,10 +39,10 @@ function get(path) {
 
 const PUBLIC_ROUTES = [
   '/',
-  '/what-we-do',
+  '/services',
   '/industries',
-  '/how-we-work',
-  '/who-we-are',
+  '/the-model',
+  '/about-us',
   '/contact',
   '/privacy',
   '/cookies',
@@ -54,6 +54,34 @@ const PUBLIC_ROUTES = [
 for (const route of PUBLIC_ROUTES) {
   test(`GET ${route} returns 200`, async () => {
     assert.equal(await get(route), 200);
+  });
+}
+
+// Old URLs (pre-rename: What We Do/How We Work/Who We Are) must 301 to
+// their new pages, not 404 -- existing bookmarks/backlinks/search results
+// still point at these.
+const RENAMED_REDIRECTS = [
+  ['/what-we-do', '/services'],
+  ['/how-we-work', '/the-model'],
+  ['/who-we-are', '/about-us']
+];
+
+function getRedirect(path) {
+  return new Promise((resolve, reject) => {
+    http
+      .get(base + path, (res) => {
+        res.resume();
+        res.on('end', () => resolve({ status: res.statusCode, location: res.headers.location }));
+      })
+      .on('error', reject);
+  });
+}
+
+for (const [oldPath, newPath] of RENAMED_REDIRECTS) {
+  test(`GET ${oldPath} redirects 301 to ${newPath}`, async () => {
+    const { status, location } = await getRedirect(oldPath);
+    assert.equal(status, 301);
+    assert.equal(location, newPath);
   });
 }
 

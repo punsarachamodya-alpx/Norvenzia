@@ -41,7 +41,7 @@ test('isSafeAbsoluteUrl rejects javascript: and file: schemes', () => {
 });
 
 test('sanitizeLinkHref passes through a safe value and blanks an unsafe one', () => {
-  assert.equal(sanitizeLinkHref('/what-we-do'), '/what-we-do');
+  assert.equal(sanitizeLinkHref('/services'), '/services');
   assert.equal(sanitizeLinkHref('javascript:alert(1)'), '');
 });
 

@@ -53,7 +53,7 @@ module.exports = {
 
   // 3.3 — Divisions, alternating full-photo + bullet-list rows. The actual
   // division data (names/status/summary/capabilities) lives once on the
-  // What We Do page and is exposed here via res.locals.divisions (see
+  // Services page and is exposed here via res.locals.divisions (see
   // server.js) -- only the section's own intro copy stays here.
   services: {
     eyebrow: '// WHAT WE RUN',

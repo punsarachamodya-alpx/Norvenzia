@@ -3,10 +3,10 @@
 
 module.exports = {
   primary: [
-    { label: 'What We Do', href: '/what-we-do' },
-    { label: 'Industries We Serve', href: '/industries' },
-    { label: 'How We Work', href: '/how-we-work' },
-    { label: 'Who We Are', href: '/who-we-are' },
+    { label: 'Services', href: '/services' },
+    { label: 'Industries', href: '/industries' },
+    { label: 'The Model', href: '/the-model' },
+    { label: 'About Us', href: '/about-us' },
     { label: 'Intelligence', href: '/live' },
     { label: 'Contact', href: '/contact' }
   ],

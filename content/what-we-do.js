@@ -1,12 +1,12 @@
 module.exports = {
   meta: {
-    title: 'What We Do — Norvenzia',
+    title: 'Services — Norvenzia',
     description:
       'Two divisions live today: Operations and Analytics. Digital, AI, and Advisory are roadmap divisions — we don’t sell them yet.'
   },
 
   hero: {
-    eyebrow: 'What we do',
+    eyebrow: 'Services',
     headline: 'Two divisions, live today.',
     body:
       'Norvenzia runs Operations and Analytics now. Digital, AI, and Advisory are roadmap divisions for when the company scales — we don’t sell them yet.'
@@ -14,7 +14,7 @@ module.exports = {
 
   // Single source of truth for the site's five divisions -- server.js exposes
   // this as res.locals.divisions (same pattern as site/nav/appearance) so the
-  // homepage and Who We Are's roadmap table read the same live/roadmap facts
+  // homepage and About Us's roadmap table read the same live/roadmap facts
   // instead of each page maintaining its own copy that can drift out of sync.
   divisions: [
     {

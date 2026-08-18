@@ -3,13 +3,13 @@
 
 module.exports = {
   meta: {
-    title: 'Industries We Serve — Norvenzia',
+    title: 'Industries — Norvenzia',
     description:
       'Eight verticals, one operating model. The procurement and supply chain patterns we are built to take on.'
   },
 
   hero: {
-    eyebrow: 'Industries we serve',
+    eyebrow: 'Industries',
     headline: 'Eight verticals, one operating model.',
     body:
       'These are the operational patterns we see repeatedly in mid-market procurement teams. No named clients — just the problems we’re built to take on.'

@@ -1,11 +1,10 @@
-<%# The homepage, What We Do, Industries We Serve, How We Work, Who We
-    Are, Intelligence (Live), and Contact all start with a transparent
-    header over a dark hero, so they need the white/"dark-bg" logo variant
-    at load; every other page has no dark hero behind it and always
-    renders solid white, so it always gets the navy/"light-bg" variant.
-    nav.js swaps the src on scroll for the dark-starting pages — see
-    public/js/nav.js. %>
-<% var startsOnDark = ['/', '/what-we-do', '/industries', '/how-we-work', '/who-we-are', '/live', '/contact'].indexOf(currentPath) !== -1; %>
+<%# The homepage, Services, Industries, The Model, About Us, Intelligence
+    (Live), and Contact all start with a transparent header over a dark
+    hero, so they need the white/"dark-bg" logo variant at load; every
+    other page has no dark hero behind it and always renders solid white,
+    so it always gets the navy/"light-bg" variant. nav.js swaps the src on
+    scroll for the dark-starting pages — see public/js/nav.js. %>
+<% var startsOnDark = ['/', '/services', '/industries', '/the-model', '/about-us', '/live', '/contact'].indexOf(currentPath) !== -1; %>
 <header class="header <%= startsOnDark ? 'header--transparent' : '' %>">
   <div class="shell header__inner">
     <a class="header__logo" href="/" aria-label="<%= site.publicName %> — home">

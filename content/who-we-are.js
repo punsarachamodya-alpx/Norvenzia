@@ -1,12 +1,12 @@
 module.exports = {
   meta: {
-    title: 'Who We Are — Norvenzia',
+    title: 'About Us — Norvenzia',
     description:
       'A specialist procurement and supply chain operation, built deliberately small. Senior attention on your operation, not scale we don’t have yet.'
   },
 
   hero: {
-    eyebrow: 'Who we are',
+    eyebrow: 'About us',
     headline: 'A specialist operation, built deliberately small.',
     body:
       'Norvenzia is early. We’d rather tell you that plainly than dress it up — what we offer is senior attention on your procurement operation, not scale we don’t have yet.'
@@ -61,7 +61,7 @@ module.exports = {
   },
 
   // divisions shown in this section's table come from res.locals.divisions
-  // (the What We Do page's data, see server.js) -- only the section's own
+  // (the Services page's data, see server.js) -- only the section's own
   // intro copy lives here.
   roadmap: {
     eyebrow: 'Roadmap',
