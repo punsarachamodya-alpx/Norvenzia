@@ -2005,6 +2005,20 @@ button {
   font-size: 0.93rem;
 }
 
+/* Below 900px the footer's five sections stack into one tall column (see
+   .footer__grid's breakpoints below) -- the box becomes portrait, roughly
+   9:16 at typical phone/tablet widths, nothing like footer-bg.jpg's wide
+   1920x1072 landscape source. background-size: cover was scaling that
+   landscape image up ~2.5x to cover the height, which read as blur. A
+   purpose-shot portrait crop swaps in instead, same as the mobile hero/
+   contact photos elsewhere on the site. */
+@media (max-width: 900px) {
+  .footer {
+    background-image: linear-gradient(180deg, rgba(10, 15, 26, 0.6) 0%, rgba(10, 15, 26, 0.78) 100%),
+      url('/img/photos/footer-bg-mobile.jpg');
+  }
+}
+
 .footer__grid {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
