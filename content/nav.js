@@ -6,8 +6,8 @@ module.exports = {
     { label: 'Services', href: '/services' },
     { label: 'Industries', href: '/industries' },
     { label: 'The Model', href: '/the-model' },
-    { label: 'About Us', href: '/about-us' },
     { label: 'Intelligence', href: '/live' },
+    { label: 'About Us', href: '/about-us' },
     { label: 'Contact', href: '/contact' }
   ],
   legal: [
