@@ -56,7 +56,7 @@ module.exports = {
   // Services page and is exposed here via res.locals.divisions (see
   // server.js) -- only the section's own intro copy stays here.
   services: {
-    eyebrow: '// WHAT WE RUN',
+    eyebrow: '// WHAT WE DO',
     headline: 'Two divisions live today. Three more on the roadmap.',
     body: 'Start with what’s live. The rest scales as the engagement grows.'
   },
