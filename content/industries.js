@@ -121,7 +121,7 @@ module.exports = {
     eyebrow: 'Is this a fit?',
     headline: 'Where Norvenzia works best.',
     criteria: [
-      'You run 50–500 employees and procurement has outgrown the person who set it up.',
+      'You run 20–500 employees, procurement has outgrown the person who set it up, and you have a defined (or semi-defined) supply chain process to build on.',
       'You’re based in Scandinavia, the EU, the UK, Switzerland, or Australia.',
       'You have defined, repeatable procurement processes — or want help defining them.',
       'You’d rather buy senior capacity than carry the cost of hiring it in-house.'

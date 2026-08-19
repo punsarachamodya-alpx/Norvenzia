@@ -18,7 +18,7 @@ module.exports = {
 
   // 3.2 — Social proof strip. Plain-text chips, no client logos (§4 rule).
   socialProof: {
-    eyebrow: 'SERVING MID-MARKET INDUSTRIAL COMPANIES ACROSS',
+    eyebrow: 'SERVING SMES & MID-MARKET INDUSTRIAL COMPANIES ACROSS',
     verticals: [
       'General Manufacturing',
       'Medical Devices',
