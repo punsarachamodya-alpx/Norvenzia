@@ -29,23 +29,40 @@
 
   // ------------------------------------------------ native-resolution cap
   // Full-bleed hero/backdrop photos are absolutely positioned to fill
-  // their section (see .hero__photo etc. in styles.css). On a tall
-  // section -- a content-driven hero, or one with min-height: 100vh --
-  // that forces object-fit: cover to upscale the photo well past its own
-  // native resolution, worst on high-density mobile screens (a 1920x1072
-  // source stretched to a ~900px-tall, 3x-density phone hero needs ~2700
-  // physical px -- 2.5x the pixels the photo actually has). Caps each
-  // one's max-height to its own naturalHeight / devicePixelRatio, so the
-  // browser only ever crops it, never stretches it past the resolution it
-  // actually has -- the section's own background (already close to the
-  // scrim's own darkest value) shows through below the cap instead of the
-  // photo being stretched to reach it. Not gated by prefers-reduced-motion
-  // -- this is a static sizing constraint, not an animation.
+  // their section (see .hero__photo etc. in styles.css). On a *narrow*
+  // tall section -- a phone-width hero with min-height: 100vh -- that
+  // forces object-fit: cover to upscale the photo well past its own
+  // native resolution (a 1920x1072 source stretched to a ~900px-tall,
+  // 3x-density phone hero needs ~2700 physical px, 2.5x the pixels the
+  // photo actually has). Capping max-height to naturalHeight /
+  // devicePixelRatio there stops the browser stretching it past the
+  // resolution it actually has.
+  //
+  // Only applied below MAX_CAP_WIDTH: on desktop/tablet the photo is
+  // already close to the section's own aspect ratio, so object-fit: cover
+  // barely has to grow it -- capping there caused more harm than good,
+  // since any display with devicePixelRatio > 1 (standard on most modern
+  // laptops/monitors, not an edge case) shrinks the cap below the
+  // section's actual height, leaving a visible gap below the photo where
+  // the flat scrim/background shows through instead. Desktop instead just
+  // lets object-fit: cover do its job uncapped.
+  var MAX_CAP_WIDTH = 900;
+
   var noUpscaleEls = document.querySelectorAll(
     '.hero__photo, .work-hero__img, .banner-photo__img, .contact-photo-hero__img, .division-section__bg'
   );
 
+  // naturalHeight (not the HTML height attribute) is the only reliable
+  // source here: several of these images swap to a completely different,
+  // differently-cropped mobile photo via a <picture><source> below 640px
+  // (see hero.ejs, contact.ejs, work-hero.ejs's four usages), so the
+  // static height="" attribute (always the desktop image's dimensions)
+  // would be flat wrong for whichever of those actually loaded on mobile.
   function applyNativeCap(el) {
+    if (window.innerWidth > MAX_CAP_WIDTH) {
+      el.style.removeProperty('--photo-cap-h');
+      return;
+    }
     if (!el.naturalHeight) return;
     var dpr = window.devicePixelRatio || 1;
     el.style.setProperty('--photo-cap-h', (el.naturalHeight / dpr).toFixed(1) + 'px');
@@ -62,8 +79,9 @@
     }
   }
 
-  // devicePixelRatio changes on browser zoom (rare, but cheap to handle) --
-  // naturalHeight is already known by now so no need to wait on 'load' again.
+  // Viewport width crossing MAX_CAP_WIDTH, or devicePixelRatio changing on
+  // browser zoom (rare, but cheap to handle) -- naturalHeight is already
+  // known by now so no need to wait on 'load' again.
   window.addEventListener('resize', function () {
     for (var ri = 0; ri < noUpscaleEls.length; ri++) applyNativeCap(noUpscaleEls[ri]);
   });
