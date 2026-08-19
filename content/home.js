@@ -2,7 +2,7 @@ module.exports = {
   meta: {
     title: 'Norvenzia - Supply Chain & Procurement Operations Partner',
     description:
-      'Strategy stays with your team in Europe. Execution runs from our delivery hub in Colombo, Sri Lanka. Every day.'
+      'Strategy stays with your team. Execution runs from our delivery hub in Colombo, Sri Lanka. Every day.'
   },
 
   // 3.1 — Hero. headline is animated by public/js/scramble.js on load
@@ -11,7 +11,7 @@ module.exports = {
     eyebrow: '// SUPPLY CHAIN & PROCUREMENT OPERATIONS PARTNER.',
     headline: 'We run the work.',
     body:
-      'Strategy stays with your team in Europe. Execution runs from our delivery hub in Colombo, Sri Lanka. Every day.',
+      'Strategy stays with your team. Execution runs from our delivery hub in Colombo, Sri Lanka. Every day.',
     primaryCta: { label: 'Start a conversation', href: '#contact' },
     secondaryCta: { label: 'See what we run', href: '#services' }
   },

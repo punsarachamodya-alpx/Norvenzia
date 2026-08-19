@@ -3761,8 +3761,11 @@ button {
 }
 
 /* Reserves layout space equal to the final rendered text before the letter
-   reveal starts, so nothing reflows as words wrap in. */
-.hero__headline[data-letter-reveal] {
+   reveal starts, so nothing reflows as words wrap in. em-relative and
+   unscoped to any one heading class, so it applies correctly wherever
+   data-letter-reveal is used -- the homepage hero and every other page's
+   hero heading alike. */
+[data-letter-reveal] {
   min-height: 1.04em;
 }
 

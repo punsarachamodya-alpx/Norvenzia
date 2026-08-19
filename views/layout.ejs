@@ -222,9 +222,13 @@
   <%- include('partials/cookie-banner') %>
   <script src="/js/main.js?v=<%= v %>" defer></script>
   <script src="/js/nav.js?v=<%= v %>" defer></script>
+  <%# Every page's hero <h1> can opt in via data-letter-reveal (see hero.ejs
+      and the other page heroes) -- the script itself is a no-op if the
+      attribute isn't present, so it's safe to load unconditionally rather
+      than gating it per page. %>
+  <script src="/js/letter-reveal.js?v=<%= v %>" defer></script>
   <%# Homepage-only behaviours — no point shipping these to every page. %>
   <% if (currentPath === '/') { %>
-    <script src="/js/letter-reveal.js?v=<%= v %>" defer></script>
     <script src="/js/accordion.js?v=<%= v %>" defer></script>
   <% } %>
 </body>
