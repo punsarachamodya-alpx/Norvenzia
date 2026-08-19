@@ -2,16 +2,16 @@ module.exports = {
   meta: {
     title: 'Norvenzia - Supply Chain & Procurement Operations Partner',
     description:
-      'Full supply chain and procurement operations, run remotely from our delivery hub in Colombo, Sri Lanka — for manufacturers and industrial teams across Europe, the UK, and Australia. Every day.'
+      'Full supply chain and procurement operations, run remotely from our delivery hub in Colombo, Sri Lanka — for manufacturers and industrial teams worldwide. Every day.'
   },
 
   // 3.1 — Hero. headline is animated by public/js/scramble.js on load
   // (scrambles into place, then settles — see [data-scramble] in hero.ejs).
   hero: {
-    eyebrow: '// SUPPLY CHAIN & PROCUREMENT OPERATIONS PARTNER.',
+    eyebrow: '// YOUR RELIABLE SUPPLY CHAIN OPERATIONS PARTNER.',
     headline: 'We run the work.',
     body:
-      'Full supply chain and procurement operations, run remotely from our delivery hub in Colombo, Sri Lanka — for manufacturers and industrial teams across Europe, the UK, and Australia. Every day.',
+      'Full supply chain and procurement operations, run remotely from our delivery hub in Colombo, Sri Lanka — for manufacturers and industrial teams worldwide. Every day.',
     primaryCta: { label: 'Start a conversation', href: '#contact' },
     secondaryCta: { label: 'See what we run', href: '#services' }
   },
@@ -47,7 +47,7 @@ module.exports = {
 
   // Full-bleed photo banner between the proof strip and the services list.
   banner: {
-    headline: 'We run procurement and logistics for growing industrial teams, every day.',
+    headline: 'Value-driven procurement and logistics support, with a human team behind every task.',
     photoHint:
       'Photo: an operations team working together over documents and a laptop, warm natural light — /img/photos/banner-team.jpg'
   },
@@ -65,7 +65,7 @@ module.exports = {
   // 3.4 — Three entry-point tiers, numbered 01/02/03.
   tiers: {
     eyebrow: '// HOW YOU ENGAGE',
-    headline: 'Pick your entry point.',
+    headline: 'Pick your entry point — with a human on the other end at every step.',
     items: [
       {
         number: '01',
@@ -104,14 +104,14 @@ module.exports = {
     // in styles.css) -- kept as two fields rather than parsed out of one
     // string so this doesn't depend on sentence-splitting logic in the view.
     headlineAccent: 'No rip-and-replace.',
-    headlineRest: 'No new platform to learn.',
+    headlineRest: 'No new platform. Just a reliable team inside the systems you already run.',
     steps: [
       {
         number: '01',
         title: 'Scope',
         photo: '/img/photos/step-scope.jpg',
         body:
-          'We map what’s eating your team’s time. Agree exactly what we take off your plate and what stays with you.'
+          'We map what you’re exactly doing. Agree exactly what we take off your plate and what stays with you.'
       },
       {
         number: '02',
@@ -141,7 +141,7 @@ module.exports = {
   // 3.9 — FAQ accordion (public/js/accordion.js).
   faq: {
     eyebrow: '// COMMON QUESTIONS',
-    headline: 'What people ask before they start.',
+    headline: 'What people ask before they trust us with the work.',
     items: [
       {
         question: 'What does "KPO" mean in practice?',
@@ -185,7 +185,7 @@ module.exports = {
   // form lives at /contact (views/contact.ejs); this section links there
   // rather than duplicating the form.
   contactCta: {
-    headline: 'Tell us what’s struggling with your team.',
+    headline: 'Tell us what’s struggling. We’ll give it to you straight.',
     body:
       'One email. We’ll come back with a scoped, honest read on whether Norvenzia is the right fit — not a sales deck.',
     bookingNote: 'Or book a 30-minute call →',

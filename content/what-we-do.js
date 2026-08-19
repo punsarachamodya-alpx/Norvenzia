@@ -30,7 +30,7 @@ module.exports = {
         'Supplier / Vendor Management',
         'RFQ / RFP Support',
         'Logistics Coordination',
-        'Process mapping and restructuring'
+        'Process Mapping and Restructuring'
       ]
     },
     {
