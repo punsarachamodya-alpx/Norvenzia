@@ -2,7 +2,7 @@ module.exports = {
   meta: {
     title: 'Norvenzia - Supply Chain & Procurement Operations Partner',
     description:
-      'Strategy stays with your team. Execution runs from our delivery hub in Colombo, Sri Lanka. Every day.'
+      'Full supply chain and procurement operations, run remotely from our delivery hub in Colombo, Sri Lanka — for manufacturers and industrial teams across Europe, the UK, and Australia. Every day.'
   },
 
   // 3.1 — Hero. headline is animated by public/js/scramble.js on load
@@ -11,7 +11,7 @@ module.exports = {
     eyebrow: '// SUPPLY CHAIN & PROCUREMENT OPERATIONS PARTNER.',
     headline: 'We run the work.',
     body:
-      'Strategy stays with your team. Execution runs from our delivery hub in Colombo, Sri Lanka. Every day.',
+      'Full supply chain and procurement operations, run remotely from our delivery hub in Colombo, Sri Lanka — for manufacturers and industrial teams across Europe, the UK, and Australia. Every day.',
     primaryCta: { label: 'Start a conversation', href: '#contact' },
     secondaryCta: { label: 'See what we run', href: '#services' }
   },
@@ -164,9 +164,9 @@ module.exports = {
           'Consultants deliver recommendations. We deliver execution. The work gets done by our team, tracked against agreed KPIs, reported to you weekly.'
       },
       {
-        question: 'Are you based in Europe?',
+        question: 'Where are you based?',
         answer:
-          'No — Norvenzia operates entirely remotely from a single team in Colombo, Sri Lanka, with no local office anywhere else, though the founder travels to meet clients in person when it’s useful. That’s the cost structure that makes senior-led delivery commercially viable for mid-market clients, while still working inside your time zone and process.'
+          'Norvenzia is based and delivers entirely from Colombo, Sri Lanka, though the founder travels to meet clients in person when it’s useful. That’s the cost structure that makes senior-level supply chain and procurement support commercially viable for mid-market and SME clients — you get experienced analysts without the overhead of a Europe-based team, while still working inside your time zone and process.'
       },
       {
         question: 'What’s the pricing model?',
@@ -189,6 +189,6 @@ module.exports = {
     body:
       'One email. We’ll come back with a scoped, honest read on whether Norvenzia is the right fit — not a sales deck.',
     bookingNote: 'Or book a 30-minute call →',
-    bookingHref: '#'
+    bookingHref: '/contact'
   }
 };

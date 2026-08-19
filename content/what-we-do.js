@@ -27,10 +27,10 @@ module.exports = {
         'Procurement Operations',
         'Purchase Order Management',
         'Supplier Onboarding',
+        'Supplier / Vendor Management',
         'RFQ / RFP Support',
         'Logistics Coordination',
-        'Supply Chain Reporting',
-        'KPI Dashboards'
+        'Process mapping and restructuring'
       ]
     },
     {
@@ -45,7 +45,9 @@ module.exports = {
         'Inventory Analytics',
         'Demand Planning Support',
         'Master Data Management',
-        'ERP Administration'
+        'ERP Administration',
+        'Supply Chain Reporting',
+        'KPI Dashboards'
       ]
     },
     {

@@ -20,7 +20,7 @@ module.exports = {
   // destination and the address shown on the contact page / home CTA;
   // footerEmail is a distinct address that only ever appears in the
   // footer. Do not merge these.
-  contactEmail: 'info@norvenzia.com',
+  contactEmail: 'contact@norvenzia.com',
   footerEmail: 'contact@norvenzia.com',
   // TODO(founder): this is a legacy Swedish number, kept for now at the
   // founder's explicit instruction even though the business no longer has a

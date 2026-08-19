@@ -6,7 +6,7 @@
           <img src="/brand/norvenzia-logo-dark.svg" alt="<%= site.publicName %>" width="337" height="66">
         </a>
         <p class="footer__tagline"><%= site.tagline %></p>
-        <p><%= site.hub %> — remote delivery, no local office</p>
+        <p><%= site.hub %> — remote delivery worldwide</p>
       </div>
 
       <div>
@@ -22,20 +22,11 @@
         <h2 class="footer__heading">Contact</h2>
         <ul class="footer__list">
           <li><a href="mailto:<%= site.footerEmail %>"><%= site.footerEmail %></a></li>
-          <% if (site.phone) { %>
-            <li><a href="tel:<%= site.phone.replace(/[^+\d]/g, '') %>"><%= site.phone %></a></li>
+          <% if (site.linkedinUrl) { %>
+            <li><a href="<%= site.linkedinUrl %>" rel="noopener noreferrer" target="_blank">LinkedIn</a></li>
           <% } %>
         </ul>
       </div>
-
-      <% if (site.linkedinUrl) { %>
-        <div>
-          <h2 class="footer__heading">Follow</h2>
-          <ul class="footer__list">
-            <li><a href="<%= site.linkedinUrl %>" rel="noopener noreferrer" target="_blank">LinkedIn</a></li>
-          </ul>
-        </div>
-      <% } %>
 
       <div>
         <h2 class="footer__heading">Legal</h2>
