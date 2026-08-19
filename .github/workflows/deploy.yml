@@ -23,11 +23,14 @@ on:
     workflows: ["Node.js CI"]
     types: [completed]
     branches: [main]
+  # Lets a deploy be fired on demand from the Actions tab (or the API)
+  # without waiting for a new push -- still requires the same secrets.
+  workflow_dispatch: {}
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: github.event.workflow_run.conclusion == 'success'
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     steps:
       - name: Deploy over SSH
         uses: appleboy/ssh-action@v1.0.3
