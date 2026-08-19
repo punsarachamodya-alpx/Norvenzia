@@ -22,7 +22,7 @@ module.exports = {
     headline: 'One hub, one accountable team.',
     body: [
       'Colombo, Sri Lanka is where the work happens — and where you reach us. Senior supply chain and procurement analysts, not a rotating call-centre desk, working inside your existing tools and processes.',
-      'We serve clients across the wider EU, Norway, Switzerland, the UK, Australia, and New Zealand entirely remotely, on Colombo time — with no local office in any of those markets.',
+      'We serve clients across the wider EU, Norway, Switzerland, the UK, Australia, and New Zealand entirely remotely, on Colombo time — with no local office in any of those markets, though the founder travels to meet clients in person when it’s useful.',
       'That’s the structure that makes senior-led delivery commercially viable for mid-market clients: proven enterprise-grade practice, applied to a segment usually priced out of it.'
     ],
     panels: [
