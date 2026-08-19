@@ -177,6 +177,32 @@ systemctl restart norvenzia
 
 `data/` is gitignored, so your admin edits survive `git pull` untouched.
 
+### Automatic deploys (optional)
+
+`.github/workflows/deploy.yml` runs those same three commands over SSH
+automatically after every push to `main` that passes CI. To turn it on, add
+these four repository secrets in GitHub (**Settings → Secrets and variables →
+Actions → New repository secret**):
+
+| Secret | Value |
+| --- | --- |
+| `DEPLOY_HOST` | the VPS IP or hostname |
+| `DEPLOY_USER` | the SSH user (`root`, or a user with permission to restart the `norvenzia` service) |
+| `DEPLOY_SSH_KEY` | a private key whose matching public key is in that user's `~/.ssh/authorized_keys` on the VPS |
+| `DEPLOY_PORT` | SSH port — optional, defaults to 22 |
+
+Generate a dedicated deploy key rather than reusing a personal one:
+
+```bash
+ssh-keygen -t ed25519 -f deploy_key -C "github-actions-deploy" -N ""
+cat deploy_key.pub    # append this to authorized_keys on the VPS
+cat deploy_key         # paste this as the DEPLOY_SSH_KEY secret, then delete both local files
+```
+
+Without those secrets set, the workflow fails on its one step instead of
+silently doing nothing. Until they're added, keep deploying manually with the
+commands above.
+
 ---
 
 ## 3. Backups
