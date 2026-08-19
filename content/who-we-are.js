@@ -35,7 +35,7 @@ module.exports = {
     draftNotice: '',
     story: [
       'I started Norvenzia because I noticed that during the years I spent in supply chain and procurement operations across telecom, garments, seafood, and logistics, good mid-market companies choose between two bad options: overpaying for a full in-house procurement team they don’t need year-round, or underpaying for outsourced labour that never really understands the work.',
-      'There’s a third option: Norvenzia runs on people who’ve actually done this work, not people trained to sound like they have — delivered from Colombo, owned from Gothenburg, with a single person accountable for it in your time zone. No layers between the judgment and the job.',
+      'There’s a third option: Norvenzia runs on people who’ve actually done this work, not people trained to sound like they have — delivered remotely from Colombo, with a single person accountable for it. No layers between the judgment and the job.',
       'That’s the starting point, not the ceiling. Where we’re going is a KPO shaped for how supply chains actually run now, senior judgment first, technology built to sharpen it, never to replace it.'
     ]
   },

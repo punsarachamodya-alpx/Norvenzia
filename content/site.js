@@ -1,6 +1,10 @@
 // Company facts, contact details, base URL.
-// TODO(founder): confirm the exact Sweden engagement-point framing and the
-// registered-company wording for the footer.
+//
+// Operating model (confirmed): Norvenzia is fully remote from a single hub in
+// Colombo, Sri Lanka -- no office or physical presence anywhere else. Clients
+// are served internationally (wider EU, Norway, Switzerland, UK, Australia,
+// New Zealand) entirely through remote delivery, not local presence. The
+// former "EU engagement point in Sweden" framing is retired.
 
 module.exports = {
   legalEntity: 'Norvenzia (Private) Limited',
@@ -11,17 +15,22 @@ module.exports = {
   // actual differentiator.
   tagline: 'We run the work.',
   description:
-    'Norvenzia runs procurement and supply chain operations for mid-market companies — an EU engagement point in Sweden with senior-led delivery from Colombo.',
+    'Norvenzia runs procurement and supply chain operations for mid-market companies — a single Colombo-based team, delivered fully remotely to clients across the EU, Norway, Switzerland, the UK, Australia, and New Zealand.',
   // Two genuinely separate inboxes — contactEmail is the contact-form
   // destination and the address shown on the contact page / home CTA;
   // footerEmail is a distinct address that only ever appears in the
   // footer. Do not merge these.
   contactEmail: 'info@norvenzia.com',
   footerEmail: 'contact@norvenzia.com',
+  // TODO(founder): this is a legacy Swedish number, kept for now at the
+  // founder's explicit instruction even though the business no longer has a
+  // Sweden presence. Revisit once a Colombo-based number (or removing phone
+  // contact entirely) is decided.
   phone: '+46 73 779 5741',
   registrationLine: 'Norvenzia (Private) Limited. All rights reserved.',
-  engagementPoint: 'Sweden',
-  deliveryHub: 'Colombo, Sri Lanka',
+  // Single hub, replacing the former engagementPoint/deliveryHub split (that
+  // pair implied two locations; there is only one now).
+  hub: 'Colombo, Sri Lanka',
   linkedinUrl: 'https://www.linkedin.com/company/norvenzia',
   baseUrl: process.env.BASE_URL || 'https://www.norvenzia.com'
 };

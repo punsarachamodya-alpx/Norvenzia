@@ -166,7 +166,7 @@ module.exports = {
       {
         question: 'Are you based in Europe?',
         answer:
-          'Our client relationships and business development hub is in Gothenburg, Sweden. Delivery runs from Colombo, Sri Lanka — that’s the cost structure that makes this commercially viable for mid-market clients.'
+          'No — Norvenzia operates entirely remotely from a single team in Colombo, Sri Lanka, with no local office anywhere else. That’s the cost structure that makes senior-led delivery commercially viable for mid-market clients, while still working inside your time zone and process.'
       },
       {
         question: 'What’s the pricing model?',

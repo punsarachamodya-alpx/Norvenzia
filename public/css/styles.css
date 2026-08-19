@@ -1480,10 +1480,9 @@ button {
   padding-top: clamp(1.6rem, 2.4vw, 2.2rem);
 }
 
-/* How We Work's Sweden/Sri Lanka model cards — the same rounded, lifting
-   card chrome used for tier/product/fit cards elsewhere on the site,
-   scoped so the Security section's intentionally plain panels (no photos,
-   no hover) are untouched. */
+/* The Model's hub/reach cards — the same rounded, lifting card chrome used
+   for tier/product/fit cards elsewhere on the site, scoped so the Security
+   section's intentionally plain panels (no photos, no hover) are untouched. */
 .panel--model {
   border-radius: var(--radius-lg);
   transition: border-color 0.25s var(--ease), transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
@@ -3817,69 +3816,6 @@ button {
   border-color: var(--color-text-white);
   background: rgba(255, 255, 255, 0.1);
   color: var(--color-text-white);
-}
-
-/* ---- 31.2 Route line — Gothenburg -> Colombo, replaces stock photography ---- */
-
-.route-line {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-top: clamp(3rem, 7vw, 5rem);
-  max-width: 30rem;
-}
-
-.route-line__label {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
-  color: var(--color-text-dim);
-  white-space: nowrap;
-}
-
-.route-line__track {
-  position: relative;
-  flex: 1;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.16);
-}
-
-.route-line__dot {
-  position: absolute;
-  top: 50%;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--color-text-dim);
-  transform: translate(-50%, -50%);
-}
-
-.route-line__dot--start {
-  left: 0;
-}
-
-.route-line__dot--end {
-  left: 100%;
-}
-
-.route-line__pulse {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--color-accent);
-  box-shadow: 0 0 10px 2px rgba(47, 111, 237, 0.6);
-  transform: translate(-50%, -50%);
-  animation: route-pulse 3.4s ease-in-out infinite;
-}
-
-@keyframes route-pulse {
-  0% { left: 0%; opacity: 0; }
-  8% { opacity: 1; }
-  92% { opacity: 1; }
-  100% { left: 100%; opacity: 0; }
 }
 
 /* ---- 31.3 Social proof strip ---- */

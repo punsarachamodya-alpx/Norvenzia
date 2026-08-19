@@ -2,36 +2,41 @@ module.exports = {
   meta: {
     title: 'The Model — Norvenzia',
     description:
-      'An EU engagement point in Sweden paired with a senior-led delivery hub in Sri Lanka. Documented process, and a straight account of our security posture today.'
+      'A single Colombo-based team delivering senior-led procurement and supply chain operations remotely to clients across the EU, Norway, Switzerland, the UK, Australia, and New Zealand.'
   },
 
   hero: {
     eyebrow: 'The model',
     headline: 'A deliberate design, not an outsourcing euphemism.',
     body:
-      'An EU engagement point paired with a Sri Lanka delivery hub is the whole point of the model — not a detail we hide in the footer.'
+      'A senior, Colombo-based team running your procurement and supply chain operations remotely — not a detail we hide in the footer.'
   },
 
+  // Norvenzia is fully remote from a single Colombo hub -- no office or
+  // physical presence anywhere else (see content/site.js). These two panels
+  // are two facets of that one model (where the work happens, who it reaches),
+  // not two locations -- "The reach" panel deliberately carries no image/place,
+  // since there is no second office to show.
   model: {
     eyebrow: 'The model',
-    headline: 'Two locations, one accountable team.',
+    headline: 'One hub, one accountable team.',
     body: [
-      'Sweden is where you reach us. A real point of contact, operating in your time zone and your regulatory context, accountable for the work that gets delivered.',
-      'Sri Lanka is where the work happens. Senior supply chain and procurement analysts — not a rotating call-centre desk — working inside your existing tools and processes.',
-      'The split exists so you get EU-grade accountability and cost-efficient, senior-led delivery in the same engagement. Most outsourcing asks you to trade one for the other.'
+      'Colombo, Sri Lanka is where the work happens — and where you reach us. Senior supply chain and procurement analysts, not a rotating call-centre desk, working inside your existing tools and processes.',
+      'We serve clients across the wider EU, Norway, Switzerland, the UK, Australia, and New Zealand entirely remotely, on Colombo time — with no local office in any of those markets.',
+      'That’s the structure that makes senior-led delivery commercially viable for mid-market clients: proven enterprise-grade practice, applied to a segment usually priced out of it.'
     ],
     panels: [
       {
-        label: 'EU engagement point',
-        place: 'Sweden',
-        image: '/img/regions/se-06.png',
-        body: 'Contracting, communication, and accountability inside the EU.'
+        label: 'The hub',
+        place: 'Colombo, Sri Lanka',
+        image: '/img/regions/lk-06.png',
+        body: 'Senior analysts running your day-to-day procurement operations, in one accountable team.'
       },
       {
-        label: 'Delivery hub',
-        place: 'Sri Lanka',
-        image: '/img/regions/lk-06.png',
-        body: 'Senior analysts running your day-to-day procurement operations.'
+        label: 'The reach',
+        place: 'Remote, by design',
+        image: '',
+        body: 'Clients across the EU, Norway, Switzerland, the UK, Australia, and New Zealand — served remotely, with no local office in any of them.'
       }
     ]
   },
@@ -109,9 +114,9 @@ module.exports = {
           'It’s a fair question, so here’s a straight answer: we’re early, and we’ve said so throughout this site rather than dressing it up. What you get today is senior attention on your operation, run by someone with hands-on supply chain and procurement experience across telecom, garments, seafood, and logistics — not scale we haven’t earned yet. A discovery call costs you thirty minutes and tells you directly whether that trade-off works for your operation.'
       },
       {
-        question: 'How does our data actually move between Sweden and Sri Lanka?',
+        question: 'Where is our data actually handled?',
         answer:
-          'Your engagement point in Sweden handles contracting and communication. Where work is delivered from Sri Lanka, access is limited to the analysts assigned to your account, under confidentiality terms in every engagement agreement, with a Data Processing Agreement available on request. Full detail is in the data security section above.'
+          'Everything runs through our Colombo team. Access is limited to the analysts assigned to your account, under confidentiality terms in every engagement agreement, with a Data Processing Agreement available on request. Full detail is in the data security section above.'
       },
       {
         question: 'Do you replace our procurement team, or work alongside it?',

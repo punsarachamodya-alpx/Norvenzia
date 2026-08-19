@@ -13,7 +13,7 @@ const privacy = {
     {
       heading: 'Who we are',
       body: [
-        'Norvenzia (Private) Limited runs procurement and supply chain operations for mid-market companies. Our engagement point for European clients is based in Sweden; delivery is carried out from Sri Lanka.',
+        'Norvenzia (Private) Limited runs procurement and supply chain operations for mid-market companies. We operate entirely remotely from a single team in Colombo, Sri Lanka, serving clients internationally.',
         'For any question about this policy, or about data we hold, write to info@norvenzia.com.'
       ]
     },
@@ -42,7 +42,7 @@ const privacy = {
     {
       heading: 'Where your data is handled',
       body: [
-        'Enquiry data reaches our engagement point in Sweden and, where relevant to scoping or delivering your engagement, our delivery team in Sri Lanka.',
+        'Enquiry data reaches our team in Colombo, Sri Lanka, where it is handled by the analysts assigned to your account.',
         'Sri Lanka is not covered by a European Commission adequacy decision. Where personal data is transferred there, we rely on appropriate safeguards, including contractual confidentiality terms and access limited to the analysts assigned to your account. A Data Processing Agreement is available on request.'
       ]
     },

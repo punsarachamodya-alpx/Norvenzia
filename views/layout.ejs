@@ -22,7 +22,12 @@
   <meta name="google-site-verification" content="7gYId43Lho6wGtoeaNaLe2Dn677lgGabxZ31fi0BUEI" />
   <%# SVG favicon for browsers that support scalable tab icons; PNG fallbacks
       (regenerated from the same source SVG) for everyone else, and Apple touch
-      icon specifically — Safari doesn't accept SVG there. %>
+      icon specifically — Safari doesn't accept SVG there. /favicon.ico at the
+      site root is the classic implicit lookup search crawlers (Google
+      included) fall back to regardless of these <link> tags -- without one,
+      Google Search shows a generic globe instead of the real icon, which is
+      exactly what was happening before this file existed. %>
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
   <link rel="icon" href="/brand/norvenzia-favicon.svg" type="image/svg+xml">
   <link rel="icon" href="/brand/favicon-32.png" sizes="32x32">
   <link rel="icon" href="/brand/favicon-256.png" sizes="256x256">
