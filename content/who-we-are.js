@@ -57,7 +57,7 @@ module.exports = {
 
   mission: {
     statement:
-      'To give SEMs & mid-market companies senior-led procurement and supply chain operations, without the overhead of building that team in-house.'
+      'To give SMEs & mid-market companies senior-led procurement and supply chain operations, without the overhead of building that team in-house.'
   },
 
   // divisions shown in this section's table come from res.locals.divisions
