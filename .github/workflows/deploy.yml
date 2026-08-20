@@ -40,18 +40,14 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           port: ${{ secrets.DEPLOY_PORT || 22 }}
           script: |
-            echo "=== cloudlinux-selector CLI ==="
-            which cloudlinux-selector 2>/dev/null
-            ls -la /usr/sbin/cloudlinux-selector /usr/bin/cloudlinux-selector 2>/dev/null
-            echo "=== uapi / whmapi tools ==="
-            which uapi whmapi1 2>/dev/null
-            echo "=== config dir (filenames only, not contents) ==="
-            ls -la ~/domains/norvenzia.com/hbuilds/config
-            echo "=== source dir (filenames only) ==="
-            ls -la ~/domains/norvenzia.com/hbuilds/source
-            echo "=== versions dir ==="
-            ls -la ~/domains/norvenzia.com/hbuilds/versions
-            echo "=== .cagefs/.cl.selector related config for nodejs app ==="
-            find ~/.config -maxdepth 4 -iname "*node*" 2>/dev/null
-            echo "=== uapi test: NodejsSelector list ==="
-            uapi NodejsSelector list_nodejs_instances 2>&1 | head -60
+            HB=~/domains/norvenzia.com/hbuilds
+            echo "=== current symlink target ==="
+            readlink -f "$HB/current"
+            echo "=== founder photo file in current build ==="
+            ls -la "$HB/current/nodejs/public/img/photos/founder-punsara.jpg" 2>/dev/null
+            sha256sum "$HB/current/nodejs/public/img/photos/founder-punsara.jpg" 2>/dev/null
+            echo "=== founder photo file in last-source (git checkout) ==="
+            sha256sum "$HB/last-source/public/img/photos/founder-punsara.jpg" 2>/dev/null
+            echo "=== curl the live site from the server itself ==="
+            curl -s -o /dev/null -w "about-us HTTP %{http_code}\n" https://norvenzia.com/about-us
+            curl -s https://norvenzia.com/about-us | grep -o 'founder-punsara[^"]*' | head -3
