@@ -168,6 +168,8 @@ secure cookies. Without them, one failed login would lock out every visitor at o
 
 ### Deploying an update
 
+If you're on a self-managed VPS you set up yourself following the steps above:
+
 ```bash
 cd /var/www/norvenzia
 git pull
@@ -177,31 +179,44 @@ systemctl restart norvenzia
 
 `data/` is gitignored, so your admin edits survive `git pull` untouched.
 
-### Automatic deploys (optional)
+### Production (norvenzia.com): Hostinger's managed Node.js hosting — deploys are already automatic
 
-`.github/workflows/deploy.yml` runs those same three commands over SSH
-automatically after every push to `main` that passes CI. To turn it on, add
-these four repository secrets in GitHub (**Settings → Secrets and variables →
-Actions → New repository secret**):
+**norvenzia.com does not actually run on a self-managed VPS with the setup
+above.** It runs on Hostinger's managed Node.js App product (hPanel →
+Websites → norvenzia.com → **Deployments**), backed by CloudLinux's NodeJS
+Selector. Confirmed by inspecting the live server directly:
 
-| Secret | Value |
-| --- | --- |
-| `DEPLOY_HOST` | the VPS IP or hostname |
-| `DEPLOY_USER` | the SSH user (`root`, or a user with permission to restart the `norvenzia` service) |
-| `DEPLOY_SSH_KEY` | a private key whose matching public key is in that user's `~/.ssh/authorized_keys` on the VPS |
-| `DEPLOY_PORT` | SSH port — optional, defaults to 22 |
+- The app lives at `~/domains/norvenzia.com/hbuilds/`, not `/var/www/norvenzia`.
+- `hbuilds/last-source/` is a git checkout with `origin` already pointing at
+  `https://github.com/punsarachamodya-alpx/Norvenzia.git`.
+- `hbuilds/current` is a symlink to a built, versioned copy under
+  `hbuilds/versions/<uuid>/nodejs/` — a fresh version directory appears
+  automatically shortly after every push to `main`, and `current` is
+  re-pointed to it. The Node process itself runs under `lsnode` (CloudLinux's
+  supervisor), not systemd — there is no `systemctl restart` equivalent to
+  run by hand, and none is needed.
 
-Generate a dedicated deploy key rather than reusing a personal one:
+**In short: pushing to `main` on GitHub is the entire deploy step.** Hostinger's
+own webhook picks it up, builds a new version, and promotes it — usually
+within well under a minute. There is no SSH command, GitHub Action, or
+manual trigger required for norvenzia.com specifically.
+
+An earlier revision of this doc described a `.github/workflows/deploy.yml`
+SSH-based auto-deploy action for a self-managed VPS. It was removed: for
+norvenzia.com's actual hosting it was redundant (Hostinger already deploys
+on push) and its assumptions (`/var/www/norvenzia`, `systemctl`) don't hold
+for this hosting product. If this project is ever moved to a genuine
+self-managed VPS, that pattern (an `appleboy/ssh-action` step running
+`git pull && npm ci --omit=dev && systemctl restart norvenzia` after CI
+passes, gated on `DEPLOY_HOST`/`DEPLOY_USER`/`DEPLOY_SSH_KEY`/`DEPLOY_PORT`
+secrets) is worth reintroducing then — just not for this instance.
+
+If you ever need to check the current deploy state directly, SSH in (hPanel
+→ **SSH Access** has the host/port/username) and look at:
 
 ```bash
-ssh-keygen -t ed25519 -f deploy_key -C "github-actions-deploy" -N ""
-cat deploy_key.pub    # append this to authorized_keys on the VPS
-cat deploy_key         # paste this as the DEPLOY_SSH_KEY secret, then delete both local files
+readlink -f ~/domains/norvenzia.com/hbuilds/current
 ```
-
-Without those secrets set, the workflow fails on its one step instead of
-silently doing nothing. Until they're added, keep deploying manually with the
-commands above.
 
 ---
 
