@@ -40,8 +40,11 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           port: ${{ secrets.DEPLOY_PORT || 22 }}
           script: |
-            set -e
-            cd /var/www/norvenzia
-            git pull
-            npm ci --omit=dev
-            systemctl restart norvenzia
+            echo "=== whoami/pwd ==="
+            whoami
+            pwd
+            echo "=== home dir ==="
+            ls -la ~
+            echo "=== looking for the app ==="
+            find / -maxdepth 6 -iname "server.js" -not -path "*/node_modules/*" 2>/dev/null
+            find / -maxdepth 6 -iname ".git" -type d 2>/dev/null
