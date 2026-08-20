@@ -40,15 +40,18 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           port: ${{ secrets.DEPLOY_PORT || 22 }}
           script: |
-            APP=~/domains/norvenzia.com/hbuilds/last-source
-            echo "=== last-source git remote/log ==="
-            cd "$APP" && git remote -v && git log -1 --oneline && git status --short
-            echo "=== running node processes ==="
-            ps -ef | grep -i node | grep -v grep
-            echo "=== hbuilds dir layout ==="
-            ls -la ~/domains/norvenzia.com/hbuilds
-            echo "=== any hostinger/deploy CLI on PATH ==="
-            compgen -c | grep -iE "hpanel|hostinger|deploy|hbuild" | sort -u
-            echo "=== nodejsselector / .cl.selector hints ==="
-            cat ~/.cl.selector/* 2>/dev/null
-            find ~ -maxdepth 2 -iname "*.json" -path "*nodejs*" 2>/dev/null
+            echo "=== cloudlinux-selector CLI ==="
+            which cloudlinux-selector 2>/dev/null
+            ls -la /usr/sbin/cloudlinux-selector /usr/bin/cloudlinux-selector 2>/dev/null
+            echo "=== uapi / whmapi tools ==="
+            which uapi whmapi1 2>/dev/null
+            echo "=== config dir (filenames only, not contents) ==="
+            ls -la ~/domains/norvenzia.com/hbuilds/config
+            echo "=== source dir (filenames only) ==="
+            ls -la ~/domains/norvenzia.com/hbuilds/source
+            echo "=== versions dir ==="
+            ls -la ~/domains/norvenzia.com/hbuilds/versions
+            echo "=== .cagefs/.cl.selector related config for nodejs app ==="
+            find ~/.config -maxdepth 4 -iname "*node*" 2>/dev/null
+            echo "=== uapi test: NodejsSelector list ==="
+            uapi NodejsSelector list_nodejs_instances 2>&1 | head -60
