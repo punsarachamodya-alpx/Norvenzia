@@ -74,7 +74,7 @@ app.use(
         defaultSrc: ["'self'"],
         styleSrc: ["'self'", "'unsafe-inline'"], // per-element accent styles only
         scriptSrc: ["'self'"], // no inline scripts anywhere
-        // /live's map (public/js/live.js) loads CARTO's free dark-matter
+        // /intelligence's map (public/js/live.js) loads CARTO's free dark-matter
         // basemap directly client-side: a style.json plus vector tiles,
         // glyphs, and a sprite, all served from *.basemaps.cartocdn.com.
         // This is a deliberate, minimal, named-origin exception (same
