@@ -28,8 +28,8 @@
       <% var divisionPhotos = {
         Operations: '/img/photos/service-core.jpg',
         Analytics: '/img/photos/service-pulse.jpg',
-        Digital: '/img/photos/service-link.jpg',
-        AI: '/img/photos/service-signal.jpg',
+        Resilience: '/img/photos/service-flow.jpg',
+        'Digital & AI': '/img/photos/service-signal.jpg',
         Advisory: '/img/photos/service-desk.jpg'
       }; %>
       <% page.divisions.forEach(function (d, i) { %>
@@ -38,10 +38,7 @@
             <img src="<%= divisionPhotos[d.name] || '/img/photos/service-core.jpg' %>" alt="<%= d.name %>" width="1024" height="768">
           </div>
           <div class="service-row__copy">
-            <h2 class="service-row__name">
-              <%= d.name %>
-              <%- include('partials/badge', { status: d.status }) %>
-            </h2>
+            <h2 class="service-row__name"><%= d.name %></h2>
             <p class="home-section__body" style="margin-bottom:1.2rem;"><%= d.summary %></p>
             <ul class="service-row__list">
               <% d.capabilities.forEach(function (c) { %>

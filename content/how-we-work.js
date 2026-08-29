@@ -2,7 +2,7 @@ module.exports = {
   meta: {
     title: 'The Model — Norvenzia',
     description:
-      'A single Colombo-based team delivering senior-led procurement and supply chain operations remotely to clients across the EU, Norway, Switzerland, the UK, Australia, and New Zealand.'
+      'A single Colombo-based team delivering senior-led procurement and supply chain operations remotely to clients across the EU, Norway, Switzerland, the UK, Australia, New Zealand, and the United States.'
   },
 
   hero: {
@@ -22,7 +22,7 @@ module.exports = {
     headline: 'One hub, one accountable team.',
     body: [
       'Colombo, Sri Lanka is where the work happens — and where you reach us. Senior supply chain and procurement analysts, not a rotating call-centre desk, working inside your existing tools and processes.',
-      'We serve clients across the wider EU, Norway, Switzerland, the UK, Australia, and New Zealand entirely remotely, on Colombo time — with no local office in any of those markets, though the founder travels to meet clients in person when it’s useful.',
+      'We serve clients across the wider EU, Norway, Switzerland, the UK, Australia, New Zealand, and the United States entirely remotely, on Colombo time — with no local office in any of those markets.',
       'That’s the structure that makes senior-led delivery commercially viable for mid-market clients: proven enterprise-grade practice, applied to a segment usually priced out of it.'
     ],
     panels: [
@@ -36,7 +36,7 @@ module.exports = {
         label: 'The reach',
         place: 'Remote, by design',
         image: '',
-        body: 'Clients across the EU, Norway, Switzerland, the UK, Australia, and New Zealand — served remotely, with no local office in any of them.'
+        body: 'Clients across the EU, Norway, Switzerland, the UK, Australia, New Zealand, and the United States — served remotely, with no local office in any of them.'
       }
     ]
   },

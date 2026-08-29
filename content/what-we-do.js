@@ -2,14 +2,14 @@ module.exports = {
   meta: {
     title: 'Services — Norvenzia',
     description:
-      'Two divisions live today: Operations and Analytics. AI is in active development (Nexus GeoTracer). Digital and Advisory are roadmap divisions — we don’t sell them yet.'
+      'Three divisions live today: Operations, Analytics, and Resilience. Digital & AI is in active development. Advisory is a roadmap division — we don’t sell it yet.'
   },
 
   hero: {
     eyebrow: 'Services',
-    headline: 'Two divisions, live today.',
+    headline: 'Three divisions, live today.',
     body:
-      'Norvenzia runs Operations and Analytics now. AI is in active development. Digital and Advisory are roadmap divisions for when the company scales — we don’t sell them yet.'
+      'Norvenzia runs Operations, Analytics, and Resilience now. Digital & AI is in active development. Advisory is a roadmap division for when the company scales — we don’t sell it yet.'
   },
 
   // Single source of truth for the site's five divisions -- server.js exposes
@@ -52,26 +52,33 @@ module.exports = {
     },
     {
       index: '03',
-      name: 'Digital',
-      status: 'roadmap',
+      name: 'Resilience',
+      status: 'live',
       summary:
-        'Process automation and systems integration across the tools you already run — planned for when the delivery model scales.',
-      capabilities: ['Process Automation', 'Systems Integration']
+        'Supplier and supply chain risk mapped and monitored on an ongoing basis, so exposure gets managed before it becomes disruption.',
+      capabilities: [
+        'Supplier Dependency & Single-Source Mapping',
+        'Geographic & Corridor Exposure Mapping',
+        'Supplier Financial Health Monitoring',
+        'Customer Due-Diligence Questionnaire Response (Inbound)',
+        'Supplier Due-Diligence Data Collection (Outbound)',
+        'Risk Register Maintenance & Owner-Level Reporting'
+      ]
     },
     {
       index: '04',
-      name: 'AI',
+      name: 'Digital & AI',
       status: 'building',
       summary:
-        'We’re currently building Nexus GeoTracer — an AI-powered enterprise intelligence tool that monitors global supply chain ecosystems in real time, detecting and analyzing disruptions against real-world conditions to help you act before they cause operational failure.',
-      capabilities: ['Nexus GeoTracer — Global Disruption Monitoring', 'Applied Forecasting', 'Document Processing']
+        'Process automation and systems integration across the tools you already run, alongside an AI-powered intelligence capability we’re actively building — global disruption monitoring, applied forecasting, and document processing — to help you act before disruption causes operational failure.',
+      capabilities: ['Process Automation', 'Systems Integration', 'Global Disruption Monitoring', 'Applied Forecasting', 'Document Processing']
     },
     {
       index: '05',
       name: 'Advisory',
       status: 'roadmap',
       summary:
-        'Strategic sourcing and procurement transformation for teams planning a bigger operating-model shift — planned for Year 2 and beyond.',
+        'Strategic sourcing and procurement transformation for teams planning a bigger operating-model shift — planned as the company scales.',
       capabilities: ['Strategic Sourcing', 'Procurement Transformation']
     }
   ],

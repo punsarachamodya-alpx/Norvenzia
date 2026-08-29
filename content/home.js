@@ -21,15 +21,13 @@ module.exports = {
     eyebrow: 'SERVING SMES & MID-MARKET INDUSTRIAL COMPANIES ACROSS',
     verticals: [
       'General Manufacturing',
-      'Medical Devices',
       'Renewable Energy',
-      'Automotive Suppliers',
       'Electronics & EMS',
       'FMCG & Food Production',
-      'E-commerce',
-      'Apparel & Footwear'
+      'Apparel Manufacturing',
+      'Footwear Manufacturing'
     ],
-    markets: 'Europe · Norway · Switzerland · UK · Australia · New Zealand'
+    markets: 'Europe · Norway · Switzerland · UK · Australia · New Zealand · United States'
   },
 
   // Who Norvenzia serves — asymmetric photo + copy split.
@@ -58,7 +56,7 @@ module.exports = {
   // server.js) -- only the section's own intro copy stays here.
   services: {
     eyebrow: '// WHAT WE DO',
-    headline: 'Two divisions live today. AI in active development.',
+    headline: 'Three divisions live today. Digital & AI in active development.',
     body: 'Start with what’s live. The rest scales as the engagement grows.'
   },
 
@@ -166,7 +164,7 @@ module.exports = {
       {
         question: 'Where are you based?',
         answer:
-          'Norvenzia is based and delivers entirely from Colombo, Sri Lanka, though the founder travels to meet clients in person when it’s useful. That’s the cost structure that makes senior-level supply chain and procurement support commercially viable for mid-market and SME clients — you get experienced analysts without the overhead of a Europe-based team, while still working inside your time zone and process.'
+          'Norvenzia is based and delivers entirely from Colombo, Sri Lanka. That’s the cost structure that makes senior-level supply chain and procurement support commercially viable for mid-market and SME clients — you get experienced analysts without the overhead of a Europe-based team, while still working inside your time zone and process.'
       },
       {
         question: 'What’s the pricing model?',

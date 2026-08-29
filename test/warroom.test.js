@@ -6,7 +6,7 @@
 //    unlocks, the session flag persists across requests)
 //  - the proxy routes' happy path against the fixed API contract
 //    (docs/internal/WARROOM_API_CONTRACT.md)
-//  - the same degrade-gracefully contract /live/data already has for MIS:
+//  - the same degrade-gracefully contract /intelligence/data already has for MIS:
 //    200/JSON "unavailable", never a 500, when War Room is down.
 //
 // Mirrors test/live.test.js's fake-service pattern.
@@ -153,8 +153,8 @@ const validIncident = {
 
 // ------------------------------------------------------------------ gating
 
-test('POST /live/investigate is refused (403, locked) with no session at all', async () => {
-  const res = await fetch(`${base}/live/investigate`, {
+test('POST /intelligence/investigate is refused (403, locked) with no session at all', async () => {
+  const res = await fetch(`${base}/intelligence/investigate`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(validIncident)
@@ -165,8 +165,8 @@ test('POST /live/investigate is refused (403, locked) with no session at all', a
   assert.equal(body.locked, true);
 });
 
-test('POST /live/unlock rejects a wrong code and does not set the session flag', async () => {
-  const res = await fetch(`${base}/live/unlock`, {
+test('POST /intelligence/unlock rejects a wrong code and does not set the session flag', async () => {
+  const res = await fetch(`${base}/intelligence/unlock`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ code: 'definitely-wrong' })
@@ -176,7 +176,7 @@ test('POST /live/unlock rejects a wrong code and does not set the session flag',
   assert.equal(body.ok, false);
 
   const cookie = sessionCookie(res);
-  const gated = await fetch(`${base}/live/investigate`, {
+  const gated = await fetch(`${base}/intelligence/investigate`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Cookie: cookie },
     body: JSON.stringify(validIncident)
@@ -186,8 +186,8 @@ test('POST /live/unlock rejects a wrong code and does not set the session flag',
 
 let unlockedCookie;
 
-test('POST /live/unlock accepts the correct code and sets the session flag', async () => {
-  const res = await fetch(`${base}/live/unlock`, {
+test('POST /intelligence/unlock accepts the correct code and sets the session flag', async () => {
+  const res = await fetch(`${base}/intelligence/unlock`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ code: 'ci-test-warroom-code' })
@@ -200,7 +200,7 @@ test('POST /live/unlock accepts the correct code and sets the session flag', asy
 });
 
 test('the unlocked session flag persists across a subsequent request (no re-unlock needed)', async () => {
-  const res = await fetch(`${base}/live/investigate`, {
+  const res = await fetch(`${base}/intelligence/investigate`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Cookie: unlockedCookie },
     body: JSON.stringify(validIncident)
@@ -210,8 +210,8 @@ test('the unlocked session flag persists across a subsequent request (no re-unlo
 
 // -------------------------------------------------------------- happy path
 
-test('POST /live/investigate proxies to War Room and returns the jobId (202)', async () => {
-  const res = await fetch(`${base}/live/investigate`, {
+test('POST /intelligence/investigate proxies to War Room and returns the jobId (202)', async () => {
+  const res = await fetch(`${base}/intelligence/investigate`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Cookie: unlockedCookie },
     body: JSON.stringify(validIncident)
@@ -228,8 +228,8 @@ test('POST /live/investigate proxies to War Room and returns the jobId (202)', a
   assert.equal(lastCreatedJob.severity, 5);
 });
 
-test('GET /live/investigate/:jobId returns the completed result with citations intact', async () => {
-  const res = await fetch(`${base}/live/investigate/wrj_test123`, {
+test('GET /intelligence/investigate/:jobId returns the completed result with citations intact', async () => {
+  const res = await fetch(`${base}/intelligence/investigate/wrj_test123`, {
     headers: { Cookie: unlockedCookie }
   });
   const body = await res.json();
@@ -246,8 +246,8 @@ test('GET /live/investigate/:jobId returns the completed result with citations i
 // assessmentReason) need no server-side contract change to reach the
 // client -- this asserts that pass-through actually holds, not just that
 // it should in theory.
-test('GET /live/investigate/:jobId passes the new War Room fields through untouched', async () => {
-  const res = await fetch(`${base}/live/investigate/wrj_test123`, {
+test('GET /intelligence/investigate/:jobId passes the new War Room fields through untouched', async () => {
+  const res = await fetch(`${base}/intelligence/investigate/wrj_test123`, {
     headers: { Cookie: unlockedCookie }
   });
   const body = await res.json();
@@ -263,9 +263,9 @@ test('GET /live/investigate/:jobId passes the new War Room fields through untouc
 
 // ----------------------------------------------------------- request shape
 
-test('POST /live/investigate rejects a body missing required fields (400) without calling War Room', async () => {
+test('POST /intelligence/investigate rejects a body missing required fields (400) without calling War Room', async () => {
   const before = lastCreatedJob;
-  const res = await fetch(`${base}/live/investigate`, {
+  const res = await fetch(`${base}/intelligence/investigate`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Cookie: unlockedCookie },
     body: JSON.stringify({ title: 'Missing everything else' })
@@ -276,8 +276,8 @@ test('POST /live/investigate rejects a body missing required fields (400) withou
   assert.deepEqual(lastCreatedJob, before); // untouched -- War Room was never called
 });
 
-test('GET /live/investigate/:jobId rejects a path-unsafe job id (400)', async () => {
-  const res = await fetch(`${base}/live/investigate/${encodeURIComponent('../../etc/passwd')}`, {
+test('GET /intelligence/investigate/:jobId rejects a path-unsafe job id (400)', async () => {
+  const res = await fetch(`${base}/intelligence/investigate/${encodeURIComponent('../../etc/passwd')}`, {
     headers: { Cookie: unlockedCookie }
   });
   const body = await res.json();
@@ -287,10 +287,10 @@ test('GET /live/investigate/:jobId rejects a path-unsafe job id (400)', async ()
 
 // --------------------------------------------------------------- degrading
 
-test('POST /live/investigate returns available:false (never 500) when War Room is unreachable', async () => {
+test('POST /intelligence/investigate returns available:false (never 500) when War Room is unreachable', async () => {
   warroomShouldFail = true;
   try {
-    const res = await fetch(`${base}/live/investigate`, {
+    const res = await fetch(`${base}/intelligence/investigate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Cookie: unlockedCookie },
       body: JSON.stringify(validIncident)
@@ -303,10 +303,10 @@ test('POST /live/investigate returns available:false (never 500) when War Room i
   }
 });
 
-test('GET /live/investigate/:jobId returns available:false (never 500) when War Room is unreachable', async () => {
+test('GET /intelligence/investigate/:jobId returns available:false (never 500) when War Room is unreachable', async () => {
   warroomShouldFail = true;
   try {
-    const res = await fetch(`${base}/live/investigate/wrj_test123`, { headers: { Cookie: unlockedCookie } });
+    const res = await fetch(`${base}/intelligence/investigate/wrj_test123`, { headers: { Cookie: unlockedCookie } });
     const body = await res.json();
     assert.equal(res.status, 200);
     assert.equal(body.available, false);
@@ -321,10 +321,10 @@ test('GET /live/investigate/:jobId returns available:false (never 500) when War 
 // shape as a real outage, so this asserts the response shape stays sane
 // (never leaks the 401 detail body, never 500) while lib/warroomClient.js
 // logs the distinction server-side instead of staying silent.
-test('POST /live/investigate returns available:false (never leaks the 401 body) when WARROOM_API_KEY is rejected', async () => {
+test('POST /intelligence/investigate returns available:false (never leaks the 401 body) when WARROOM_API_KEY is rejected', async () => {
   warroomUnauthorized = true;
   try {
-    const res = await fetch(`${base}/live/investigate`, {
+    const res = await fetch(`${base}/intelligence/investigate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Cookie: unlockedCookie },
       body: JSON.stringify(validIncident)
@@ -343,10 +343,10 @@ test('POST /live/investigate returns available:false (never leaks the 401 body) 
 // with no recognizable `status` -- which public/js/live-warroom.js then
 // rendered as "This investigation failed," implying the research itself
 // failed rather than an auth/config problem no retry will fix.
-test('GET /live/investigate/:jobId returns available:false (not a fake success) when WARROOM_API_KEY is rejected', async () => {
+test('GET /intelligence/investigate/:jobId returns available:false (not a fake success) when WARROOM_API_KEY is rejected', async () => {
   warroomUnauthorized = true;
   try {
-    const res = await fetch(`${base}/live/investigate/wrj_test123`, { headers: { Cookie: unlockedCookie } });
+    const res = await fetch(`${base}/intelligence/investigate/wrj_test123`, { headers: { Cookie: unlockedCookie } });
     const body = await res.json();
     assert.equal(res.status, 200);
     assert.deepEqual(body, { available: false });
@@ -355,10 +355,10 @@ test('GET /live/investigate/:jobId returns available:false (not a fake success) 
   }
 });
 
-test('POST /live/investigate passes a 429 from War Room through as rate-limited', async () => {
+test('POST /intelligence/investigate passes a 429 from War Room through as rate-limited', async () => {
   warroomRateLimited = true;
   try {
-    const res = await fetch(`${base}/live/investigate`, {
+    const res = await fetch(`${base}/intelligence/investigate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Cookie: unlockedCookie },
       body: JSON.stringify(validIncident)

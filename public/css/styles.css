@@ -705,62 +705,6 @@ button {
   margin-top: 2.4rem;
 }
 
-/* -------------------------------------------------------------- 8. Badge */
-
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-family: var(--font-mono);
-  font-size: 0.63rem;
-  font-weight: 700;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  padding: 0.34rem 0.6rem;
-  border-radius: 2px;
-  white-space: nowrap;
-  border: 1px solid transparent;
-}
-
-.badge::before {
-  content: '';
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: currentColor;
-  flex: none;
-}
-
-.badge--live {
-  color: var(--ok);
-  background: rgba(46, 106, 79, 0.1);
-  border-color: rgba(46, 106, 79, 0.28);
-}
-
-.badge--roadmap {
-  color: #6b7280;
-  background: rgba(94, 114, 154, 0.1);
-  border-color: rgba(94, 114, 154, 0.26);
-}
-
-.badge--building {
-  color: var(--warn);
-  background: rgba(138, 90, 31, 0.1);
-  border-color: rgba(138, 90, 31, 0.28);
-}
-
-.section--navy .badge--live {
-  color: var(--cyan);
-  background: rgba(70, 211, 255, 0.12);
-  border-color: rgba(70, 211, 255, 0.34);
-}
-
-.section--navy .badge--roadmap {
-  color: rgba(255, 255, 255, 0.68);
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
 /* --------------------------------------------------------------- 9. Hero */
 
 .hero {

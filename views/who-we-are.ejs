@@ -74,7 +74,6 @@
         <thead>
           <tr>
             <th scope="col">Division</th>
-            <th scope="col">Status</th>
             <th scope="col">Scope</th>
           </tr>
         </thead>
@@ -82,7 +81,6 @@
           <% divisions.forEach(function (d) { %>
             <tr>
               <td><%= d.name %></td>
-              <td><%- include('partials/badge', { status: d.status }) %></td>
               <td><%= d.summary %></td>
             </tr>
           <% }); %>

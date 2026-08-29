@@ -5,7 +5,7 @@
 //    single-country URL from before the multi-country generalization)
 //  - /insights/trade/se renders 200 from the committed
 //    content/trade-data/se.json -- no network calls, no mocked upstream
-//    (unlike /live, this route has zero runtime dependency on anything
+//    (unlike /intelligence, this route has zero runtime dependency on anything
 //    external).
 // Also asserts the empty-array beats (topGoodsCategories, balance, trend are
 // still pending from the offline job as of this writing) are skipped
@@ -50,14 +50,14 @@ test('GET /insights/trade/se returns 200 and renders the story shell', async () 
   assert.ok(body.includes('id="story-data"'));
 });
 
-test('GET /insights/trade/se cross-links back to /live', async () => {
+test('GET /insights/trade/se cross-links back to /intelligence', async () => {
   const res = await fetch(`${base}/insights/trade/se`);
   const body = await res.text();
-  assert.ok(body.includes('href="/live"'));
+  assert.ok(body.includes('href="/intelligence"'));
 });
 
-test('GET /live cross-links to the Sweden trade story', async () => {
-  const res = await fetch(`${base}/live`);
+test('GET /intelligence cross-links to the Sweden trade story', async () => {
+  const res = await fetch(`${base}/intelligence`);
   const body = await res.text();
   assert.ok(body.includes('href="/insights/sweden-trade"'));
 });

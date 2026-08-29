@@ -4,7 +4,7 @@
 // WARROOM_BASE_URL is unset here, exactly like a fresh checkout of this repo
 // today. Asserts the proxy routes degrade to a clean "unavailable" JSON
 // response (200, never a 500) once unlocked, mirroring how test/live.test.js
-// asserts /live/data degrades when MIS_BASE_URL points nowhere.
+// asserts /intelligence/data degrades when MIS_BASE_URL points nowhere.
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
@@ -36,7 +36,7 @@ function sessionCookie(res) {
 }
 
 async function unlockSession() {
-  const res = await fetch(`${base}/live/unlock`, {
+  const res = await fetch(`${base}/intelligence/unlock`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ code: 'ci-test-warroom-code' })
@@ -46,9 +46,9 @@ async function unlockSession() {
   return sessionCookie(res);
 }
 
-test('POST /live/investigate degrades to available:false (200) when WARROOM_BASE_URL is unset', async () => {
+test('POST /intelligence/investigate degrades to available:false (200) when WARROOM_BASE_URL is unset', async () => {
   const cookie = await unlockSession();
-  const res = await fetch(`${base}/live/investigate`, {
+  const res = await fetch(`${base}/intelligence/investigate`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Cookie: cookie },
     body: JSON.stringify({
@@ -68,9 +68,9 @@ test('POST /live/investigate degrades to available:false (200) when WARROOM_BASE
   assert.equal(body.available, false);
 });
 
-test('GET /live/investigate/:jobId degrades to available:false (200) when WARROOM_BASE_URL is unset', async () => {
+test('GET /intelligence/investigate/:jobId degrades to available:false (200) when WARROOM_BASE_URL is unset', async () => {
   const cookie = await unlockSession();
-  const res = await fetch(`${base}/live/investigate/wrj_doesnotexist`, {
+  const res = await fetch(`${base}/intelligence/investigate/wrj_doesnotexist`, {
     headers: { Cookie: cookie }
   });
   const body = await res.json();
@@ -79,7 +79,7 @@ test('GET /live/investigate/:jobId degrades to available:false (200) when WARROO
 });
 
 test('War Room routes never 500 even when locked and WARROOM_BASE_URL is unset', async () => {
-  const res = await fetch(`${base}/live/investigate/wrj_whatever`);
+  const res = await fetch(`${base}/intelligence/investigate/wrj_whatever`);
   assert.equal(res.status, 403);
   const body = await res.json();
   assert.equal(body.available, false);

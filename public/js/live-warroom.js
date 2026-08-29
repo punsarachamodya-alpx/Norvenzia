@@ -1,12 +1,12 @@
-/* War Room "Investigate" action for /live's event popup
+/* War Room "Investigate" action for /intelligence's event popup
    (docs/internal/WARROOM_BUILD_PLAN.md, WARROOM_API_CONTRACT.md).
 
    Self-contained: exposes window.NorvenziaWarroom.buildSection(props), which
    public/js/live.js calls to append a section to the popup it already
    builds -- this file never touches the map itself. Every request goes to
-   the site's own same-origin proxy routes (/live/unlock, /live/investigate,
-   /live/investigate/:jobId); War Room's real address is never known here,
-   same doctrine as MIS in live.js.
+   the site's own same-origin proxy routes (/intelligence/unlock,
+   /intelligence/investigate, /intelligence/investigate/:jobId); War Room's
+   real address is never known here, same doctrine as MIS in live.js.
 
    Gating: the initial locked/unlocked state comes from the server-rendered
    #live-warroom-state JSON island (session-scoped). Unlocking flips a local
@@ -92,7 +92,7 @@
   function submitUnlock(form, input, submit, error, props) {
     error.hidden = true;
     submit.disabled = true;
-    fetchJson('/live/unlock', {
+    fetchJson('/intelligence/unlock', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ code: input.value })
@@ -272,7 +272,7 @@
     jobsByEventId[props.id] = { status: 'starting' };
     renderInto(container, props);
 
-    fetchJson('/live/investigate', {
+    fetchJson('/intelligence/investigate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -324,7 +324,7 @@
       // and the poll loop simply stops here instead of rescheduling.
       if (!document.body.contains(container)) return;
 
-      fetchJson('/live/investigate/' + encodeURIComponent(jobId))
+      fetchJson('/intelligence/investigate/' + encodeURIComponent(jobId))
         .then(function (result) { handlePollResponse(container, props, jobId, result); })
         .catch(function () {
           if (!document.body.contains(container)) return;

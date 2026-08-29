@@ -1,16 +1,16 @@
-// Nine verticals. Pain points describe operational patterns we see repeatedly —
+// Seven verticals. Pain points describe operational patterns we see repeatedly —
 // they are not case studies, and no client is named or implied (Brief §11).
 
 module.exports = {
   meta: {
     title: 'Industries — Norvenzia',
     description:
-      'Nine verticals, one operating model. The procurement and supply chain patterns we are built to take on.'
+      'Seven verticals, one operating model. The procurement and supply chain patterns we are built to take on.'
   },
 
   hero: {
     eyebrow: 'Industries',
-    headline: 'Nine verticals, one operating model.',
+    headline: 'Seven verticals, one operating model.',
     body:
       'These are the operational patterns we see repeatedly in mid-market procurement teams. No named clients — just the problems we’re built to take on.'
   },
@@ -28,17 +28,6 @@ module.exports = {
       ]
     },
     {
-      slug: 'medical-devices',
-      name: 'Medical Devices',
-      image: '/img/photos/industry-medical-devices.jpg',
-      icon: '', // optional: overrides the built-in line icon
-      painPoints: [
-        'Supplier qualification and documentation overhead that outpaces a lean procurement team.',
-        'Component sourcing decisions made without consistent vendor performance tracking.',
-        'Compliance-driven traceability requirements that manual PO processes were never built for.'
-      ]
-    },
-    {
       slug: 'renewable-energy',
       name: 'Renewable Energy',
       image: '/img/photos/industry-renewable-energy.jpg',
@@ -47,17 +36,6 @@ module.exports = {
         'Fast-scaling procurement volume outpacing the internal team that originally set it up.',
         'Multi-region supplier coordination with inconsistent lead-time visibility.',
         'Project-based sourcing that needs faster RFQ turnaround than current headcount supports.'
-      ]
-    },
-    {
-      slug: 'automotive-suppliers',
-      name: 'Automotive Suppliers',
-      image: '/img/photos/industry-automotive-suppliers.jpg',
-      icon: '', // optional: overrides the built-in line icon
-      painPoints: [
-        'Tier-2/3 supplier management stretched thin against OEM delivery windows.',
-        'PO and change-order volume that overwhelms a generalist purchasing desk.',
-        'Reporting assembled after the fact instead of live KPI visibility for supply continuity.'
       ]
     },
     {
@@ -94,25 +72,25 @@ module.exports = {
       ]
     },
     {
-      slug: 'e-commerce',
-      name: 'E-commerce',
-      image: '/img/photos/industry-e-commerce.jpg',
-      icon: '', // optional: overrides the built-in line icon
-      painPoints: [
-        'Inventory and demand planning that hasn’t kept pace with order volume growth.',
-        'Vendor and fulfilment-partner performance with no consolidated dashboard.',
-        'Procurement handled reactively between founders and ops leads instead of a dedicated team.'
-      ]
-    },
-    {
-      slug: 'apparel-footwear',
-      name: 'Apparel & Footwear Manufacturing',
+      slug: 'apparel-manufacturing',
+      name: 'Apparel Manufacturing',
       image: '/img/photos/industry-apparel-footwear.jpg',
       icon: '', // optional: overrides the built-in line icon
       painPoints: [
         'Seasonal style changes multiplying SKUs across sizes, colours, and materials faster than manual purchasing can track.',
         'Multi-tier sourcing — fabric mills, trims, components — with fragmented supplier data and no consolidated spend view.',
         'Compliance and factory-audit documentation piling up faster than a lean team can process it.'
+      ]
+    },
+    {
+      slug: 'footwear-manufacturing',
+      name: 'Footwear Manufacturing',
+      image: '/img/photos/industry-apparel-footwear.jpg',
+      icon: '', // optional: overrides the built-in line icon
+      painPoints: [
+        'Component sourcing spread across uppers, soles, and outsole suppliers with no consolidated lead-time view.',
+        'Last-and-mould-specific tooling procurement running through the same process as routine component reorders.',
+        'Factory-audit and compliance documentation piling up faster than a lean team can process it.'
       ]
     }
   ],
@@ -122,7 +100,7 @@ module.exports = {
     headline: 'Where Norvenzia works best.',
     criteria: [
       'You run 20–500 employees, procurement has outgrown the person who set it up, and you have a defined (or semi-defined) supply chain process to build on.',
-      'You’re based in the EU, Norway, Switzerland, the UK, Australia, and New Zealand.',
+      'You’re based in the EU, Norway, Switzerland, the UK, Australia, New Zealand, or the United States.',
       'You’re ready to plug an external team into your existing tools and workflows, not rebuild everything from scratch.',
       'You’d rather buy senior capacity than carry the cost of hiring it in-house.'
     ]

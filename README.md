@@ -7,9 +7,9 @@ Plain Node.js. No build step, no bundler, no CSS framework. Edit a file, restart
 
 ![Homepage](public/img/readme/homepage.jpg)
 
-**Intelligence pages** — `/live`'s global disruption map, feed search/sort, and the
+**Intelligence pages** — `/intelligence`'s global disruption map, feed search/sort, and the
 War Room AI-investigation feature (see "Intelligence" below). The map below is a
-real screenshot of the running site; the War Room result panels on `/live` itself
+real screenshot of the running site; the War Room result panels on `/intelligence` itself
 are the product's own real UI classes rendered with illustrative sample data, not
 screenshots — see the comments in `views/live.ejs` and `public/css/styles.css`:
 
@@ -44,9 +44,9 @@ the public site works, `/admin` stays locked). Production: `npm start`.
 | `BASE_URL` | Recommended | Canonical URLs, Open Graph tags, sitemap |
 | `MIS_BASE_URL` | Optional | Address of the [Norvenzia Intelligence Service](https://github.com/Viraj97-SL/massifyx-intelligence) — see below |
 | `WARROOM_BASE_URL` | Optional | Address of the War Room investigation service — see below |
-| `WARROOM_ACCESS_CODE` | Required to unlock War Room | Shared code that unlocks `/live`'s "Investigate" action for a session. Without it, every unlock attempt is refused by design |
+| `WARROOM_ACCESS_CODE` | Required to unlock War Room | Shared code that unlocks `/intelligence`'s "Investigate" action for a session. Without it, every unlock attempt is refused by design |
 
-Unset or unreachable `MIS_BASE_URL` is not an error — `/live` degrades to a
+Unset or unreachable `MIS_BASE_URL` is not an error — `/intelligence` degrades to a
 "temporarily unavailable" panel and still returns 200.
 `/insights/sweden-trade` needs no env var at all; it renders entirely from
 the committed `content/sweden-trade-data.json` (see **Intelligence** below).
@@ -84,10 +84,10 @@ Two ways:
 Two pages under the "Intelligence" nav item, both designed so a down or
 missing upstream never takes the marketing site with it:
 
-- **`/live` — Global Disruption Monitor.** Server-side proxies
+- **`/intelligence` — Global Disruption Monitor.** Server-side proxies
   [Norvenzia Intelligence Service](https://github.com/Viraj97-SL/massifyx-intelligence)
   (`MIS_BASE_URL`) for live supply-chain disruption events; the browser
-  never learns MIS's real address (`GET /live/data` is a same-origin
+  never learns MIS's real address (`GET /intelligence/data` is a same-origin
   proxy). The map is MapLibre GL JS (self-hosted, CSP-safe build) on
   CARTO's free dark-matter vector basemap — a named CSP exception for
   `*.basemaps.cartocdn.com` (`server.js`), the only origin exception on
@@ -95,10 +95,10 @@ missing upstream never takes the marketing site with it:
   geography (`public/geo/shipping-lanes.geojson`, sourced from the
   [Global Shipping Lanes dataset](https://doi.org/10.5281/zenodo.6361763),
   CC BY-SA 4.0 — see `public/geo/README.md`), not generated or
-  illustrative paths. If MIS is unset, down, or slow, `/live` still
+  illustrative paths. If MIS is unset, down, or slow, `/intelligence` still
   returns 200 with a "temporarily unavailable" panel.
 - **War Room — gated incident investigation.** An "Investigate" action in
-  `/live`'s event popup that proxies to a third, separate microservice
+  `/intelligence`'s event popup that proxies to a third, separate microservice
   (`WARROOM_BASE_URL`) which researches a single clicked disruption and
   returns a structured affected/unaffected/recommended-actions briefing,
   every claim cited to a real source. Gated, not public: anonymous visitors
@@ -106,7 +106,7 @@ missing upstream never takes the marketing site with it:
   (identifiable via `?topic=warroom`) and, if a booking URL is configured,
   a "Schedule a demo" link. `WARROOM_ACCESS_CODE` (same shape as
   `ADMIN_PASSWORD`) unlocks it for a browser session via `POST
-  /live/unlock`. Investigations run server-side only — the browser never
+  /intelligence/unlock`. Investigations run server-side only — the browser never
   learns War Room's address, and an unset/unreachable/failed/capped job all
   degrade to a clear "unavailable" state, never a broken page. See
   `docs/internal/WARROOM_BUILD_PLAN.md` and `WARROOM_API_CONTRACT.md`.
@@ -120,7 +120,7 @@ missing upstream never takes the marketing site with it:
     chips surfaced from the same semantic-similarity check the service
     uses for its own cost-saving dedupe cache.
   - Since the "Investigate" action only lives inside a clicked event's
-    popup, `/live` also has a standalone explainer section below the map
+    popup, `/intelligence` also has a standalone explainer section below the map
     (visible to every visitor, locked or unlocked) describing the
     capability and previewing the real result-panel styling with static,
     labeled-illustrative example content — not a screenshot or stock
@@ -203,7 +203,7 @@ unconditionally in case the IntersectionObserver misses an element.
 - Helmet CSP: `script-src 'self'`, no inline scripts anywhere. `frame-src` is
   evaluated per request against the live booking URL, so adding a Calendly link in the
   admin panel widens the policy with no restart. The one standing origin exception is
-  `connect-src`/`img-src` for `/live`'s CARTO basemap tiles (`*.basemaps.cartocdn.com`)
+  `connect-src`/`img-src` for `/intelligence`'s CARTO basemap tiles (`*.basemaps.cartocdn.com`)
   — named and minimal, not a blanket relaxation.
 - Admin: one shared password via `ADMIN_PASSWORD`, SHA-256 + `timingSafeEqual`
   comparison, session regeneration on login, per-session CSRF on every POST, and a

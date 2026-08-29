@@ -6,7 +6,7 @@ module.exports = {
     { label: 'Services', href: '/services' },
     { label: 'Industries', href: '/industries' },
     { label: 'The Model', href: '/the-model' },
-    { label: 'Intelligence', href: '/live' },
+    { label: 'Intelligence', href: '/intelligence' },
     { label: 'About Us', href: '/about-us' },
     { label: 'Contact', href: '/contact' }
   ],

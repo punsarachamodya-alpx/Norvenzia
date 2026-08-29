@@ -1,7 +1,7 @@
 'use strict';
 
 // Boots the real app against a fake in-process MIS (never the real network)
-// and asserts /live's graceful-degradation contract: 200 whether MIS is
+// and asserts /intelligence's graceful-degradation contract: 200 whether MIS is
 // healthy or down, and MIS's real address never leaks to the browser.
 
 const test = require('node:test');
@@ -97,8 +97,8 @@ test.after(async () => {
   await new Promise((resolve) => fakeMis.close(resolve));
 });
 
-test('GET /live returns 200 with the globe rendered when MIS is healthy', async () => {
-  const res = await fetch(`${base}/live`);
+test('GET /intelligence returns 200 with the globe rendered when MIS is healthy', async () => {
+  const res = await fetch(`${base}/intelligence`);
   const body = await res.text();
   assert.equal(res.status, 200);
   assert.ok(body.includes('id="live-globe"'));
@@ -106,10 +106,10 @@ test('GET /live returns 200 with the globe rendered when MIS is healthy', async 
   assert.ok(!body.includes('temporarily unavailable'));
 });
 
-test('GET /live degrades gracefully (still 200) when MIS is down', async () => {
+test('GET /intelligence degrades gracefully (still 200) when MIS is down', async () => {
   misShouldFail = true;
   try {
-    const res = await fetch(`${base}/live`);
+    const res = await fetch(`${base}/intelligence`);
     const body = await res.text();
     assert.equal(res.status, 200);
     assert.ok(body.includes('temporarily unavailable'));
@@ -119,8 +119,8 @@ test('GET /live degrades gracefully (still 200) when MIS is down', async () => {
   }
 });
 
-test('GET /live/data proxies MIS data without exposing its address to the client', async () => {
-  const res = await fetch(`${base}/live/data`);
+test('GET /intelligence/data proxies MIS data without exposing its address to the client', async () => {
+  const res = await fetch(`${base}/intelligence/data`);
   const body = await res.json();
   assert.equal(res.status, 200);
   assert.equal(body.available, true);
@@ -128,10 +128,10 @@ test('GET /live/data proxies MIS data without exposing its address to the client
   assert.ok(!JSON.stringify(body).includes(String(fakeMisPort)));
 });
 
-test('GET /live/data degrades to available:false when MIS is down', async () => {
+test('GET /intelligence/data degrades to available:false when MIS is down', async () => {
   misShouldFail = true;
   try {
-    const res = await fetch(`${base}/live/data`);
+    const res = await fetch(`${base}/intelligence/data`);
     const body = await res.json();
     assert.equal(res.status, 200);
     assert.equal(body.available, false);
@@ -142,23 +142,23 @@ test('GET /live/data degrades to available:false when MIS is down', async () => 
 });
 
 test('a valid https sourceUrl survives end to end into the rendered page', async () => {
-  const res = await fetch(`${base}/live`);
+  const res = await fetch(`${base}/intelligence`);
   const body = await res.text();
   assert.ok(body.includes('href="https://example.com/rotterdam-storm-port-congestion"'));
 });
 
-test('GET /live embeds live vessel data and shows the "live ships" legend/caption when available', async () => {
-  const res = await fetch(`${base}/live`);
+test('GET /intelligence embeds live vessel data and shows the "live ships" legend/caption when available', async () => {
+  const res = await fetch(`${base}/intelligence`);
   const body = await res.text();
   assert.ok(body.includes('Ever Given'));
   assert.ok(body.includes('world-map__legend-vessel'));
   assert.ok(body.includes('live AIS data via aisstream.io'));
 });
 
-test('GET /live omits the "live ships" legend/caption when no vessels are available', async () => {
+test('GET /intelligence omits the "live ships" legend/caption when no vessels are available', async () => {
   vesselsAvailable = false;
   try {
-    const res = await fetch(`${base}/live`);
+    const res = await fetch(`${base}/intelligence`);
     const body = await res.text();
     assert.ok(!body.includes('world-map__legend-vessel'));
     assert.ok(!body.includes('live AIS data via aisstream.io'));
@@ -167,8 +167,8 @@ test('GET /live omits the "live ships" legend/caption when no vessels are availa
   }
 });
 
-test('GET /live/data includes vessels alongside disruption events', async () => {
-  const res = await fetch(`${base}/live/data`);
+test('GET /intelligence/data includes vessels alongside disruption events', async () => {
+  const res = await fetch(`${base}/intelligence/data`);
   const body = await res.json();
   assert.equal(body.vessels.length, 1);
   assert.equal(body.vessels[0].mmsi, '123456789');

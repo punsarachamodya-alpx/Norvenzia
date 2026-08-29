@@ -57,7 +57,8 @@
       <% var divisionPhotos = {
         Operations: '/img/photos/service-core.jpg',
         Analytics: '/img/photos/service-pulse.jpg',
-        AI: '/img/photos/service-signal.jpg'
+        Resilience: '/img/photos/service-flow.jpg',
+        'Digital & AI': '/img/photos/service-signal.jpg'
       }; %>
       <%# Live + building divisions get full rows here -- Digital/Advisory
           (pure roadmap, no work started) stay in the teaser line below. %>
@@ -68,10 +69,7 @@
             <img src="<%= divisionPhotos[d.name] || '/img/photos/service-core.jpg' %>" alt="<%= d.name %>" width="1024" height="768">
           </div>
           <div class="service-row__copy">
-            <h3 class="service-row__name">
-              <%= d.name %>
-              <%- include('partials/badge', { status: d.status }) %>
-            </h3>
+            <h3 class="service-row__name"><%= d.name %></h3>
             <p class="home-section__body" style="margin-bottom:1.2rem;"><%= d.summary %></p>
             <ul class="service-row__list">
               <% d.capabilities.forEach(function (c) { %>
@@ -84,8 +82,8 @@
       <% }); %>
     </div>
 
-    <p class="home-section__body" style="margin-top:2.5rem;">Digital and Advisory are on the roadmap.</p>
-    <a class="tier-card__link" href="/services">See the full roadmap on Services →</a>
+    <p class="home-section__body" style="margin-top:2.5rem;">Advisory is on the roadmap.</p>
+    <a class="tier-card__link" href="/services">See the full list on Services →</a>
   </div>
 </section>
 

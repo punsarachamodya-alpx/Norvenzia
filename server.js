@@ -21,8 +21,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const isProd = process.env.NODE_ENV === 'production';
 // The Norvenzia Intelligence Service (MIS) — a separate, independently
-// deployed microservice. Unset in dev by default: /live degrades cleanly
-// with no MIS_BASE_URL configured, same as it would if MIS were down.
+// deployed microservice. Unset in dev by default: /intelligence degrades
+// cleanly with no MIS_BASE_URL configured, same as it would if MIS were down.
 const MIS_BASE_URL = process.env.MIS_BASE_URL || '';
 // The War Room investigation service — a third, separate microservice (see
 // docs/internal/WARROOM_BUILD_PLAN.md). Same posture as MIS_BASE_URL: unset
@@ -271,12 +271,12 @@ app.get('/what-we-do', (req, res) => res.redirect(301, '/services'));
 app.get('/how-we-work', (req, res) => res.redirect(301, '/the-model'));
 app.get('/who-we-are', (req, res) => res.redirect(301, '/about-us'));
 
-// ------------------------------------------------------------ live monitor
+// --------------------------------------------------------- intelligence
 
-// Deliberately not in PUBLIC_ROUTES / sitemap.xml — this is an experimental
-// feature (DESIGN.md), kept off the homepage and out of primary nav, reachable
-// only by direct link for now.
-app.get('/live', async (req, res) => {
+// In primary nav (content/nav.js) as "Intelligence" and no longer an
+// off-nav experimental link — still deliberately excluded from
+// PUBLIC_ROUTES / sitemap.xml pending a decision on indexing it.
+app.get('/intelligence', async (req, res) => {
   const health = await misClient.getHealth(MIS_BASE_URL);
   const events = health ? await misClient.getDisruptions(MIS_BASE_URL) : null;
   // Vessels are a separate, optional layer — MIS itself may have no
@@ -285,7 +285,7 @@ app.get('/live', async (req, res) => {
   const vessels = health ? await misClient.getVessels(MIS_BASE_URL) : [];
 
   // MIS being unset, down, slow, or returning garbage all collapse to the
-  // same degraded state — /live must render 200 regardless.
+  // same degraded state — /intelligence must render 200 regardless.
   res.render('live', {
     meta: {
       title: `Live Disruption Monitor — ${res.locals.site.publicName}`,
@@ -305,7 +305,7 @@ app.get('/live', async (req, res) => {
 
 // Same-origin proxy so the browser never learns MIS's real address — the
 // client-side map polls this instead of MIS directly.
-app.get('/live/data', liveDataLimiter, async (req, res) => {
+app.get('/intelligence/data', liveDataLimiter, async (req, res) => {
   const events = await misClient.getDisruptions(MIS_BASE_URL);
   const vessels = await misClient.getVessels(MIS_BASE_URL);
   res.set('Cache-Control', 'no-store');
@@ -320,7 +320,7 @@ app.get('/live/data', liveDataLimiter, async (req, res) => {
 // token here -- unlike /admin, this isn't behind an authenticated session
 // already, and the lockout + timing-safe compare are the actual defenses
 // against guessing a single shared code, same as MIS/admin's own posture.
-app.post('/live/unlock', express.json({ limit: '1kb' }), (req, res) => {
+app.post('/intelligence/unlock', express.json({ limit: '1kb' }), (req, res) => {
   const lockMs = warroomAuth.lockoutFor(req.ip);
   if (lockMs > 0) {
     return res.status(429).json({
@@ -356,11 +356,11 @@ function requireWarroomUnlock(req, res, next) {
 }
 
 // Same-origin proxy so the browser never learns War Room's real address —
-// mirrors the /live/data pattern exactly. Gated: only unlocked sessions may
-// kick off a job at all, which also keeps cost exposure bounded to
-// approved users (WARROOM_BUILD_PLAN.md §6/§10).
+// mirrors the /intelligence/data pattern exactly. Gated: only unlocked
+// sessions may kick off a job at all, which also keeps cost exposure
+// bounded to approved users (WARROOM_BUILD_PLAN.md §6/§10).
 app.post(
-  '/live/investigate',
+  '/intelligence/investigate',
   investigateLimiter,
   express.json({ limit: '10kb' }),
   requireWarroomUnlock,
@@ -386,7 +386,7 @@ app.post(
   }
 );
 
-app.get('/live/investigate/:jobId', requireWarroomUnlock, async (req, res) => {
+app.get('/intelligence/investigate/:jobId', requireWarroomUnlock, async (req, res) => {
   res.set('Cache-Control', 'no-store');
   if (!warroomContract.isValidJobId(req.params.jobId)) {
     return res.status(400).json({ available: false, error: 'Invalid job id.' });
@@ -397,8 +397,8 @@ app.get('/live/investigate/:jobId', requireWarroomUnlock, async (req, res) => {
 
 // ------------------------------------------------------------ trade story
 
-// Part 2 of the "Intelligence" umbrella (part 1 is /live above) — see
-// docs/internal/SWEDEN_TRADE_BUILD_INSTRUCTIONS.md. Renders entirely from a
+// Part 2 of the "Intelligence" umbrella (part 1 is /intelligence above) —
+// see docs/internal/SWEDEN_TRADE_BUILD_INSTRUCTIONS.md. Renders entirely from a
 // committed, pre-baked content/trade-data/<code>.json; the live site has
 // zero runtime dependency on the source statistics API (§3 of that doc — the
 // data updates monthly, so a static file is strictly better than a live call
@@ -408,7 +408,7 @@ app.get('/live/investigate/:jobId', requireWarroomUnlock, async (req, res) => {
 // manifest below is what makes a second country "just add a JSON file",
 // with no route change needed.
 // Deliberately not in PUBLIC_ROUTES / sitemap.xml yet — same first-launch
-// precedent as /live above.
+// precedent as /intelligence above.
 const TRADE_DATA_DIR = path.join(__dirname, 'content', 'trade-data');
 const TRADE_MANIFEST_PATH = path.join(TRADE_DATA_DIR, 'manifest.json');
 
@@ -643,7 +643,7 @@ if (require.main === module) {
     console.warn('[boot] SESSION_SECRET is not set — admin sessions reset on restart.');
   }
   if (!process.env.WARROOM_ACCESS_CODE) {
-    console.warn('[boot] WARROOM_ACCESS_CODE is not set — /live/unlock will refuse every attempt.');
+    console.warn('[boot] WARROOM_ACCESS_CODE is not set — /intelligence/unlock will refuse every attempt.');
   } else if (process.env.WARROOM_ACCESS_CODE.length < MIN_WARROOM_ACCESS_CODE_LENGTH) {
     throw new Error(
       `[boot] WARROOM_ACCESS_CODE is shorter than ${MIN_WARROOM_ACCESS_CODE_LENGTH} characters — refusing to start with a weak access code.`

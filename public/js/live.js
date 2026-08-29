@@ -10,7 +10,7 @@
    corridors don't change minute to minute) loaded from
    public/geo/shipping-lanes.geojson -- see public/geo/README.md for
    source/license. Disruption events are our own live data, added as a
-   GeoJSON source/layer on top. Polls the same-origin /live/data proxy for
+   GeoJSON source/layer on top. Polls the same-origin /intelligence/data proxy for
    updates -- MIS's real address is never sent to the browser. */
 (function () {
   'use strict';
@@ -500,7 +500,7 @@
   renderFeed(); // populate the feed count immediately, don't wait for the first poll
 
   function poll() {
-    fetch('/live/data')
+    fetch('/intelligence/data')
       .then(function (res) { return res.json(); })
       .then(function (data) {
         vessels = Array.isArray(data.vessels) ? data.vessels : [];
