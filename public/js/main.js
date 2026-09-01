@@ -1,4 +1,4 @@
-/* MassifyX Global — progressive enhancement only.
+/* Norvenzia — progressive enhancement only.
    Every page renders, every link works, and the contact form validates and submits
    server-side without any of this. This file adds the mobile menu, scroll reveals,
    and the cookie banner. Nothing here is load-bearing. */

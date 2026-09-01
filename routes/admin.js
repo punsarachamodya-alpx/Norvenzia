@@ -62,8 +62,8 @@ router.post('/login', (req, res) => {
       ? req.body.next
       : '/admin';
 
-  const render = (error) =>
-    res.status(401).render('admin/login', {
+  const render = (error, status = 401) =>
+    res.status(status).render('admin/login', {
       title: 'Sign in',
       error,
       configured: auth.isConfigured(),
@@ -72,7 +72,9 @@ router.post('/login', (req, res) => {
 
   const lockMs = auth.lockoutFor(req.ip);
   if (lockMs > 0) {
-    return render(`Too many attempts. Try again in ${Math.ceil(lockMs / 60000)} minutes.`);
+    // 429, not 401 -- this is a rate/lockout response, not a bad-credential
+    // one, and matches /live/unlock's identical lockout branch (server.js).
+    return render(`Too many attempts. Try again in ${Math.ceil(lockMs / 60000)} minutes.`, 429);
   }
 
   if (!auth.checkPassword(req.body.password)) {
@@ -262,7 +264,7 @@ router.post('/backups/restore', auth.verifyCsrf, (req, res) => {
 });
 
 router.get('/export', (req, res) => {
-  res.set('Content-Disposition', 'attachment; filename="massifyx-content.json"');
+  res.set('Content-Disposition', 'attachment; filename="norvenzia-content.json"');
   res.type('application/json').send(JSON.stringify(store.readOverrides(), null, 2));
 });
 

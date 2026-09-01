@@ -98,6 +98,29 @@ app.use((req, res, next) => {
 
 app.use(compression());
 
+// Every view (including the 404/500 error views) gets site + nav +
+// appearance without each route having to pass them. Deliberately placed
+// this early -- before body parsing, static serving, and the session
+// middleware -- so it always runs, even on a request that never reaches a
+// route handler (a static 404, or a body-parser error like an oversized
+// POST). Previously this ran much later, after express.urlencoded(); an
+// oversized request body made body-parser throw before this ever set
+// res.locals.site, so the error-handling middleware below crashed a second
+// time trying to read `undefined.publicName`, and layout.ejs would have
+// failed the same way on `nav`/`appearance` even if that one reference were
+// guarded -- Express's own default handler then returned a raw stack trace
+// (with local filesystem paths) to the client instead of the styled 500
+// page. Moving this middleware here is the actual fix, not a narrower guard
+// around one field.
+app.use((req, res, next) => {
+  res.locals.site = store.getSection('site');
+  res.locals.nav = store.getSection('nav');
+  res.locals.appearance = store.getSection('appearance');
+  res.locals.currentPath = req.path;
+  res.locals.canonical = store.getSection('site').baseUrl + req.originalUrl.split('?')[0];
+  next();
+});
+
 // Public, unauthenticated, cost/abuse-relevant endpoints -- the two admin/
 // warroom-unlock lockouts (lib/auth.js, lib/warroomAuth.js) already cover
 // their own login routes; these three have no such gating of their own.
@@ -155,6 +178,22 @@ app.use((req, res, next) => {
 
 app.use(express.urlencoded({ extended: false }));
 
+// A body over body-parser's default 100kb limit (e.g. a hostile/oversized
+// /contact submission) throws entity.too.large synchronously inside the
+// urlencoded parser above, before any route handler's own field-length
+// validation (server.js's MAX_FIELD_LENGTH) ever runs. Caught here, right
+// next to the parser that raises it, and turned into a plain 413 rather
+// than falling through to the generic 500 page below -- the visitor gets an
+// honest "too large" outcome instead of "something went wrong at our end,"
+// and this stays route-agnostic (a plain response, not a specific page
+// template) since any express.urlencoded() POST route could trigger it.
+app.use((err, req, res, next) => {
+  if (err && err.type === 'entity.too.large') {
+    return res.status(413).type('text/plain').send('Your submission was too large. Please shorten it and try again.');
+  }
+  next(err);
+});
+
 app.use(
   express.static(path.join(__dirname, 'public'), {
     maxAge: isProd ? '7d' : 0
@@ -175,16 +214,6 @@ app.use(
     }
   })
 );
-
-// Every view gets site + nav + appearance without each route having to pass them.
-app.use((req, res, next) => {
-  res.locals.site = store.getSection('site');
-  res.locals.nav = store.getSection('nav');
-  res.locals.appearance = store.getSection('appearance');
-  res.locals.currentPath = req.path;
-  res.locals.canonical = store.getSection('site').baseUrl + req.originalUrl.split('?')[0];
-  next();
-});
 
 app.use('/admin', adminRouter);
 
@@ -381,7 +410,7 @@ app.get('/insights/sweden-trade', (req, res) => {
     meta: {
       title: `Sweden Trade Intelligence — ${res.locals.site.publicName}`,
       description:
-        "A scroll-driven look at what Sweden imports, who from, and what that concentration means — the same analytical rigor MassifyX applies to a single company's supplier base."
+        "A scroll-driven look at what Sweden imports, who from, and what that concentration means — the same analytical rigor Norvenzia applies to a single company's supplier base."
     },
     data: tradeData
   });
@@ -532,14 +561,14 @@ app.get('/sitemap.xml', (req, res) => {
 
 app.use((req, res) => {
   res.status(404).render('404', {
-    meta: { title: 'Page not found — MassifyX Global', description: '' }
+    meta: { title: `Page not found — ${res.locals.site.publicName}`, description: '' }
   });
 });
 
 app.use((err, req, res, next) => {
   console.error('[error]', err);
   res.status(500).render('500', {
-    meta: { title: 'Something went wrong — MassifyX Global', description: '' }
+    meta: { title: `Something went wrong — ${res.locals.site.publicName}`, description: '' }
   });
 });
 
@@ -575,7 +604,7 @@ if (require.main === module) {
     );
   }
   app.listen(PORT, () => {
-    console.log(`MassifyX Global listening on http://localhost:${PORT}`);
+    console.log(`Norvenzia listening on http://localhost:${PORT}`);
   });
 }
 

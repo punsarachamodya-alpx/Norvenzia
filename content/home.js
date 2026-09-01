@@ -1,6 +1,6 @@
 module.exports = {
   meta: {
-    title: 'MassifyX Global — Procurement & Supply Chain Operations',
+    title: 'Norvenzia — Procurement & Supply Chain Operations',
     description:
       'A senior supply chain team, without the headcount. An EU-based engagement point in Sweden paired with senior-led procurement delivery from Sri Lanka.'
   },
@@ -9,7 +9,7 @@ module.exports = {
     eyebrow: 'Procurement & supply chain operations',
     headline: 'A senior supply chain team, without the headcount.',
     body:
-      'MassifyX Global gives mid-market companies an EU-based engagement point and a senior-led delivery team in Sri Lanka — running procurement, purchase orders, supplier onboarding, and analytics inside your existing systems.',
+      'Norvenzia gives mid-market companies an EU-based engagement point and a senior-led delivery team in Sri Lanka — running procurement, purchase orders, supplier onboarding, and analytics inside your existing systems.',
     primaryCta: { label: 'Book a Discovery Call', href: '/contact' },
     secondaryCta: { label: 'See what we do', href: '/what-we-do' },
     // Leave empty to keep the built-in animated diagram (views/partials/hero-figure.ejs).
@@ -70,7 +70,7 @@ module.exports = {
     eyebrow: 'What we do',
     headline: 'Two divisions, live today.',
     body:
-      'Operations and Analytics are what MassifyX delivers now. Digital, AI, and Advisory sit on the roadmap as the company scales — they are not current offerings.',
+      'Operations and Analytics are what Norvenzia delivers now. Digital, AI, and Advisory sit on the roadmap as the company scales — they are not current offerings.',
     items: [
       {
         name: 'Operations',
@@ -105,7 +105,7 @@ module.exports = {
   },
 
   why: {
-    eyebrow: 'Why MassifyX',
+    eyebrow: 'Why Norvenzia',
     headline: 'What makes the model different.',
     items: [
       {

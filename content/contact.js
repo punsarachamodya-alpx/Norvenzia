@@ -1,6 +1,6 @@
 module.exports = {
   meta: {
-    title: 'Contact — MassifyX Global',
+    title: 'Contact — Norvenzia',
     description:
       'Book a discovery call. Tell us what your procurement operation looks like today and we’ll come back with an honest read on whether we can help.'
   },
