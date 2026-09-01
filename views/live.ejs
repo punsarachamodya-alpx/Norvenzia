@@ -66,6 +66,19 @@
     </div>
   </section>
 
+  <%# At-a-glance stats strip: category and severity counts, computed
+      entirely client-side by public/js/live.js's renderStatsStrip() from
+      the same `events` array already in memory -- no new network call, so
+      MIS's real address still never reaches the browser (see live.js's own
+      header comment). Server-rendered as an empty shell (same pattern as
+      data-role="feed-count" below, which also starts empty); JS fills it
+      in on load and again on every poll()/renderFeed() refresh. %>
+  <section class="section section--tight">
+    <div class="shell">
+      <div class="live-stats" data-role="live-stats" aria-label="Disruption summary"></div>
+    </div>
+  </section>
+
   <%# War Room feature explainer -- the "Investigate" action only lives
       inside a clicked event's popup, so a visitor who never clicks a
       marker has no way to discover it exists. This section makes the
@@ -206,6 +219,7 @@
               <option value="newest">Newest first</option>
               <option value="severity-desc">Severity: high to low</option>
               <option value="severity-asc">Severity: low to high</option>
+              <option value="event-date">Event date</option>
             </select>
           </div>
         </div>
