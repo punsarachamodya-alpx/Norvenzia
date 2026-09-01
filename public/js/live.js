@@ -40,6 +40,13 @@
   var updatedEl = root ? root.querySelector('[data-role="last-updated"]') : null;
   var dataEl = document.getElementById('live-initial-data');
   var vesselsEl = document.getElementById('live-initial-vessels');
+  // Opt-in map-level filter controls (views/live.ejs). Entirely separate
+  // from feedSearchInput/feedSortSelect above -- those only ever affect
+  // the feed list, never the map.
+  var mapFilterChips = Array.prototype.slice.call(document.querySelectorAll('.live-map-filters__chip'));
+  var mapFilterStatusRow = document.querySelector('[data-role="map-filter-status-row"]');
+  var mapFilterStatusText = document.querySelector('[data-role="map-filter-status-text"]');
+  var mapFilterClearBtn = document.querySelector('[data-role="map-filter-clear"]');
   if (!root || !dataEl) return;
 
   function parseJsonIsland(el) {
@@ -119,6 +126,40 @@
   // undisturbed, just moved out from under our own bottom-right legend.
   map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-left');
 
+  // ---------------------------------------------------- clustering tuning
+  //
+  // The map only ever zooms across [minZoom, maxZoom] = [1.3, 6] (set in
+  // the constructor above) -- a "regional glance" range, never
+  // street-level. MIS's real GDELT ingestion was only just unbroken after
+  // ~4 weeks of silently producing nothing, so this map has essentially
+  // never been exercised with real, steady event volume -- nobody yet
+  // knows whether a given moment holds 5 events or 500. These two numbers
+  // are therefore a deliberate judgment call tuned for that uncertainty,
+  // not a measured constant assuming toy-scale data:
+  //
+  // - clusterMaxZoom is set one level below the map's own maxZoom (6), so
+  //   the very top of the zoom range is a guaranteed, deterministic escape
+  //   hatch: zoom all the way in and every event always renders as its own
+  //   dot, no matter how tight real-world density gets. Above this zoom,
+  //   clustering is off entirely.
+  // - clusterRadius is wider than MapLibre's own default (50px) because
+  //   this map box is physically small on screen (max-height: 60vh,
+  //   min-height: 320px -- see .world-map in styles.css) while still
+  //   framing the whole globe by default (zoom 1.75, Atlantic/Europe
+  //   framing). At that scale a 50px radius still leaves same-region
+  //   disruptions (e.g. several Red Sea/Suez incidents reported within a
+  //   day of each other) rendered as overlapping, hard-to-read dots rather
+  //   than one legible cluster -- 60px clusters a bit more eagerly to
+  //   compensate for the small canvas.
+  var CLUSTER_MAX_ZOOM = 5;
+  var CLUSTER_RADIUS = 60;
+  // Fly-to target for feed-driven navigation (focusEventOnMap below): one
+  // zoom level above CLUSTER_MAX_ZOOM, capped at the map's own maxZoom.
+  // Flying here guarantees the target event has already left clustering
+  // range, so it always renders as its own dot instead of possibly landing
+  // back inside a cluster bubble the click can't see into.
+  var FOCUS_ZOOM = Math.min(CLUSTER_MAX_ZOOM + 1, map.getMaxZoom());
+
   // --------------------------------------------------------------- popup
 
   // Wider than a bare severity/summary popup would need on its own --
@@ -172,21 +213,108 @@
     popup.setLngLat(feature.geometry.coordinates).setDOMContent(buildEventPopupContent(feature.properties)).addTo(map);
   }
 
+  // ------------------------------------------------------- map-level filter
+  //
+  // Opt-in, map-only filtering (views/live.ejs renders the category/
+  // severity chips; wiring is below). Entirely separate from
+  // feedSearchQuery/feedSortMode further down, which only ever affect the
+  // feed *list* -- these two Sets drive what the *map* actually draws.
+  // Both start empty, i.e. "no filter, show every event": the map's
+  // default behavior is unchanged unless a visitor deliberately presses a
+  // chip.
+  var mapFilterCategories = new Set();
+  var mapFilterSeverities = new Set();
+
+  function isMapFilterActive() {
+    return mapFilterCategories.size > 0 || mapFilterSeverities.size > 0;
+  }
+
+  function passesMapFilter(item) {
+    if (mapFilterCategories.size > 0 && !mapFilterCategories.has(item.category)) return false;
+    if (mapFilterSeverities.size > 0 && !mapFilterSeverities.has(item.severity)) return false;
+    return true;
+  }
+
+  function getMapFilteredEvents() {
+    return isMapFilterActive() ? events.filter(passesMapFilter) : events;
+  }
+
+  // Filtering is applied at the *data* level -- filtering the events array
+  // itself before it becomes a GeoJSON collection -- rather than via a
+  // layer-level setFilter(). That distinction matters specifically because
+  // of clustering: MapLibre (via supercluster under the hood) computes
+  // each cluster's point_count from whatever data the source was last
+  // given via setData(); a layer-level filter only hides already-clustered
+  // render output, so a filtered-out event would still silently inflate a
+  // nearby cluster's count -- exactly the "looks like data vanished, or
+  // worse, looks like it didn't" failure this feature needs to avoid.
+  // Re-supplying a smaller collection via setData() makes clustering
+  // itself recompute over just the visible subset, so point_count always
+  // matches what's actually being shown, for both the clustered and
+  // unclustered layers alike (they all read from this one source).
+  function updateMapFilterStatus(shownCount, totalCount) {
+    if (!mapFilterStatusRow || !mapFilterStatusText) return;
+    if (!isMapFilterActive()) {
+      mapFilterStatusRow.hidden = true;
+      return;
+    }
+    mapFilterStatusRow.hidden = false;
+    mapFilterStatusText.textContent = 'Showing ' + shownCount + ' of ' + totalCount +
+      (totalCount === 1 ? ' disruption on the map' : ' disruptions on the map');
+  }
+
+  mapFilterChips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      var type = chip.dataset.filterType;
+      var nextActive = chip.getAttribute('aria-pressed') !== 'true';
+      chip.setAttribute('aria-pressed', String(nextActive));
+
+      var targetSet = type === 'severity' ? mapFilterSeverities : mapFilterCategories;
+      var value = type === 'severity' ? Number(chip.dataset.filterValue) : chip.dataset.filterValue;
+      if (nextActive) targetSet.add(value); else targetSet.delete(value);
+
+      renderEventLayers();
+    });
+  });
+
+  if (mapFilterClearBtn) {
+    mapFilterClearBtn.addEventListener('click', function () {
+      mapFilterCategories.clear();
+      mapFilterSeverities.clear();
+      mapFilterChips.forEach(function (chip) { chip.setAttribute('aria-pressed', 'false'); });
+      renderEventLayers();
+    });
+  }
+
   // ---------------------------------------------------- event/lane layers
 
   var hoveredEventId = null;
 
   function renderEventLayers() {
+    var filteredEvents = getMapFilteredEvents();
+    var collection = toEventsGeoJSON(filteredEvents);
+    updateMapFilterStatus(filteredEvents.length, events.length);
+
     var source = map.getSource('events');
-    var collection = toEventsGeoJSON(events);
     if (source) {
       source.setData(collection);
       return;
     }
 
     // promoteId lets MapLibre key feature-state (used for the hover
-    // highlight below) by our own stable event id.
-    map.addSource('events', { type: 'geojson', data: collection, promoteId: 'id' });
+    // highlight below) by our own stable event id -- meaningful only for
+    // unclustered points; cluster pseudo-features get their own
+    // synthetic cluster_id from supercluster and never carry feature
+    // state. cluster/clusterMaxZoom/clusterRadius: see the CLUSTER_*
+    // constants above for the reasoning behind these specific numbers.
+    map.addSource('events', {
+      type: 'geojson',
+      data: collection,
+      promoteId: 'id',
+      cluster: true,
+      clusterMaxZoom: CLUSTER_MAX_ZOOM,
+      clusterRadius: CLUSTER_RADIUS,
+    });
 
     var severityColorExpression = [
       'match', ['get', 'severity'],
@@ -198,11 +326,19 @@
       '#94a3b8',
     ];
     var hovered = ['boolean', ['feature-state', 'hover'], false];
+    // Cluster pseudo-features carry no severity/score properties of their
+    // own (only point_count/point_count_abbreviated/cluster_id) -- without
+    // this filter, the severity/score expressions above would evaluate
+    // against missing data for every cluster feature rendered through
+    // these two layers. These layers keep exactly the pre-clustering
+    // individual-event look; only which features they draw has changed.
+    var unclusteredFilter = ['!', ['has', 'point_count']];
 
     map.addLayer({
       id: 'events-glow',
       type: 'circle',
       source: 'events',
+      filter: unclusteredFilter,
       paint: {
         'circle-color': severityColorExpression,
         'circle-radius': ['interpolate', ['linear'], ['get', 'score'], 20, 12, 100, 26],
@@ -215,6 +351,7 @@
       id: 'events-dots',
       type: 'circle',
       source: 'events',
+      filter: unclusteredFilter,
       paint: {
         'circle-color': severityColorExpression,
         'circle-radius': [
@@ -224,6 +361,58 @@
         ],
         'circle-stroke-width': ['case', hovered, 2.5, 1.5],
         'circle-stroke-color': ['case', hovered, '#ffffff', '#0a1628'],
+      },
+    });
+
+    // Cluster circle + count label -- MapLibre's standard step-by-
+    // point_count pattern. Colored on its own slate/navy scale, never
+    // SEVERITY_COLORS: a cluster can (and, at real volume, likely will)
+    // mix events of different severities, so reusing the severity ramp
+    // here would falsely imply a single severity reading for the whole
+    // group -- two different kinds of fact never share one visual channel
+    // on this map (same principle as the vessel markers elsewhere in this
+    // file). Three buckets (<10 / 10-49 / 50+) are deliberately wide given
+    // the real-volume uncertainty described above: fine whether a given
+    // cluster ends up holding 3 events or 300.
+    map.addLayer({
+      id: 'events-clusters',
+      type: 'circle',
+      source: 'events',
+      filter: ['has', 'point_count'],
+      paint: {
+        'circle-color': [
+          'step', ['get', 'point_count'],
+          '#5b7699',
+          10, '#3a5a82',
+          50, '#1c3a63',
+        ],
+        'circle-radius': [
+          'step', ['get', 'point_count'],
+          16,
+          10, 22,
+          50, 30,
+        ],
+        'circle-stroke-width': 1.5,
+        'circle-stroke-color': 'rgba(255, 255, 255, 0.35)',
+      },
+    });
+
+    map.addLayer({
+      id: 'events-cluster-count',
+      type: 'symbol',
+      source: 'events',
+      filter: ['has', 'point_count'],
+      layout: {
+        'text-field': ['get', 'point_count_abbreviated'],
+        // Confirmed present in CARTO dark-matter's own style.json glyph
+        // stack (it ships this exact fallback pair for its own labels),
+        // not a guess -- an unavailable font name would silently render no
+        // text at all.
+        'text-font': ['Open Sans Bold', 'Noto Sans Regular'],
+        'text-size': 12,
+      },
+      paint: {
+        'text-color': '#ffffff',
       },
     });
 
@@ -247,6 +436,35 @@
     map.on('click', 'events-dots', function (e) {
       var feature = e.features && e.features[0];
       if (feature) openEventPopup(feature);
+    });
+
+    // Clicking a cluster zooms toward it rather than doing nothing or
+    // opening an ambiguous popup for a mixed group of events --
+    // getClusterExpansionZoom queries supercluster (via the source) for
+    // the exact zoom at which this specific cluster's own points stop
+    // being grouped together, so the zoom-in always lands precisely where
+    // the cluster actually resolves rather than an arbitrary "+1 zoom"
+    // guess. This vendored MapLibre GL JS build (v4.7.1) resolves this as
+    // a Promise, not the older callback(err, zoom) shape -- verified by
+    // reading the actual bundle in public/js/vendor/maplibre-gl-csp.js
+    // rather than assumed.
+    map.on('mouseenter', 'events-clusters', function () {
+      map.getCanvas().style.cursor = 'pointer';
+    });
+    map.on('mouseleave', 'events-clusters', function () {
+      map.getCanvas().style.cursor = '';
+    });
+    map.on('click', 'events-clusters', function (e) {
+      var feature = e.features && e.features[0];
+      if (!feature) return;
+      var clusterId = feature.properties.cluster_id;
+      map.getSource('events').getClusterExpansionZoom(clusterId).then(function (zoom) {
+        map.easeTo({ center: feature.geometry.coordinates, zoom: zoom });
+      }).catch(function () {
+        // The cluster may have already changed shape (a poll landed, or
+        // the filter changed) by the time this resolves -- fail quietly
+        // rather than throwing an unhandled rejection.
+      });
     });
   }
 
@@ -365,11 +583,22 @@
 
   // Clicking (or Enter/Space-ing) a feed item flies the map to it and
   // opens the same popup a direct map click would -- the list and the map
-  // are two views over the same data, so they stay cross-linked.
+  // are two views over the same data, so they stay cross-linked. Flies to
+  // FOCUS_ZOOM specifically (not just "some closer zoom") so the target
+  // event is always above CLUSTER_MAX_ZOOM and therefore guaranteed to
+  // render as its own dot, never left grouped inside a cluster bubble a
+  // single feed click can't see into. Note this is independent of the
+  // map's own opt-in filter (mapFilterCategories/mapFilterSeverities
+  // above): the feed list is always the full, unfiltered set, so if a map
+  // filter is currently active and happens to exclude this event, the dot
+  // itself won't be there even after flying in -- the popup still opens
+  // (it's built straight from the feed's own data, not from the rendered
+  // map layer), and the ever-visible "Showing X of Y" status makes it
+  // clear why no marker appeared, rather than this looking like a bug.
   function focusEventOnMap(id) {
     var event = findEventById(id);
     if (!event || !Number.isFinite(event.lat) || !Number.isFinite(event.lon)) return;
-    map.flyTo({ center: [event.lon, event.lat], zoom: Math.max(map.getZoom(), 4), essential: true });
+    map.flyTo({ center: [event.lon, event.lat], zoom: Math.max(map.getZoom(), FOCUS_ZOOM), essential: true });
     var geoJsonEvent = toEventsGeoJSON([event]).features[0];
     openEventPopup(geoJsonEvent);
   }
@@ -389,10 +618,11 @@
     });
   }
 
-  // Search/sort apply only to the feed *list* -- the map still shows every
-  // event regardless (renderEventLayers always uses the raw `events`
-  // array), so filtering the list is a reading convenience, never a way to
-  // accidentally hide real data from the map itself.
+  // Search/sort apply only to the feed *list* -- the map's own default is
+  // still to show every event regardless (mapFilterCategories/
+  // mapFilterSeverities above start empty and only ever change via an
+  // explicit chip press), so filtering the list is a reading convenience,
+  // never a way to accidentally hide real data from the map itself.
   var feedSearchQuery = '';
   var feedSortMode = 'newest';
 
