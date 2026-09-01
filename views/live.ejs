@@ -58,6 +58,35 @@
         </div>
         <p class="world-map__updated" data-role="last-updated" aria-live="polite"></p>
       </div>
+      <%# Opt-in map-level filtering (public/js/live.js wires the click
+          handlers and the actual MapLibre source filtering). Every chip
+          starts unpressed -- the map shows every event by default, exactly
+          as before this existed, unless a visitor deliberately presses one.
+          This is a separate control from the feed's own search/sort above
+          the "Recent events" list further down the page: this one narrows
+          what the *map* draws, that one only reorders/narrows the *list*. %>
+      <div class="live-map-filters" data-role="map-filters">
+        <span class="live-map-filters__intro">Filter map (optional)</span>
+        <div class="live-map-filters__group" role="group" aria-label="Filter map by category">
+          <span class="live-map-filters__label">Category</span>
+          <%# Fixed 7-value enum from lib/misContract.js's CATEGORY_ENUM --
+              MIS's contract, not something derived from whatever events
+              happen to be present right now. %>
+          <% ['weather', 'geopolitical', 'labor', 'logistics', 'regulatory', 'supplier', 'other'].forEach(function (cat) { %>
+            <button type="button" class="live-map-filters__chip" data-filter-type="category" data-filter-value="<%= cat %>" aria-pressed="false"><%= cat %></button>
+          <% }); %>
+        </div>
+        <div class="live-map-filters__group" role="group" aria-label="Filter map by severity">
+          <span class="live-map-filters__label">Severity</span>
+          <% [1, 2, 3, 4, 5].forEach(function (sev) { %>
+            <button type="button" class="live-map-filters__chip live-map-filters__chip--severity" data-filter-type="severity" data-filter-value="<%= sev %>" aria-pressed="false"><%= sev %></button>
+          <% }); %>
+        </div>
+        <div class="live-map-filters__status-row" data-role="map-filter-status-row" hidden>
+          <span data-role="map-filter-status-text"></span>
+          <button type="button" class="live-map-filters__clear" data-role="map-filter-clear">Clear filter</button>
+        </div>
+      </div>
       <p class="world-map__caption">
         Shipping lanes are real maritime corridors (<a href="https://doi.org/10.5281/zenodo.6361763" target="_blank" rel="noopener noreferrer">Global Shipping Lanes dataset</a>, CC BY-SA 4.0), not live vessel tracking.
         <% if (vessels.length > 0) { %>
