@@ -20,6 +20,21 @@
   var CARTO_STYLE_URL = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
   var POLL_INTERVAL_MS = 15000;
 
+  // "Stale" here means MIS resolved a real-world eventDate (GDELT-reported)
+  // that sits well before this event's own firstSeenAt (our own ingest
+  // timestamp) -- exactly the symptom described in
+  // massifyx-intelligence's RUNBOOK.md ("Live feed data quality"): an event
+  // getting stamped with a fresh ingest time even though the underlying
+  // incident was weeks/months old. A gap of a few days is normal and
+  // expected (a still-developing story can take several days of follow-on
+  // coverage before GDELT/MIS settle on a canonical date); a full week or
+  // more is well past ordinary reporting lag, so 7 days is the threshold
+  // below -- generous enough to not cry wolf on routine lag, tight enough
+  // to still catch a real recurrence of the original bug. This doubles as
+  // an ongoing sanity check that the backend fix is holding, not just a
+  // feature.
+  var STALE_THRESHOLD_MS = 7 * 24 * 60 * 60 * 1000;
+
   // A status-style ramp (severity behaves like a threat level, not a
   // generic magnitude). Never the only channel: every marker/popup also
   // carries a numeric label and a text tooltip/summary. Matches the
@@ -37,6 +52,7 @@
   var feedSearchInput = document.getElementById('live-feed-search');
   var feedSortSelect = document.getElementById('live-feed-sort');
   var feedCountEl = document.querySelector('[data-role="feed-count"]');
+  var statsEl = document.querySelector('[data-role="live-stats"]');
   var updatedEl = root ? root.querySelector('[data-role="last-updated"]') : null;
   var dataEl = document.getElementById('live-initial-data');
   var vesselsEl = document.getElementById('live-initial-vessels');
@@ -57,6 +73,32 @@
     return SEVERITY_COLORS[sev] || '#94a3b8';
   }
 
+  // item.eventDate is a "YYYY-MM-DD" real-world date (or null) -- parsed as
+  // UTC midnight and formatted in UTC so a viewer west of UTC never sees it
+  // roll back a day (new Date('2026-07-15') is UTC midnight per spec, but
+  // toLocaleDateString() without an explicit timeZone renders in the
+  // browser's *local* zone, which would print "Jul 14" for a negative UTC
+  // offset). Returns '' for null/missing/malformed -- callers must treat
+  // that as "omit," never render "Invalid Date."
+  function formatEventDate(dateStr) {
+    if (typeof dateStr !== 'string' || !dateStr) return '';
+    var ms = Date.parse(dateStr + 'T00:00:00Z');
+    if (!Number.isFinite(ms)) return '';
+    return new Date(ms).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
+  }
+
+  // See STALE_THRESHOLD_MS above for the 7-day reasoning. Both dates must
+  // actually parse -- an unknown/malformed eventDate or firstSeenAt means
+  // "no opinion," never a false-positive badge.
+  function isStaleEvent(eventDateStr, firstSeenAtStr) {
+    if (typeof eventDateStr !== 'string' || !eventDateStr) return false;
+    if (typeof firstSeenAtStr !== 'string' || !firstSeenAtStr) return false;
+    var eventMs = Date.parse(eventDateStr + 'T00:00:00Z');
+    var firstSeenMs = Date.parse(firstSeenAtStr);
+    if (!Number.isFinite(eventMs) || !Number.isFinite(firstSeenMs)) return false;
+    return (firstSeenMs - eventMs) > STALE_THRESHOLD_MS;
+  }
+
   // The MIS API contract (lib/misContract.js) emits an integer severity
   // 1-5 and a fixed category enum -- "score" here is derived purely for
   // circle-radius scaling; it is not an MIS-provided field and nothing
@@ -73,10 +115,10 @@
             geometry: { type: 'Point', coordinates: [item.lon, item.lat] },
             properties: {
               id: item.id,
-              // title/lat/lon/eventDate aren't used by the base popup below,
-              // but War Room's "Investigate" action (live-warroom.js) needs
-              // them to build its investigation request -- carried here so
-              // that module never has to re-derive them from the raw feed.
+              // title/lat/lon aren't used by the base popup below, but War
+              // Room's "Investigate" action (live-warroom.js) needs them to
+              // build its investigation request -- carried here so that
+              // module never has to re-derive them from the raw feed.
               title: typeof item.title === 'string' ? item.title : item.summary,
               severity: item.severity,
               category: item.category,
@@ -86,7 +128,23 @@
               score: item.severity * 20,
               lat: item.lat,
               lon: item.lon,
-              eventDate: typeof item.firstSeenAt === 'string' ? item.firstSeenAt : (typeof item.lastUpdatedAt === 'string' ? item.lastUpdatedAt : ''),
+              // Renamed from a former property also called "eventDate" that
+              // actually held our own firstSeenAt/lastUpdatedAt ingest
+              // bookkeeping, not a real event date -- same fallback, just
+              // honestly named now that the real thing exists below.
+              reportedAt: typeof item.firstSeenAt === 'string' ? item.firstSeenAt : (typeof item.lastUpdatedAt === 'string' ? item.lastUpdatedAt : ''),
+              // The *real* eventDate: MIS/GDELT's real-world "YYYY-MM-DD"
+              // date this incident actually happened on, independent of
+              // when we first saw it. null when MIS couldn't resolve one --
+              // every reader must handle that (formatEventDate/isStaleEvent
+              // above already do). Used by the popup's "Occurred" line/stale
+              // badge and forwarded as War Room's investigation eventDate.
+              eventDate: typeof item.eventDate === 'string' ? item.eventDate : null,
+              // Raw first-seen ingest timestamp (distinct from the
+              // firstSeenAt/lastUpdatedAt *merge* in reportedAt above) so
+              // isStaleEvent() always compares against the actual
+              // first-seen moment, not whichever fallback reportedAt chose.
+              firstSeenAt: typeof item.firstSeenAt === 'string' ? item.firstSeenAt : '',
             },
           };
         }),
@@ -141,6 +199,25 @@
     meta.className = 'world-map__popup-meta';
     meta.textContent = props.category + ' — ' + props.location;
     wrap.appendChild(meta);
+
+    // Real-world event date, distinct from "reported"/"last updated" --
+    // omitted entirely when MIS couldn't resolve one (props.eventDate is
+    // null), never rendered as "null" or "Invalid Date".
+    var occurredLabel = formatEventDate(props.eventDate);
+    if (occurredLabel) {
+      var occurred = document.createElement('div');
+      occurred.className = 'world-map__popup-occurred';
+      occurred.textContent = 'Occurred ' + occurredLabel;
+      if (isStaleEvent(props.eventDate, props.firstSeenAt)) {
+        var staleBadge = document.createElement('span');
+        staleBadge.className = 'world-map__popup-stale';
+        staleBadge.textContent = 'Reported late';
+        staleBadge.title = 'First reported to us well after the real event date.';
+        occurred.appendChild(document.createTextNode(' '));
+        occurred.appendChild(staleBadge);
+      }
+      wrap.appendChild(occurred);
+    }
 
     var summary = document.createElement('p');
     summary.className = 'world-map__popup-summary';
@@ -408,6 +485,18 @@
     return haystack.indexOf(query) !== -1;
   }
 
+  // 'event-date' sort mode: the real GDELT-reported eventDate ("YYYY-MM-DD",
+  // parsed as UTC midnight) when MIS resolved one. Fallback rule: an event
+  // with no real eventDate falls back to eventTimestamp() (our own
+  // lastUpdatedAt/firstSeenAt ingest bookkeeping) rather than being sorted
+  // to one arbitrary end of the list -- "we don't know the real date" is
+  // not the same claim as "this just happened" or "this is ancient," so it
+  // sorts by whatever timestamp we *do* have instead of a sentinel value.
+  function eventDateSortValue(e) {
+    var ms = typeof e.eventDate === 'string' && e.eventDate ? Date.parse(e.eventDate + 'T00:00:00Z') : NaN;
+    return Number.isFinite(ms) ? ms : eventTimestamp(e);
+  }
+
   function getVisibleFeedEvents() {
     var query = feedSearchQuery.trim().toLowerCase();
     var list = events.filter(function (e) { return matchesSearch(e, query); });
@@ -415,6 +504,7 @@
     list.sort(function (a, b) {
       if (feedSortMode === 'severity-desc') return b.severity - a.severity;
       if (feedSortMode === 'severity-asc') return a.severity - b.severity;
+      if (feedSortMode === 'event-date') return eventDateSortValue(b) - eventDateSortValue(a);
       return eventTimestamp(b) - eventTimestamp(a); // 'newest' (default)
     });
 
@@ -441,7 +531,109 @@
     });
   }
 
+  // At-a-glance category/severity breakdown, computed purely from the
+  // `events` array already in memory -- never a new request, so MIS's real
+  // address still never reaches the browser (see this file's header
+  // comment). Deliberately uses the *full* `events` list, not the
+  // search-filtered feed: this answers "what's happening right now
+  // globally," not "what's currently on screen after I typed in the search
+  // box." Called from renderFeed() below so it refreshes on every poll()
+  // too, not just on first load.
+  function renderStatsStrip() {
+    if (!statsEl) return;
+    statsEl.innerHTML = '';
+
+    if (events.length === 0) {
+      var empty = document.createElement('p');
+      empty.className = 'live-stats__empty';
+      empty.textContent = 'No active disruptions to summarize.';
+      statsEl.appendChild(empty);
+      return;
+    }
+
+    var categoryCounts = {};
+    var severityCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    events.forEach(function (e) {
+      var cat = typeof e.category === 'string' && e.category ? e.category : 'other';
+      categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+      if (severityCounts[e.severity] !== undefined) severityCounts[e.severity] += 1;
+    });
+
+    // Highest-count category first -- "glanceable" means leading with
+    // what's actually dominant right now, not a fixed enum order.
+    var categories = Object.keys(categoryCounts).sort(function (a, b) {
+      return categoryCounts[b] - categoryCounts[a] || a.localeCompare(b);
+    });
+
+    var categoryGroup = document.createElement('div');
+    categoryGroup.className = 'live-stats__group';
+    categoryGroup.setAttribute('aria-label', 'Disruptions by category');
+    var categoryHeading = document.createElement('h3');
+    categoryHeading.className = 'live-stats__heading';
+    categoryHeading.textContent = 'By category';
+    categoryGroup.appendChild(categoryHeading);
+    var categoryList = document.createElement('ul');
+    categoryList.className = 'live-stats__categories';
+    categories.forEach(function (cat) {
+      var li = document.createElement('li');
+      // Full "count category" text per item -- never relies on the CSS
+      // separator glyph alone for meaning (that's purely decorative).
+      li.textContent = categoryCounts[cat] + ' ' + cat;
+      categoryList.appendChild(li);
+    });
+    categoryGroup.appendChild(categoryList);
+    statsEl.appendChild(categoryGroup);
+
+    var severityGroup = document.createElement('div');
+    severityGroup.className = 'live-stats__group';
+    severityGroup.setAttribute('aria-label', 'Disruptions by severity');
+    var severityHeading = document.createElement('h3');
+    severityHeading.className = 'live-stats__heading';
+    severityHeading.textContent = 'By severity';
+    severityGroup.appendChild(severityHeading);
+    var severityList = document.createElement('ul');
+    severityList.className = 'live-stats__severity';
+    var maxSeverityCount = Math.max.apply(null, [1, severityCounts[1], severityCounts[2], severityCounts[3], severityCounts[4], severityCounts[5]]);
+    [1, 2, 3, 4, 5].forEach(function (sev) {
+      var count = severityCounts[sev];
+      if (count === 0) return; // skip bands with nothing active rather than padding the strip with empty rows
+
+      var li = document.createElement('li');
+      li.className = 'live-stats__severity-row';
+
+      // Reuses SEVERITY_COLORS -- the same ramp as the map/feed/legend, not
+      // a second color scale. The swatch is aria-hidden: the bar's length
+      // and the text label right after it both already carry the real
+      // information, so color here is decorative reinforcement only.
+      var swatch = document.createElement('span');
+      swatch.className = 'live-stats__severity-swatch';
+      swatch.style.background = severityColor(sev);
+      swatch.setAttribute('aria-hidden', 'true');
+      li.appendChild(swatch);
+
+      var track = document.createElement('span');
+      track.className = 'live-stats__severity-track';
+      track.setAttribute('aria-hidden', 'true');
+      var fill = document.createElement('span');
+      fill.className = 'live-stats__severity-fill';
+      fill.style.width = Math.round((count / maxSeverityCount) * 100) + '%';
+      fill.style.background = severityColor(sev);
+      track.appendChild(fill);
+      li.appendChild(track);
+
+      var text = document.createElement('span');
+      text.className = 'live-stats__severity-text';
+      text.textContent = 'Severity ' + sev + ' — ' + count + (count === 1 ? ' disruption' : ' disruptions');
+      li.appendChild(text);
+
+      severityList.appendChild(li);
+    });
+    severityGroup.appendChild(severityList);
+    statsEl.appendChild(severityGroup);
+  }
+
   function renderFeed() {
+    renderStatsStrip();
     if (!feedList) return;
     var visible = getVisibleFeedEvents();
     updateFeedCount(visible.length, events.length);
@@ -466,13 +658,32 @@
       loc.className = 'live-feed__location';
       loc.textContent = e.location;
 
-      var summary = document.createElement('p');
-      summary.className = 'live-feed__summary';
-      summary.textContent = e.summary;
-
       li.appendChild(sev);
       li.appendChild(cat);
       li.appendChild(loc);
+
+      // Real event date, distinct from "reported"/"last updated" -- omitted
+      // entirely when MIS couldn't resolve one (e.eventDate is null/absent),
+      // never rendered as "null" or "Invalid Date".
+      var occurredLabel = formatEventDate(e.eventDate);
+      if (occurredLabel) {
+        var occurred = document.createElement('span');
+        occurred.className = 'live-feed__occurred';
+        occurred.textContent = 'Occurred ' + occurredLabel;
+        if (isStaleEvent(e.eventDate, e.firstSeenAt)) {
+          var staleBadge = document.createElement('span');
+          staleBadge.className = 'live-feed__stale-badge';
+          staleBadge.textContent = 'Reported late';
+          staleBadge.title = 'First reported to us well after the real event date.';
+          occurred.appendChild(document.createTextNode(' '));
+          occurred.appendChild(staleBadge);
+        }
+        li.appendChild(occurred);
+      }
+
+      var summary = document.createElement('p');
+      summary.className = 'live-feed__summary';
+      summary.textContent = e.summary;
       li.appendChild(summary);
 
       if (typeof e.sourceUrl === 'string' && /^https?:\/\//i.test(e.sourceUrl)) {
