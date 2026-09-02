@@ -57,7 +57,7 @@
       <% var divisionPhotos = {
         Operations: '/img/photos/service-core.jpg',
         Analytics: '/img/photos/service-pulse.jpg',
-        Resilience: '/img/photos/service-flow.jpg',
+        'Risk Management': '/img/photos/service-flow.jpg',
         'Digital & AI': '/img/photos/service-signal.jpg'
       }; %>
       <%# Live + building divisions get full rows here -- Advisory
@@ -76,7 +76,7 @@
                 <li><%= c %></li>
               <% }); %>
             </ul>
-            <a class="btn btn--ghost btn--pill" href="#contact">Talk to us →</a>
+            <a class="btn btn--ghost btn--pill" href="<%= d.href || '#contact' %>"><%= d.href ? 'Explore ' + d.name : 'Talk to us' %> →</a>
           </div>
         </article>
       <% }); %>

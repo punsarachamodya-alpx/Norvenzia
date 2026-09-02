@@ -1,0 +1,28 @@
+<%# Division landing page (Operations / Analytics / Risk Management) --
+    server.js registers one of these routes per content/<division>.js file.
+    No-photo hero (.hero--inner, same pattern as legal.ejs/story.ejs) rather
+    than the full-bleed .work-hero used elsewhere: none of the ~30 pages in
+    this section have dedicated photography (or the mobile crops .work-hero
+    expects), so every page here -- division, topic, and service alike --
+    uses this same lighter pattern for visual consistency across the set. %>
+<section class="hero hero--inner">
+  <div class="shell shell--narrow">
+    <a class="eyebrow" href="/services">← Back to Services</a>
+    <h1 class="display-1" data-letter-reveal><%= page.h1 %></h1>
+    <p class="lede" style="margin-top:1.5rem;"><%= page.body %></p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="shell">
+    <div class="tier-cards reveal-group">
+      <% page.topics.forEach(function (t) { %>
+        <article class="tier-card">
+          <h3 class="tier-card__name"><%= t.h1 %></h3>
+          <p class="tier-card__body"><%= t.cardBlurb %></p>
+          <a class="tier-card__link" href="/<%= page.slug %>/<%= t.slug %>">Learn more →</a>
+        </article>
+      <% }); %>
+    </div>
+  </div>
+</section>

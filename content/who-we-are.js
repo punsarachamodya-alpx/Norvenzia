@@ -67,7 +67,7 @@ module.exports = {
     eyebrow: 'Roadmap',
     headline: 'Where this is headed.',
     body:
-      'We publish this so there’s no ambiguity about what you can buy today. Operations, Analytics, and Resilience are live, Digital & AI is in active development, and Advisory is direction, not a menu.'
+      'We publish this so there’s no ambiguity about what you can buy today. Operations, Analytics, and Risk Management are live, Digital & AI is in active development, and Advisory is direction, not a menu.'
   },
 
   closing: {

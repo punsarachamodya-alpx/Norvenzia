@@ -57,6 +57,19 @@ const OG_IMAGE_VERSION = (() => {
 // fresh cache key on every release with nothing to remember to bump.
 const ASSET_VERSION = String(Date.now());
 
+// Operations / Analytics / Risk Management: each content/<key>.js exposes
+// { slug, meta, h1, body, topics: [{ slug, meta, h1, body, cardBlurb,
+// services: [{ slug, meta, h1, cardBlurb, problem, whatWeDo, whatYouGet }] }] }
+// -- one division landing page, its topic pages, and their service pages,
+// all flat under /<key>/<slug> regardless of topic vs. service (the doc's
+// own PARENT field drives nesting/back-links, not URL depth). Used both by
+// the res.locals.nav middleware below (to build the expandable nav items)
+// and by the route registration further down. Digital and AI / Advisory
+// and Transformation are deliberately absent from the source document
+// (Norvenzia_Website_Content_for_Claude_Code.docx) and must not be added
+// here.
+const DIVISION_KEYS = ['operations', 'analytics', 'risk-management'];
+
 // Correct secure-cookie and req.ip behaviour behind a reverse proxy.
 app.set('trust proxy', 1);
 app.set('view engine', 'ejs');
@@ -192,7 +205,22 @@ app.use((req, res, next) => {
 // around one field.
 app.use((req, res, next) => {
   res.locals.site = store.getSection('site');
-  res.locals.nav = store.getSection('nav');
+  // "Services" is an expandable nav item whose children are the Operations /
+  // Analytics / Risk Management division pages -- computed here from each
+  // division's own content rather than duplicated in content/nav.js, so the
+  // nav can never list a division that doesn't actually exist (or miss one
+  // that was added). See DIVISION_KEYS above.
+  const navBase = store.getSection('nav');
+  const servicesChildren = DIVISION_KEYS.map((key) => {
+    const division = store.getSection(key);
+    return { label: division.h1, href: `/${key}` };
+  });
+  res.locals.nav = {
+    ...navBase,
+    primary: navBase.primary.map((item) =>
+      item.href === '/services' ? { ...item, children: servicesChildren } : item
+    )
+  };
   res.locals.appearance = store.getSection('appearance');
   // The five divisions (Operations/Analytics/Resilience live, Digital & AI
   // building, Advisory roadmap) are authored once on the What We Do page and
@@ -260,7 +288,17 @@ const PUBLIC_ROUTES = [
   '/contact',
   '/privacy',
   '/cookies',
-  '/terms'
+  '/terms',
+  ...DIVISION_KEYS.flatMap((key) => {
+    const division = store.getSection(key);
+    return [
+      `/${key}`,
+      ...division.topics.flatMap((t) => [
+        `/${key}/${t.slug}`,
+        ...t.services.map((s) => `/${key}/${s.slug}`)
+      ])
+    ];
+  })
 ];
 
 app.get('/', (req, res) => {
@@ -300,6 +338,38 @@ app.get('/about-us', (req, res) => {
 app.get('/what-we-do', (req, res) => res.redirect(301, '/services'));
 app.get('/how-we-work', (req, res) => res.redirect(301, '/the-model'));
 app.get('/who-we-are', (req, res) => res.redirect(301, '/about-us'));
+
+// ------------------------------------- Operations / Analytics / Risk Management
+//
+// Registered per-slug at boot (same pattern as the legal-pages loop below)
+// rather than one wildcard `/:division/:slug` handler, so an unmatched
+// slug 404s through Express's normal fallthrough instead of needing its
+// own lookup-and-404 logic here.
+for (const key of DIVISION_KEYS) {
+  const division = store.getSection(key);
+
+  app.get(`/${key}`, (req, res) => {
+    const page = store.getSection(key);
+    res.render('division', { page, meta: page.meta });
+  });
+
+  for (const topicDefault of division.topics) {
+    app.get(`/${key}/${topicDefault.slug}`, (req, res) => {
+      const page = store.getSection(key);
+      const topic = page.topics.find((t) => t.slug === topicDefault.slug);
+      res.render('division-topic', { division: page, topic, meta: topic.meta });
+    });
+
+    for (const serviceDefault of topicDefault.services) {
+      app.get(`/${key}/${serviceDefault.slug}`, (req, res) => {
+        const page = store.getSection(key);
+        const topic = page.topics.find((t) => t.slug === topicDefault.slug);
+        const service = topic.services.find((s) => s.slug === serviceDefault.slug);
+        res.render('division-service', { division: page, topic, service, meta: service.meta });
+      });
+    }
+  }
+}
 
 // --------------------------------------------------------- intelligence
 

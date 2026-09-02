@@ -2,14 +2,14 @@ module.exports = {
   meta: {
     title: 'Services — Norvenzia',
     description:
-      'Three divisions live today: Operations, Analytics, and Resilience. Digital & AI is in active development. Advisory is a roadmap division — we don’t sell it yet.'
+      'Three divisions live today: Operations, Analytics, and Risk Management. Digital & AI is in active development. Advisory is a roadmap division — we don’t sell it yet.'
   },
 
   hero: {
     eyebrow: 'Services',
     headline: 'Three divisions, live today.',
     body:
-      'Norvenzia runs Operations, Analytics, and Resilience now. Digital & AI is in active development. Advisory is a roadmap division for when the company scales — we don’t sell it yet.'
+      'Norvenzia runs Operations, Analytics, and Risk Management now. Digital & AI is in active development. Advisory is a roadmap division for when the company scales — we don’t sell it yet.'
   },
 
   // Single source of truth for the site's five divisions -- server.js exposes
@@ -20,6 +20,7 @@ module.exports = {
     {
       index: '01',
       name: 'Operations',
+      href: '/operations',
       status: 'live',
       summary:
         'End-to-end supply chain management operations, run by senior analysts inside the systems you already use.',
@@ -36,6 +37,7 @@ module.exports = {
     {
       index: '02',
       name: 'Analytics',
+      href: '/analytics',
       status: 'live',
       summary:
         'Visibility and decision support layered on top of your operational data, so procurement decisions stop being guesswork.',
@@ -52,7 +54,8 @@ module.exports = {
     },
     {
       index: '03',
-      name: 'Resilience',
+      name: 'Risk Management',
+      href: '/risk-management',
       status: 'live',
       summary:
         'Supplier and supply chain risk mapped and monitored on an ongoing basis, so exposure gets managed before it becomes disruption.',

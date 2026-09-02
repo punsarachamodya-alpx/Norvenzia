@@ -4937,3 +4937,97 @@ button {
 .work-hero--dark-nav .work-hero__scrim {
   background: linear-gradient(180deg, rgba(10, 15, 26, 0.6) 0%, rgba(10, 15, 26, 0.92) 100%);
 }
+
+/* ---- 31.18 Expandable nav items (Operations/Analytics/Risk Management) --
+   desktop flyout. The mobile accordion variant of this same markup lives in
+   views/layout.ejs's inline @media block, not here, for the same reason the
+   rest of the hamburger-mode nav does (see that file's comment) -- it needs
+   navBreakpoint, an admin-configurable value CSS can't reference from a
+   static file. ---- */
+
+.header__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.header__caret {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-left: 0.1rem;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  flex: none;
+}
+
+.header__caret span {
+  width: 7px;
+  height: 7px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg) translateY(-2px);
+  transition: transform 0.2s var(--ease);
+}
+
+.header__item.is-open .header__caret span {
+  transform: rotate(225deg) translateY(2px);
+}
+
+.header__dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 16rem;
+  margin-top: 0.7rem;
+  padding: 0.5rem;
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 40px -28px rgba(10, 27, 60, 0.4);
+  z-index: 10;
+}
+
+.header__item.is-open .header__dropdown {
+  display: block;
+}
+
+.header__dropdown-link {
+  display: block;
+  padding: 0.65rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--ink);
+  transition: background-color 0.16s var(--ease), color 0.16s var(--ease);
+}
+
+.header__dropdown-link:hover,
+.header__dropdown-link.is-current {
+  background: var(--ice);
+  color: var(--cobalt);
+}
+
+/* Caret needs the same transparent-header color swaps .header__link already
+   gets (styles.css:547-566) -- it isn't nested inside .header__link, so it
+   doesn't inherit those rules for free. Same white-on-white trap the mobile
+   panel's own .header__link rule exists to avoid: the panel always renders
+   solid white regardless of .header--transparent, so the last rule here
+   matters just as much as the first two. */
+.header--transparent .header__caret {
+  color: var(--color-text-white);
+}
+
+.header--transparent.nav--scrolled .header__caret {
+  color: var(--ink);
+}
+
+.header--transparent .header__nav.is-open .header__caret {
+  color: var(--ink);
+}

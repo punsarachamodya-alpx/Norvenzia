@@ -28,7 +28,7 @@
       <% var divisionPhotos = {
         Operations: '/img/photos/service-core.jpg',
         Analytics: '/img/photos/service-pulse.jpg',
-        Resilience: '/img/photos/service-flow.jpg',
+        'Risk Management': '/img/photos/service-flow.jpg',
         'Digital & AI': '/img/photos/service-signal.jpg',
         Advisory: '/img/photos/service-desk.jpg'
       }; %>
@@ -45,6 +45,9 @@
                 <li><%= c %></li>
               <% }); %>
             </ul>
+            <% if (d.href) { %>
+              <a class="arrow-link" style="margin-top:1.2rem;" href="<%= d.href %>">Explore <%= d.name %></a>
+            <% } %>
           </div>
         </article>
       <% }); %>

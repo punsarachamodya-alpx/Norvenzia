@@ -78,13 +78,19 @@
     const LOGO_ASPECT = 337 / 66;
     const desktopLogoWidth = logoH * LOGO_ASPECT;
 
-    // How much room the 5 nav links + CTA button + gutters need beside the logo
-    // to fit on one line, measured in a real browser at two logo sizes and
-    // solved for the constant: breakpoint = logoWidth + ~915px, with a small
-    // safety margin added here. A fixed pixel breakpoint (the previous approach)
-    // only holds for the logo size and aspect ratio it was measured at — this
-    // one holds for whatever the admin sets, including much larger values.
-    const NAV_ROOM = 930;
+    // How much room the nav links + CTA button + gutters need beside the logo
+    // to fit on one line, measured in a real browser and solved for the
+    // constant: breakpoint = logoWidth + ~1710px, with a small safety margin
+    // added here. A fixed pixel breakpoint (the previous approach) only holds
+    // for the logo size and aspect ratio it was measured at — this one holds
+    // for whatever the admin sets, including much larger values.
+    //
+    // Bumped from 930 to 1000 when "Services" became an expandable item
+    // (Operations/Analytics/Risk Management as its dropdown children) --
+    // same nav content as before plus one caret icon, re-measured the same
+    // way against the real default logo width (90px height -> ~460px wide,
+    // not a smaller assumed value).
+    const NAV_ROOM = 1000;
     const navBreakpoint = Math.ceil(desktopLogoWidth + NAV_ROOM);
   %>
   <style>
@@ -166,6 +172,43 @@
       .header__link::after { display: none; }
 
       .header__cta { margin: 1.25rem 0 0; text-align: center; }
+
+      <%# Operations/Analytics/Risk Management inside the mobile panel: the
+          border-bottom that plain .header__link items carry directly moves
+          to the wrapping .header__item instead, so an expandable item gets
+          exactly one divider line (not one under the link and another
+          under its dropdown). The dropdown itself drops the desktop
+          flyout's floating-panel chrome (position/shadow/border) and
+          becomes a plain indented block that pushes the rest of the list
+          down when open, same accordion behaviour as any mobile nav. %>
+      .header__item {
+        flex-wrap: wrap;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .header__item .header__link {
+        border-bottom: 0;
+      }
+
+      .header__caret {
+        width: 2.75rem;
+        height: 2.75rem;
+      }
+
+      .header__dropdown {
+        position: static;
+        width: 100%;
+        margin-top: 0;
+        padding: 0 0 0.75rem 0.4rem;
+        background: none;
+        border: 0;
+        box-shadow: none;
+      }
+
+      .header__dropdown-link {
+        padding-block: 0.7rem;
+        font-size: 1rem;
+      }
     }
     <%# The footer has its own, narrower breakpoint (see .footer__grid in
         styles.css) where it drops to a single column — that's when a large

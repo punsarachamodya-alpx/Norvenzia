@@ -2,6 +2,13 @@
 // are absent by design until there is a real content pipeline or active hiring.
 
 module.exports = {
+  // "Services" is expandable, with Operations / Analytics / Risk Management
+  // filled in as its `children` at render time (server.js's res.locals
+  // middleware) -- computed from content/operations.js etc. rather than
+  // duplicated here, so the nav can never list a division that doesn't
+  // actually exist. The label/href below are this item's own (still points
+  // straight at the /services summary page, same as the plain link it used
+  // to be); server.js only adds `children` to it.
   primary: [
     { label: 'Services', href: '/services' },
     { label: 'Industries', href: '/industries' },

@@ -20,10 +20,32 @@
     </button>
 
     <nav class="header__nav" id="primaryNav" aria-label="Primary">
-      <% nav.primary.forEach(function (item) { %>
-        <a class="header__link <%= currentPath === item.href ? 'is-current' : '' %>"
-           href="<%= item.href %>"
-           <%= currentPath === item.href ? 'aria-current="page"' : '' %>><%= item.label %></a>
+      <% nav.primary.forEach(function (item, i) { %>
+        <% if (item.children && item.children.length) { %>
+          <%# Expandable item (Operations/Analytics/Risk Management): the
+              label itself still links straight to the division page --
+              only the caret toggles the dropdown, so "click the word" and
+              "click the arrow" both do something reasonable, and a visitor
+              who never notices the caret can still get where the label
+              says. Click-to-toggle (not hover) on purpose: it's the only
+              interaction model that works identically on desktop and the
+              touch-only mobile panel, see public/js/main.js. %>
+          <div class="header__item">
+            <a class="header__link <%= currentPath === item.href ? 'is-current' : '' %>"
+               href="<%= item.href %>"
+               <%= currentPath === item.href ? 'aria-current="page"' : '' %>><%= item.label %></a>
+            <button type="button" class="header__caret" aria-expanded="false" aria-controls="navDropdown<%= i %>" aria-label="Show <%= item.label %> topics"><span></span></button>
+            <div class="header__dropdown" id="navDropdown<%= i %>">
+              <% item.children.forEach(function (child) { %>
+                <a class="header__dropdown-link <%= currentPath === child.href ? 'is-current' : '' %>" href="<%= child.href %>"><%= child.label %></a>
+              <% }); %>
+            </div>
+          </div>
+        <% } else { %>
+          <a class="header__link <%= currentPath === item.href ? 'is-current' : '' %>"
+             href="<%= item.href %>"
+             <%= currentPath === item.href ? 'aria-current="page"' : '' %>><%= item.label %></a>
+        <% } %>
       <% }); %>
       <a class="btn btn--primary header__cta" href="<%= nav.ctaHref %>"><%= nav.ctaLabel %></a>
     </nav>

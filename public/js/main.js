@@ -27,6 +27,42 @@
     });
   }
 
+  // ------------------------------------------------- expandable nav items
+  // Operations/Analytics/Risk Management's dropdown caret (views/partials/
+  // header.ejs). Click-to-toggle rather than hover so the exact same
+  // handler works for both the desktop flyout and the mobile accordion
+  // panel -- no separate touch/hover logic to keep in sync. Only one open
+  // at a time, and closes on an outside click or Escape, same posture as
+  // the mobile nav panel above.
+  var carets = document.querySelectorAll('.header__caret');
+
+  function closeAllDropdowns(except) {
+    carets.forEach(function (c) {
+      if (c === except) return;
+      c.closest('.header__item').classList.remove('is-open');
+      c.setAttribute('aria-expanded', 'false');
+    });
+  }
+
+  carets.forEach(function (caret) {
+    caret.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var item = caret.closest('.header__item');
+      var open = item.classList.toggle('is-open');
+      caret.setAttribute('aria-expanded', String(open));
+      closeAllDropdowns(open ? caret : null);
+    });
+  });
+
+  if (carets.length) {
+    document.addEventListener('click', function () {
+      closeAllDropdowns(null);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeAllDropdowns(null);
+    });
+  }
+
   // ------------------------------------------------ native-resolution cap
   // Full-bleed hero/backdrop photos are absolutely positioned to fill
   // their section (see .hero__photo etc. in styles.css). On a *narrow*

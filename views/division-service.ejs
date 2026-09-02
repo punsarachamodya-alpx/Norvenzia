@@ -1,0 +1,41 @@
+<%# Service page, nested two levels under a division (e.g.
+    /operations/category-strategy) but one level up from its topic (parent
+    is the topic, not the division -- see the eyebrow back-link below).
+    Locals: division, topic (parent), service (the matched entry in
+    topic.services). See views/division.ejs's header comment for why
+    .hero--inner (no photo) is used uniformly across this whole section.
+
+    Body is the doc's own three-part structure (the problem / what
+    Norvenzia does / what you get) -- reusing the exact numbered .step
+    pattern from views/how-we-work.ejs's methodology section verbatim,
+    just with 3 rows instead of 5, and the doc's own section labels
+    standing in for a short .step__title where that pattern normally has
+    one (e.g. "Onboarding", "QA Loop"). %>
+<section class="hero hero--inner">
+  <div class="shell shell--narrow">
+    <a class="eyebrow" href="/<%= division.slug %>/<%= topic.slug %>">← Back to <%= topic.h1 %></a>
+    <h1 class="display-1" data-letter-reveal><%= service.h1 %></h1>
+  </div>
+</section>
+
+<section class="section">
+  <div class="shell shell--narrow">
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step__number">01</div>
+        <h3 class="step__title">The Problem</h3>
+        <p class="step__body"><%= service.problem %></p>
+      </div>
+      <div class="step reveal">
+        <div class="step__number">02</div>
+        <h3 class="step__title">What Norvenzia Does</h3>
+        <p class="step__body"><%= service.whatWeDo %></p>
+      </div>
+      <div class="step reveal">
+        <div class="step__number">03</div>
+        <h3 class="step__title">What You Get</h3>
+        <p class="step__body"><%= service.whatYouGet %></p>
+      </div>
+    </div>
+  </div>
+</section>

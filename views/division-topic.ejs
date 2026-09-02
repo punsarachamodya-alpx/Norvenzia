@@ -1,0 +1,26 @@
+<%# Topic page, nested one level under a division landing page (e.g.
+    /operations/sourcing-contracting). Locals: division (the parent
+    content/<division>.js object), topic (the matched entry in
+    division.topics). See views/division.ejs's header comment for why
+    .hero--inner (no photo) is used uniformly across this whole section. %>
+<section class="hero hero--inner">
+  <div class="shell shell--narrow">
+    <a class="eyebrow" href="/<%= division.slug %>">← Back to <%= division.h1 %></a>
+    <h1 class="display-1" data-letter-reveal><%= topic.h1 %></h1>
+    <p class="lede" style="margin-top:1.5rem;"><%= topic.body %></p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="shell">
+    <div class="tier-cards reveal-group">
+      <% topic.services.forEach(function (s) { %>
+        <article class="tier-card">
+          <h3 class="tier-card__name"><%= s.h1 %></h3>
+          <p class="tier-card__body"><%= s.cardBlurb %></p>
+          <a class="tier-card__link" href="/<%= division.slug %>/<%= s.slug %>">Learn more →</a>
+        </article>
+      <% }); %>
+    </div>
+  </div>
+</section>
