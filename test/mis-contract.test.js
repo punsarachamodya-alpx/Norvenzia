@@ -53,3 +53,32 @@ test('rejects a missing id', () => {
     /id must be a non-empty stable string/,
   );
 });
+
+// eventDate is MIS's newest contract field (fixes old GDELT events sorting
+// as "recent" -- see massifyx-intelligence commit 6e6dae8). This site's copy
+// of the contract must reject the exact shape of bug that field was added
+// to catch: a full timestamp or a non-string Date leaking through instead of
+// a plain "YYYY-MM-DD" calendar string.
+test('accepts a null or absent eventDate (rows enriched before the column existed)', () => {
+  assert.doesNotThrow(() => assertValidDisruptionEvent({ ...fixtureEvents[0], eventDate: null }));
+  const { eventDate, ...withoutEventDate } = fixtureEvents[0];
+  assert.doesNotThrow(() => assertValidDisruptionEvent(withoutEventDate));
+});
+
+test('accepts a well-formed "YYYY-MM-DD" eventDate', () => {
+  assert.doesNotThrow(() => assertValidDisruptionEvent({ ...fixtureEvents[0], eventDate: '2026-07-30' }));
+});
+
+test('rejects an eventDate that is a full timestamp instead of a plain date', () => {
+  assert.throws(
+    () => assertValidDisruptionEvent({ ...fixtureEvents[0], eventDate: '2026-07-30T06:02:00.000Z' }),
+    /eventDate must be null or a "YYYY-MM-DD" string/,
+  );
+});
+
+test('rejects a non-string eventDate (e.g. an un-cast Date object)', () => {
+  assert.throws(
+    () => assertValidDisruptionEvent({ ...fixtureEvents[0], eventDate: new Date('2026-07-30') }),
+    /eventDate must be null or a "YYYY-MM-DD" string/,
+  );
+});
