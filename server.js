@@ -222,13 +222,21 @@ app.use((req, res, next) => {
     )
   };
   res.locals.appearance = store.getSection('appearance');
-  // The five divisions (Operations/Analytics/Resilience live, Digital & AI
-  // building, Advisory roadmap) are authored once on the What We Do page and
-  // read from here wherever else they're shown (currently the homepage), so
-  // there's a single live/roadmap status per division instead of each page
-  // carrying its own copy that can silently drift out of sync with the
-  // others.
-  res.locals.divisions = store.getSection('what-we-do').divisions;
+  // The five divisions (Operations/Analytics/Risk Management live, Digital &
+  // AI building, Advisory roadmap) are authored once on the What We Do page
+  // and read from here wherever else they're shown (currently the homepage
+  // and About Us's roadmap table), so there's a single live/roadmap status
+  // per division instead of each page carrying its own copy that can
+  // silently drift out of sync with the others.
+  const divisions = store.getSection('what-we-do').divisions;
+  // The three live divisions also get their division-page intro paragraph
+  // attached here (read from content/operations.js etc., the same body the
+  // division page itself renders) so /services can show that instead of
+  // duplicating its own summary text -- see views/what-we-do.ejs.
+  res.locals.divisions = divisions.map((d) => {
+    const key = d.href && d.href.startsWith('/') ? d.href.slice(1) : null;
+    return DIVISION_KEYS.includes(key) ? { ...d, intro: store.getSection(key).body } : d;
+  });
   res.locals.currentPath = req.path;
   res.locals.canonical = store.getSection('site').baseUrl + req.originalUrl.split('?')[0];
   res.locals.ogImageVersion = OG_IMAGE_VERSION;
