@@ -27,7 +27,7 @@ module.exports = {
       'Apparel Manufacturing',
       'Footwear Manufacturing'
     ],
-    markets: 'Europe · Norway · Switzerland · UK · Australia · New Zealand · United States'
+    markets: 'Europe · Norway · UK · Australia · New Zealand · United States'
   },
 
   // Who Norvenzia serves — asymmetric photo + copy split.

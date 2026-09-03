@@ -2,7 +2,7 @@
 //
 // Operating model (confirmed): Norvenzia is fully remote from a single hub in
 // Colombo, Sri Lanka -- no office or physical presence anywhere else. Clients
-// are served internationally (wider EU, Norway, Switzerland, UK, Australia,
+// are served internationally (wider EU, Norway, UK, Australia,
 // New Zealand, United States) entirely through remote delivery, not local
 // presence. The former "EU engagement point in Sweden" framing is retired.
 
@@ -15,7 +15,7 @@ module.exports = {
   // actual differentiator.
   tagline: 'We run the work.',
   description:
-    'Norvenzia runs procurement and supply chain operations for mid-market companies — a single Colombo-based team, delivered fully remotely to clients across the EU, Norway, Switzerland, the UK, Australia, New Zealand, and the United States.',
+    'Norvenzia runs procurement and supply chain operations for mid-market companies — a single Colombo-based team, delivered fully remotely to clients across the EU, Norway, the UK, Australia, New Zealand, and the United States.',
   // Two genuinely separate inboxes — contactEmail is the contact-form
   // destination and the address shown on the contact page / home CTA;
   // footerEmail is a distinct address that only ever appears in the

@@ -100,7 +100,7 @@ module.exports = {
     headline: 'Where Norvenzia works best.',
     criteria: [
       'You run 20–500 employees, procurement has outgrown the person who set it up, and you have a defined (or semi-defined) supply chain process to build on.',
-      'You’re based in the EU, Norway, Switzerland, the UK, Australia, New Zealand, or the United States.',
+      'You’re based in the EU, Norway, the UK, Australia, New Zealand, or the United States.',
       'You’re ready to plug an external team into your existing tools and workflows, not rebuild everything from scratch.',
       'You’d rather buy senior capacity than carry the cost of hiring it in-house.'
     ]

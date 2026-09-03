@@ -2,14 +2,14 @@ module.exports = {
   meta: {
     title: 'Services — Norvenzia',
     description:
-      'Three divisions live today: Operations, Analytics, and Risk Management. Digital & AI is in active development. Advisory is a roadmap division — we don’t sell it yet.'
+      'Three divisions live today: Operations, Analytics, and Risk Management.'
   },
 
   hero: {
     eyebrow: 'Services',
     headline: 'Three divisions, live today.',
     body:
-      'Norvenzia runs Operations, Analytics, and Risk Management now. Digital & AI is in active development. Advisory is a roadmap division for when the company scales — we don’t sell it yet.'
+      'Norvenzia runs Operations, Analytics, and Risk Management now.'
   },
 
   // Single source of truth for the site's five divisions -- server.js exposes
