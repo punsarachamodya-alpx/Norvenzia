@@ -230,12 +230,23 @@ app.use((req, res, next) => {
   // silently drift out of sync with the others.
   const divisions = store.getSection('what-we-do').divisions;
   // The three live divisions also get their division-page intro paragraph
-  // attached here (read from content/operations.js etc., the same body the
-  // division page itself renders) so /services can show that instead of
-  // duplicating its own summary text -- see views/what-we-do.ejs.
+  // and topic cards attached here (read from content/operations.js etc.,
+  // the same content the division page itself renders) so /services can
+  // nest each division's topics under it instead of duplicating that
+  // content by hand -- see views/what-we-do.ejs.
   res.locals.divisions = divisions.map((d) => {
     const key = d.href && d.href.startsWith('/') ? d.href.slice(1) : null;
-    return DIVISION_KEYS.includes(key) ? { ...d, intro: store.getSection(key).body } : d;
+    if (!DIVISION_KEYS.includes(key)) return d;
+    const division = store.getSection(key);
+    return {
+      ...d,
+      intro: division.body,
+      topics: division.topics.map((t) => ({
+        h1: t.h1,
+        cardBlurb: t.cardBlurb,
+        href: `/${key}/${t.slug}`
+      }))
+    };
   });
   res.locals.currentPath = req.path;
   res.locals.canonical = store.getSection('site').baseUrl + req.originalUrl.split('?')[0];

@@ -21,6 +21,10 @@
     content/operations.js etc., attached as `intro` in server.js), so this
     page and its three division pages never carry two different summaries
     of the same thing.
+    Below each row, that division's own topic cards (same `.tier-cards`
+    grid the division page itself uses) are nested directly under it, so
+    visitors can jump straight to a topic without a stop at the division
+    page in between -- the division pages still carry the same cards too.
     The compact photo column (see .service-row--compact) leaves a lot of
     plain white space beside the copy — a faint architectural backdrop
     fills that without competing with the text, since it sits at low
@@ -35,21 +39,35 @@
         'Risk Management': '/img/photos/service-flow.jpg'
       }; %>
       <%# `divisions` (not `page.divisions`) -- the res.locals copy has each
-          live division's `intro` paragraph attached (see server.js). %>
+          live division's `intro` paragraph and `topics` attached (see
+          server.js). %>
       <% var liveDivisions = divisions.filter(function (d) { return d.status === 'live'; }); %>
       <% liveDivisions.forEach(function (d, i) { %>
-        <article class="service-row service-row--compact <%= i % 2 === 1 ? 'service-row--reverse' : '' %>">
-          <div class="service-row__media <%= i % 2 === 1 ? 'reveal-right' : 'reveal-left' %>">
-            <img src="<%= divisionPhotos[d.name] || '/img/photos/service-core.jpg' %>" alt="<%= d.name %>" width="1024" height="768">
-          </div>
-          <div class="service-row__copy">
-            <h2 class="service-row__name"><%= d.name %></h2>
-            <p class="home-section__body" style="margin-bottom:1.2rem;"><%= d.intro %></p>
-            <% if (d.href) { %>
-              <a class="arrow-link" style="margin-top:1.2rem;" href="<%= d.href %>">Explore <%= d.name %></a>
-            <% } %>
-          </div>
-        </article>
+        <div class="division-block">
+          <article class="service-row service-row--compact <%= i % 2 === 1 ? 'service-row--reverse' : '' %>">
+            <div class="service-row__media <%= i % 2 === 1 ? 'reveal-right' : 'reveal-left' %>">
+              <img src="<%= divisionPhotos[d.name] || '/img/photos/service-core.jpg' %>" alt="<%= d.name %>" width="1024" height="768">
+            </div>
+            <div class="service-row__copy">
+              <h2 class="service-row__name"><%= d.name %></h2>
+              <p class="home-section__body" style="margin-bottom:1.2rem;"><%= d.intro %></p>
+              <% if (d.href) { %>
+                <a class="arrow-link" style="margin-top:1.2rem;" href="<%= d.href %>">Explore <%= d.name %></a>
+              <% } %>
+            </div>
+          </article>
+          <% if (d.topics && d.topics.length) { %>
+            <div class="tier-cards reveal-group" style="margin-top:2rem;">
+              <% d.topics.forEach(function (t) { %>
+                <article class="tier-card">
+                  <h3 class="tier-card__name"><%= t.h1 %></h3>
+                  <p class="tier-card__body"><%= t.cardBlurb %></p>
+                  <a class="tier-card__link" href="<%= t.href %>">Learn more →</a>
+                </article>
+              <% }); %>
+            </div>
+          <% } %>
+        </div>
       <% }); %>
     </div>
   </div>
