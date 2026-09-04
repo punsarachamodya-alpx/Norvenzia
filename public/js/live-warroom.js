@@ -284,7 +284,16 @@
         summary: props.summary,
         lat: props.lat,
         lon: props.lon,
-        eventDate: props.eventDate
+        // Prefer the real GDELT-reported eventDate (props.eventDate, a
+        // "YYYY-MM-DD" string) so War Room's research is anchored to when
+        // the incident actually happened, not when we ingested it -- this
+        // is the same real-world-date gap the RUNBOOK's "Live feed data
+        // quality" fix was about. Falls back to reportedAt (our own
+        // firstSeenAt/lastUpdatedAt bookkeeping, see live.js's
+        // toEventsGeoJSON) only for the rarer case where MIS couldn't
+        // resolve a real event date. warroomContract.js on the server just
+        // treats this as an opaque trimmed string either way.
+        eventDate: props.eventDate || props.reportedAt
       })
     })
       .then(function (result) { handleInvestigateResponse(container, props, result); })

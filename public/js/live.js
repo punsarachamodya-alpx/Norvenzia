@@ -20,6 +20,21 @@
   var CARTO_STYLE_URL = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
   var POLL_INTERVAL_MS = 15000;
 
+  // "Stale" here means MIS resolved a real-world eventDate (GDELT-reported)
+  // that sits well before this event's own firstSeenAt (our own ingest
+  // timestamp) -- exactly the symptom described in
+  // massifyx-intelligence's RUNBOOK.md ("Live feed data quality"): an event
+  // getting stamped with a fresh ingest time even though the underlying
+  // incident was weeks/months old. A gap of a few days is normal and
+  // expected (a still-developing story can take several days of follow-on
+  // coverage before GDELT/MIS settle on a canonical date); a full week or
+  // more is well past ordinary reporting lag, so 7 days is the threshold
+  // below -- generous enough to not cry wolf on routine lag, tight enough
+  // to still catch a real recurrence of the original bug. This doubles as
+  // an ongoing sanity check that the backend fix is holding, not just a
+  // feature.
+  var STALE_THRESHOLD_MS = 7 * 24 * 60 * 60 * 1000;
+
   // A status-style ramp (severity behaves like a threat level, not a
   // generic magnitude). Never the only channel: every marker/popup also
   // carries a numeric label and a text tooltip/summary. Matches the
@@ -37,9 +52,17 @@
   var feedSearchInput = document.getElementById('live-feed-search');
   var feedSortSelect = document.getElementById('live-feed-sort');
   var feedCountEl = document.querySelector('[data-role="feed-count"]');
+  var statsEl = document.querySelector('[data-role="live-stats"]');
   var updatedEl = root ? root.querySelector('[data-role="last-updated"]') : null;
   var dataEl = document.getElementById('live-initial-data');
   var vesselsEl = document.getElementById('live-initial-vessels');
+  // Opt-in map-level filter controls (views/live.ejs). Entirely separate
+  // from feedSearchInput/feedSortSelect above -- those only ever affect
+  // the feed list, never the map.
+  var mapFilterChips = Array.prototype.slice.call(document.querySelectorAll('.live-map-filters__chip'));
+  var mapFilterStatusRow = document.querySelector('[data-role="map-filter-status-row"]');
+  var mapFilterStatusText = document.querySelector('[data-role="map-filter-status-text"]');
+  var mapFilterClearBtn = document.querySelector('[data-role="map-filter-clear"]');
   if (!root || !dataEl) return;
 
   function parseJsonIsland(el) {
@@ -55,6 +78,32 @@
 
   function severityColor(sev) {
     return SEVERITY_COLORS[sev] || '#94a3b8';
+  }
+
+  // item.eventDate is a "YYYY-MM-DD" real-world date (or null) -- parsed as
+  // UTC midnight and formatted in UTC so a viewer west of UTC never sees it
+  // roll back a day (new Date('2026-07-15') is UTC midnight per spec, but
+  // toLocaleDateString() without an explicit timeZone renders in the
+  // browser's *local* zone, which would print "Jul 14" for a negative UTC
+  // offset). Returns '' for null/missing/malformed -- callers must treat
+  // that as "omit," never render "Invalid Date."
+  function formatEventDate(dateStr) {
+    if (typeof dateStr !== 'string' || !dateStr) return '';
+    var ms = Date.parse(dateStr + 'T00:00:00Z');
+    if (!Number.isFinite(ms)) return '';
+    return new Date(ms).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' });
+  }
+
+  // See STALE_THRESHOLD_MS above for the 7-day reasoning. Both dates must
+  // actually parse -- an unknown/malformed eventDate or firstSeenAt means
+  // "no opinion," never a false-positive badge.
+  function isStaleEvent(eventDateStr, firstSeenAtStr) {
+    if (typeof eventDateStr !== 'string' || !eventDateStr) return false;
+    if (typeof firstSeenAtStr !== 'string' || !firstSeenAtStr) return false;
+    var eventMs = Date.parse(eventDateStr + 'T00:00:00Z');
+    var firstSeenMs = Date.parse(firstSeenAtStr);
+    if (!Number.isFinite(eventMs) || !Number.isFinite(firstSeenMs)) return false;
+    return (firstSeenMs - eventMs) > STALE_THRESHOLD_MS;
   }
 
   // The MIS API contract (lib/misContract.js) emits an integer severity
@@ -73,10 +122,10 @@
             geometry: { type: 'Point', coordinates: [item.lon, item.lat] },
             properties: {
               id: item.id,
-              // title/lat/lon/eventDate aren't used by the base popup below,
-              // but War Room's "Investigate" action (live-warroom.js) needs
-              // them to build its investigation request -- carried here so
-              // that module never has to re-derive them from the raw feed.
+              // title/lat/lon aren't used by the base popup below, but War
+              // Room's "Investigate" action (live-warroom.js) needs them to
+              // build its investigation request -- carried here so that
+              // module never has to re-derive them from the raw feed.
               title: typeof item.title === 'string' ? item.title : item.summary,
               severity: item.severity,
               category: item.category,
@@ -86,7 +135,23 @@
               score: item.severity * 20,
               lat: item.lat,
               lon: item.lon,
-              eventDate: typeof item.firstSeenAt === 'string' ? item.firstSeenAt : (typeof item.lastUpdatedAt === 'string' ? item.lastUpdatedAt : ''),
+              // Renamed from a former property also called "eventDate" that
+              // actually held our own firstSeenAt/lastUpdatedAt ingest
+              // bookkeeping, not a real event date -- same fallback, just
+              // honestly named now that the real thing exists below.
+              reportedAt: typeof item.firstSeenAt === 'string' ? item.firstSeenAt : (typeof item.lastUpdatedAt === 'string' ? item.lastUpdatedAt : ''),
+              // The *real* eventDate: MIS/GDELT's real-world "YYYY-MM-DD"
+              // date this incident actually happened on, independent of
+              // when we first saw it. null when MIS couldn't resolve one --
+              // every reader must handle that (formatEventDate/isStaleEvent
+              // above already do). Used by the popup's "Occurred" line/stale
+              // badge and forwarded as War Room's investigation eventDate.
+              eventDate: typeof item.eventDate === 'string' ? item.eventDate : null,
+              // Raw first-seen ingest timestamp (distinct from the
+              // firstSeenAt/lastUpdatedAt *merge* in reportedAt above) so
+              // isStaleEvent() always compares against the actual
+              // first-seen moment, not whichever fallback reportedAt chose.
+              firstSeenAt: typeof item.firstSeenAt === 'string' ? item.firstSeenAt : '',
             },
           };
         }),
@@ -119,6 +184,40 @@
   // undisturbed, just moved out from under our own bottom-right legend.
   map.addControl(new maplibregl.AttributionControl({ compact: true }), 'bottom-left');
 
+  // ---------------------------------------------------- clustering tuning
+  //
+  // The map only ever zooms across [minZoom, maxZoom] = [1.3, 6] (set in
+  // the constructor above) -- a "regional glance" range, never
+  // street-level. MIS's real GDELT ingestion was only just unbroken after
+  // ~4 weeks of silently producing nothing, so this map has essentially
+  // never been exercised with real, steady event volume -- nobody yet
+  // knows whether a given moment holds 5 events or 500. These two numbers
+  // are therefore a deliberate judgment call tuned for that uncertainty,
+  // not a measured constant assuming toy-scale data:
+  //
+  // - clusterMaxZoom is set one level below the map's own maxZoom (6), so
+  //   the very top of the zoom range is a guaranteed, deterministic escape
+  //   hatch: zoom all the way in and every event always renders as its own
+  //   dot, no matter how tight real-world density gets. Above this zoom,
+  //   clustering is off entirely.
+  // - clusterRadius is wider than MapLibre's own default (50px) because
+  //   this map box is physically small on screen (max-height: 60vh,
+  //   min-height: 320px -- see .world-map in styles.css) while still
+  //   framing the whole globe by default (zoom 1.75, Atlantic/Europe
+  //   framing). At that scale a 50px radius still leaves same-region
+  //   disruptions (e.g. several Red Sea/Suez incidents reported within a
+  //   day of each other) rendered as overlapping, hard-to-read dots rather
+  //   than one legible cluster -- 60px clusters a bit more eagerly to
+  //   compensate for the small canvas.
+  var CLUSTER_MAX_ZOOM = 5;
+  var CLUSTER_RADIUS = 60;
+  // Fly-to target for feed-driven navigation (focusEventOnMap below): one
+  // zoom level above CLUSTER_MAX_ZOOM, capped at the map's own maxZoom.
+  // Flying here guarantees the target event has already left clustering
+  // range, so it always renders as its own dot instead of possibly landing
+  // back inside a cluster bubble the click can't see into.
+  var FOCUS_ZOOM = Math.min(CLUSTER_MAX_ZOOM + 1, map.getMaxZoom());
+
   // --------------------------------------------------------------- popup
 
   // Wider than a bare severity/summary popup would need on its own --
@@ -141,6 +240,25 @@
     meta.className = 'world-map__popup-meta';
     meta.textContent = props.category + ' — ' + props.location;
     wrap.appendChild(meta);
+
+    // Real-world event date, distinct from "reported"/"last updated" --
+    // omitted entirely when MIS couldn't resolve one (props.eventDate is
+    // null), never rendered as "null" or "Invalid Date".
+    var occurredLabel = formatEventDate(props.eventDate);
+    if (occurredLabel) {
+      var occurred = document.createElement('div');
+      occurred.className = 'world-map__popup-occurred';
+      occurred.textContent = 'Occurred ' + occurredLabel;
+      if (isStaleEvent(props.eventDate, props.firstSeenAt)) {
+        var staleBadge = document.createElement('span');
+        staleBadge.className = 'world-map__popup-stale';
+        staleBadge.textContent = 'Reported late';
+        staleBadge.title = 'First reported to us well after the real event date.';
+        occurred.appendChild(document.createTextNode(' '));
+        occurred.appendChild(staleBadge);
+      }
+      wrap.appendChild(occurred);
+    }
 
     var summary = document.createElement('p');
     summary.className = 'world-map__popup-summary';
@@ -172,21 +290,108 @@
     popup.setLngLat(feature.geometry.coordinates).setDOMContent(buildEventPopupContent(feature.properties)).addTo(map);
   }
 
+  // ------------------------------------------------------- map-level filter
+  //
+  // Opt-in, map-only filtering (views/live.ejs renders the category/
+  // severity chips; wiring is below). Entirely separate from
+  // feedSearchQuery/feedSortMode further down, which only ever affect the
+  // feed *list* -- these two Sets drive what the *map* actually draws.
+  // Both start empty, i.e. "no filter, show every event": the map's
+  // default behavior is unchanged unless a visitor deliberately presses a
+  // chip.
+  var mapFilterCategories = new Set();
+  var mapFilterSeverities = new Set();
+
+  function isMapFilterActive() {
+    return mapFilterCategories.size > 0 || mapFilterSeverities.size > 0;
+  }
+
+  function passesMapFilter(item) {
+    if (mapFilterCategories.size > 0 && !mapFilterCategories.has(item.category)) return false;
+    if (mapFilterSeverities.size > 0 && !mapFilterSeverities.has(item.severity)) return false;
+    return true;
+  }
+
+  function getMapFilteredEvents() {
+    return isMapFilterActive() ? events.filter(passesMapFilter) : events;
+  }
+
+  // Filtering is applied at the *data* level -- filtering the events array
+  // itself before it becomes a GeoJSON collection -- rather than via a
+  // layer-level setFilter(). That distinction matters specifically because
+  // of clustering: MapLibre (via supercluster under the hood) computes
+  // each cluster's point_count from whatever data the source was last
+  // given via setData(); a layer-level filter only hides already-clustered
+  // render output, so a filtered-out event would still silently inflate a
+  // nearby cluster's count -- exactly the "looks like data vanished, or
+  // worse, looks like it didn't" failure this feature needs to avoid.
+  // Re-supplying a smaller collection via setData() makes clustering
+  // itself recompute over just the visible subset, so point_count always
+  // matches what's actually being shown, for both the clustered and
+  // unclustered layers alike (they all read from this one source).
+  function updateMapFilterStatus(shownCount, totalCount) {
+    if (!mapFilterStatusRow || !mapFilterStatusText) return;
+    if (!isMapFilterActive()) {
+      mapFilterStatusRow.hidden = true;
+      return;
+    }
+    mapFilterStatusRow.hidden = false;
+    mapFilterStatusText.textContent = 'Showing ' + shownCount + ' of ' + totalCount +
+      (totalCount === 1 ? ' disruption on the map' : ' disruptions on the map');
+  }
+
+  mapFilterChips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      var type = chip.dataset.filterType;
+      var nextActive = chip.getAttribute('aria-pressed') !== 'true';
+      chip.setAttribute('aria-pressed', String(nextActive));
+
+      var targetSet = type === 'severity' ? mapFilterSeverities : mapFilterCategories;
+      var value = type === 'severity' ? Number(chip.dataset.filterValue) : chip.dataset.filterValue;
+      if (nextActive) targetSet.add(value); else targetSet.delete(value);
+
+      renderEventLayers();
+    });
+  });
+
+  if (mapFilterClearBtn) {
+    mapFilterClearBtn.addEventListener('click', function () {
+      mapFilterCategories.clear();
+      mapFilterSeverities.clear();
+      mapFilterChips.forEach(function (chip) { chip.setAttribute('aria-pressed', 'false'); });
+      renderEventLayers();
+    });
+  }
+
   // ---------------------------------------------------- event/lane layers
 
   var hoveredEventId = null;
 
   function renderEventLayers() {
+    var filteredEvents = getMapFilteredEvents();
+    var collection = toEventsGeoJSON(filteredEvents);
+    updateMapFilterStatus(filteredEvents.length, events.length);
+
     var source = map.getSource('events');
-    var collection = toEventsGeoJSON(events);
     if (source) {
       source.setData(collection);
       return;
     }
 
     // promoteId lets MapLibre key feature-state (used for the hover
-    // highlight below) by our own stable event id.
-    map.addSource('events', { type: 'geojson', data: collection, promoteId: 'id' });
+    // highlight below) by our own stable event id -- meaningful only for
+    // unclustered points; cluster pseudo-features get their own
+    // synthetic cluster_id from supercluster and never carry feature
+    // state. cluster/clusterMaxZoom/clusterRadius: see the CLUSTER_*
+    // constants above for the reasoning behind these specific numbers.
+    map.addSource('events', {
+      type: 'geojson',
+      data: collection,
+      promoteId: 'id',
+      cluster: true,
+      clusterMaxZoom: CLUSTER_MAX_ZOOM,
+      clusterRadius: CLUSTER_RADIUS,
+    });
 
     var severityColorExpression = [
       'match', ['get', 'severity'],
@@ -198,11 +403,19 @@
       '#94a3b8',
     ];
     var hovered = ['boolean', ['feature-state', 'hover'], false];
+    // Cluster pseudo-features carry no severity/score properties of their
+    // own (only point_count/point_count_abbreviated/cluster_id) -- without
+    // this filter, the severity/score expressions above would evaluate
+    // against missing data for every cluster feature rendered through
+    // these two layers. These layers keep exactly the pre-clustering
+    // individual-event look; only which features they draw has changed.
+    var unclusteredFilter = ['!', ['has', 'point_count']];
 
     map.addLayer({
       id: 'events-glow',
       type: 'circle',
       source: 'events',
+      filter: unclusteredFilter,
       paint: {
         'circle-color': severityColorExpression,
         'circle-radius': ['interpolate', ['linear'], ['get', 'score'], 20, 12, 100, 26],
@@ -215,6 +428,7 @@
       id: 'events-dots',
       type: 'circle',
       source: 'events',
+      filter: unclusteredFilter,
       paint: {
         'circle-color': severityColorExpression,
         'circle-radius': [
@@ -224,6 +438,58 @@
         ],
         'circle-stroke-width': ['case', hovered, 2.5, 1.5],
         'circle-stroke-color': ['case', hovered, '#ffffff', '#0a1628'],
+      },
+    });
+
+    // Cluster circle + count label -- MapLibre's standard step-by-
+    // point_count pattern. Colored on its own slate/navy scale, never
+    // SEVERITY_COLORS: a cluster can (and, at real volume, likely will)
+    // mix events of different severities, so reusing the severity ramp
+    // here would falsely imply a single severity reading for the whole
+    // group -- two different kinds of fact never share one visual channel
+    // on this map (same principle as the vessel markers elsewhere in this
+    // file). Three buckets (<10 / 10-49 / 50+) are deliberately wide given
+    // the real-volume uncertainty described above: fine whether a given
+    // cluster ends up holding 3 events or 300.
+    map.addLayer({
+      id: 'events-clusters',
+      type: 'circle',
+      source: 'events',
+      filter: ['has', 'point_count'],
+      paint: {
+        'circle-color': [
+          'step', ['get', 'point_count'],
+          '#5b7699',
+          10, '#3a5a82',
+          50, '#1c3a63',
+        ],
+        'circle-radius': [
+          'step', ['get', 'point_count'],
+          16,
+          10, 22,
+          50, 30,
+        ],
+        'circle-stroke-width': 1.5,
+        'circle-stroke-color': 'rgba(255, 255, 255, 0.35)',
+      },
+    });
+
+    map.addLayer({
+      id: 'events-cluster-count',
+      type: 'symbol',
+      source: 'events',
+      filter: ['has', 'point_count'],
+      layout: {
+        'text-field': ['get', 'point_count_abbreviated'],
+        // Confirmed present in CARTO dark-matter's own style.json glyph
+        // stack (it ships this exact fallback pair for its own labels),
+        // not a guess -- an unavailable font name would silently render no
+        // text at all.
+        'text-font': ['Open Sans Bold', 'Noto Sans Regular'],
+        'text-size': 12,
+      },
+      paint: {
+        'text-color': '#ffffff',
       },
     });
 
@@ -247,6 +513,35 @@
     map.on('click', 'events-dots', function (e) {
       var feature = e.features && e.features[0];
       if (feature) openEventPopup(feature);
+    });
+
+    // Clicking a cluster zooms toward it rather than doing nothing or
+    // opening an ambiguous popup for a mixed group of events --
+    // getClusterExpansionZoom queries supercluster (via the source) for
+    // the exact zoom at which this specific cluster's own points stop
+    // being grouped together, so the zoom-in always lands precisely where
+    // the cluster actually resolves rather than an arbitrary "+1 zoom"
+    // guess. This vendored MapLibre GL JS build (v4.7.1) resolves this as
+    // a Promise, not the older callback(err, zoom) shape -- verified by
+    // reading the actual bundle in public/js/vendor/maplibre-gl-csp.js
+    // rather than assumed.
+    map.on('mouseenter', 'events-clusters', function () {
+      map.getCanvas().style.cursor = 'pointer';
+    });
+    map.on('mouseleave', 'events-clusters', function () {
+      map.getCanvas().style.cursor = '';
+    });
+    map.on('click', 'events-clusters', function (e) {
+      var feature = e.features && e.features[0];
+      if (!feature) return;
+      var clusterId = feature.properties.cluster_id;
+      map.getSource('events').getClusterExpansionZoom(clusterId).then(function (zoom) {
+        map.easeTo({ center: feature.geometry.coordinates, zoom: zoom });
+      }).catch(function () {
+        // The cluster may have already changed shape (a poll landed, or
+        // the filter changed) by the time this resolves -- fail quietly
+        // rather than throwing an unhandled rejection.
+      });
     });
   }
 
@@ -365,11 +660,22 @@
 
   // Clicking (or Enter/Space-ing) a feed item flies the map to it and
   // opens the same popup a direct map click would -- the list and the map
-  // are two views over the same data, so they stay cross-linked.
+  // are two views over the same data, so they stay cross-linked. Flies to
+  // FOCUS_ZOOM specifically (not just "some closer zoom") so the target
+  // event is always above CLUSTER_MAX_ZOOM and therefore guaranteed to
+  // render as its own dot, never left grouped inside a cluster bubble a
+  // single feed click can't see into. Note this is independent of the
+  // map's own opt-in filter (mapFilterCategories/mapFilterSeverities
+  // above): the feed list is always the full, unfiltered set, so if a map
+  // filter is currently active and happens to exclude this event, the dot
+  // itself won't be there even after flying in -- the popup still opens
+  // (it's built straight from the feed's own data, not from the rendered
+  // map layer), and the ever-visible "Showing X of Y" status makes it
+  // clear why no marker appeared, rather than this looking like a bug.
   function focusEventOnMap(id) {
     var event = findEventById(id);
     if (!event || !Number.isFinite(event.lat) || !Number.isFinite(event.lon)) return;
-    map.flyTo({ center: [event.lon, event.lat], zoom: Math.max(map.getZoom(), 4), essential: true });
+    map.flyTo({ center: [event.lon, event.lat], zoom: Math.max(map.getZoom(), FOCUS_ZOOM), essential: true });
     var geoJsonEvent = toEventsGeoJSON([event]).features[0];
     openEventPopup(geoJsonEvent);
   }
@@ -389,10 +695,11 @@
     });
   }
 
-  // Search/sort apply only to the feed *list* -- the map still shows every
-  // event regardless (renderEventLayers always uses the raw `events`
-  // array), so filtering the list is a reading convenience, never a way to
-  // accidentally hide real data from the map itself.
+  // Search/sort apply only to the feed *list* -- the map's own default is
+  // still to show every event regardless (mapFilterCategories/
+  // mapFilterSeverities above start empty and only ever change via an
+  // explicit chip press), so filtering the list is a reading convenience,
+  // never a way to accidentally hide real data from the map itself.
   var feedSearchQuery = '';
   var feedSortMode = 'newest';
 
@@ -408,6 +715,18 @@
     return haystack.indexOf(query) !== -1;
   }
 
+  // 'event-date' sort mode: the real GDELT-reported eventDate ("YYYY-MM-DD",
+  // parsed as UTC midnight) when MIS resolved one. Fallback rule: an event
+  // with no real eventDate falls back to eventTimestamp() (our own
+  // lastUpdatedAt/firstSeenAt ingest bookkeeping) rather than being sorted
+  // to one arbitrary end of the list -- "we don't know the real date" is
+  // not the same claim as "this just happened" or "this is ancient," so it
+  // sorts by whatever timestamp we *do* have instead of a sentinel value.
+  function eventDateSortValue(e) {
+    var ms = typeof e.eventDate === 'string' && e.eventDate ? Date.parse(e.eventDate + 'T00:00:00Z') : NaN;
+    return Number.isFinite(ms) ? ms : eventTimestamp(e);
+  }
+
   function getVisibleFeedEvents() {
     var query = feedSearchQuery.trim().toLowerCase();
     var list = events.filter(function (e) { return matchesSearch(e, query); });
@@ -415,6 +734,7 @@
     list.sort(function (a, b) {
       if (feedSortMode === 'severity-desc') return b.severity - a.severity;
       if (feedSortMode === 'severity-asc') return a.severity - b.severity;
+      if (feedSortMode === 'event-date') return eventDateSortValue(b) - eventDateSortValue(a);
       return eventTimestamp(b) - eventTimestamp(a); // 'newest' (default)
     });
 
@@ -441,7 +761,109 @@
     });
   }
 
+  // At-a-glance category/severity breakdown, computed purely from the
+  // `events` array already in memory -- never a new request, so MIS's real
+  // address still never reaches the browser (see this file's header
+  // comment). Deliberately uses the *full* `events` list, not the
+  // search-filtered feed: this answers "what's happening right now
+  // globally," not "what's currently on screen after I typed in the search
+  // box." Called from renderFeed() below so it refreshes on every poll()
+  // too, not just on first load.
+  function renderStatsStrip() {
+    if (!statsEl) return;
+    statsEl.innerHTML = '';
+
+    if (events.length === 0) {
+      var empty = document.createElement('p');
+      empty.className = 'live-stats__empty';
+      empty.textContent = 'No active disruptions to summarize.';
+      statsEl.appendChild(empty);
+      return;
+    }
+
+    var categoryCounts = {};
+    var severityCounts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    events.forEach(function (e) {
+      var cat = typeof e.category === 'string' && e.category ? e.category : 'other';
+      categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+      if (severityCounts[e.severity] !== undefined) severityCounts[e.severity] += 1;
+    });
+
+    // Highest-count category first -- "glanceable" means leading with
+    // what's actually dominant right now, not a fixed enum order.
+    var categories = Object.keys(categoryCounts).sort(function (a, b) {
+      return categoryCounts[b] - categoryCounts[a] || a.localeCompare(b);
+    });
+
+    var categoryGroup = document.createElement('div');
+    categoryGroup.className = 'live-stats__group';
+    categoryGroup.setAttribute('aria-label', 'Disruptions by category');
+    var categoryHeading = document.createElement('h3');
+    categoryHeading.className = 'live-stats__heading';
+    categoryHeading.textContent = 'By category';
+    categoryGroup.appendChild(categoryHeading);
+    var categoryList = document.createElement('ul');
+    categoryList.className = 'live-stats__categories';
+    categories.forEach(function (cat) {
+      var li = document.createElement('li');
+      // Full "count category" text per item -- never relies on the CSS
+      // separator glyph alone for meaning (that's purely decorative).
+      li.textContent = categoryCounts[cat] + ' ' + cat;
+      categoryList.appendChild(li);
+    });
+    categoryGroup.appendChild(categoryList);
+    statsEl.appendChild(categoryGroup);
+
+    var severityGroup = document.createElement('div');
+    severityGroup.className = 'live-stats__group';
+    severityGroup.setAttribute('aria-label', 'Disruptions by severity');
+    var severityHeading = document.createElement('h3');
+    severityHeading.className = 'live-stats__heading';
+    severityHeading.textContent = 'By severity';
+    severityGroup.appendChild(severityHeading);
+    var severityList = document.createElement('ul');
+    severityList.className = 'live-stats__severity';
+    var maxSeverityCount = Math.max.apply(null, [1, severityCounts[1], severityCounts[2], severityCounts[3], severityCounts[4], severityCounts[5]]);
+    [1, 2, 3, 4, 5].forEach(function (sev) {
+      var count = severityCounts[sev];
+      if (count === 0) return; // skip bands with nothing active rather than padding the strip with empty rows
+
+      var li = document.createElement('li');
+      li.className = 'live-stats__severity-row';
+
+      // Reuses SEVERITY_COLORS -- the same ramp as the map/feed/legend, not
+      // a second color scale. The swatch is aria-hidden: the bar's length
+      // and the text label right after it both already carry the real
+      // information, so color here is decorative reinforcement only.
+      var swatch = document.createElement('span');
+      swatch.className = 'live-stats__severity-swatch';
+      swatch.style.background = severityColor(sev);
+      swatch.setAttribute('aria-hidden', 'true');
+      li.appendChild(swatch);
+
+      var track = document.createElement('span');
+      track.className = 'live-stats__severity-track';
+      track.setAttribute('aria-hidden', 'true');
+      var fill = document.createElement('span');
+      fill.className = 'live-stats__severity-fill';
+      fill.style.width = Math.round((count / maxSeverityCount) * 100) + '%';
+      fill.style.background = severityColor(sev);
+      track.appendChild(fill);
+      li.appendChild(track);
+
+      var text = document.createElement('span');
+      text.className = 'live-stats__severity-text';
+      text.textContent = 'Severity ' + sev + ' — ' + count + (count === 1 ? ' disruption' : ' disruptions');
+      li.appendChild(text);
+
+      severityList.appendChild(li);
+    });
+    severityGroup.appendChild(severityList);
+    statsEl.appendChild(severityGroup);
+  }
+
   function renderFeed() {
+    renderStatsStrip();
     if (!feedList) return;
     var visible = getVisibleFeedEvents();
     updateFeedCount(visible.length, events.length);
@@ -466,13 +888,32 @@
       loc.className = 'live-feed__location';
       loc.textContent = e.location;
 
-      var summary = document.createElement('p');
-      summary.className = 'live-feed__summary';
-      summary.textContent = e.summary;
-
       li.appendChild(sev);
       li.appendChild(cat);
       li.appendChild(loc);
+
+      // Real event date, distinct from "reported"/"last updated" -- omitted
+      // entirely when MIS couldn't resolve one (e.eventDate is null/absent),
+      // never rendered as "null" or "Invalid Date".
+      var occurredLabel = formatEventDate(e.eventDate);
+      if (occurredLabel) {
+        var occurred = document.createElement('span');
+        occurred.className = 'live-feed__occurred';
+        occurred.textContent = 'Occurred ' + occurredLabel;
+        if (isStaleEvent(e.eventDate, e.firstSeenAt)) {
+          var staleBadge = document.createElement('span');
+          staleBadge.className = 'live-feed__stale-badge';
+          staleBadge.textContent = 'Reported late';
+          staleBadge.title = 'First reported to us well after the real event date.';
+          occurred.appendChild(document.createTextNode(' '));
+          occurred.appendChild(staleBadge);
+        }
+        li.appendChild(occurred);
+      }
+
+      var summary = document.createElement('p');
+      summary.className = 'live-feed__summary';
+      summary.textContent = e.summary;
       li.appendChild(summary);
 
       if (typeof e.sourceUrl === 'string' && /^https?:\/\//i.test(e.sourceUrl)) {

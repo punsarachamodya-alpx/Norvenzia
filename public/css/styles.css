@@ -2821,6 +2821,117 @@ button {
   margin: 0 0 clamp(2rem, 4vw, 3rem);
 }
 
+/* ---- Map-level filter chips (views/live.ejs / public/js/live.js) ----
+   Deliberately plain/light like .live-feed__search/.live-feed__sort below
+   (this sits in the page's light chrome, not inside the dark map canvas)
+   -- a distinct control surface from that feed search/sort so the two
+   "filter the map" vs "filter the list" affordances never read as one
+   control. */
+.live-map-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1.5rem;
+  margin: 0 0 1rem;
+}
+
+.live-map-filters__intro {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+}
+
+.live-map-filters__group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.live-map-filters__label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+  margin-right: 0.1rem;
+}
+
+.live-map-filters__chip {
+  font: inherit;
+  font-size: 0.78rem;
+  text-transform: capitalize;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--rule-strong);
+  background: #fff;
+  color: var(--ink-muted);
+  cursor: pointer;
+  transition: border-color 0.15s var(--ease), background-color 0.15s var(--ease), color 0.15s var(--ease);
+}
+
+.live-map-filters__chip:hover {
+  border-color: var(--navy);
+  color: var(--navy);
+}
+
+.live-map-filters__chip:focus-visible {
+  outline: 2px solid var(--navy);
+  outline-offset: 2px;
+}
+
+.live-map-filters__chip[aria-pressed="true"] {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #fff;
+}
+
+/* Severity chips borrow the same ramp as the map legend/feed badges once
+   active, so "I filtered to severity 4" reads with the same color meaning
+   used everywhere else severity appears on this page. Category has no
+   established color channel here, so those chips stay plain navy. */
+.live-map-filters__chip--severity[data-filter-value="1"][aria-pressed="true"] { background: var(--severity-1); border-color: var(--severity-1); color: #fff; }
+.live-map-filters__chip--severity[data-filter-value="2"][aria-pressed="true"] { background: var(--severity-2); border-color: var(--severity-2); color: #fff; }
+.live-map-filters__chip--severity[data-filter-value="3"][aria-pressed="true"] { background: var(--severity-3); border-color: var(--severity-3); color: #fff; }
+.live-map-filters__chip--severity[data-filter-value="4"][aria-pressed="true"] { background: var(--severity-4); border-color: var(--severity-4); color: var(--navy); }
+.live-map-filters__chip--severity[data-filter-value="5"][aria-pressed="true"] { background: var(--severity-5); border-color: var(--severity-5); color: var(--navy); }
+
+/* display:flex here would otherwise beat the [hidden] attribute's own
+   UA-stylesheet display:none, since same-specificity author rules win over
+   user-agent defaults regardless of source order -- this restates it
+   explicitly so toggling the `hidden` property in live.js actually hides
+   the row. */
+.live-map-filters__status-row[hidden] {
+  display: none;
+}
+
+.live-map-filters__status-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+  flex-basis: 100%;
+}
+
+.live-map-filters__clear {
+  font: inherit;
+  font-size: 0.78rem;
+  color: var(--navy);
+  text-decoration: underline;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.live-map-filters__clear:hover,
+.live-map-filters__clear:focus-visible {
+  color: var(--navy-deep);
+}
+
 .live-feed__header {
   display: flex;
   flex-wrap: wrap;
@@ -2943,6 +3054,138 @@ button {
   grid-column: 1 / -1;
   justify-self: start;
   font-size: 0.85rem;
+}
+
+/* Real event date + "reported late" staleness badge (public/js/live.js's
+   formatEventDate()/isStaleEvent()) -- spans the full item width like
+   .live-feed__summary/-source above, placed right after location/before
+   the summary paragraph. */
+.live-feed__occurred {
+  grid-column: 1 / -1;
+  font-size: 0.78rem;
+  color: var(--ink-faint);
+}
+
+.live-feed__stale-badge {
+  display: inline-block;
+  margin-left: 0.35rem;
+  padding: 0.05rem 0.4rem;
+  border-radius: 2px;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  /* Tint of --severity-4, not a new color -- "reported late" reads as a
+     caution flag, not a fifth ramp step. */
+  background: rgba(249, 115, 22, 0.14);
+  color: #b45309;
+}
+
+/* Same popup-side treatment, on the dark .world-map__popup surface. */
+.world-map__popup-occurred {
+  margin-top: 0.3rem;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.world-map__popup-stale {
+  display: inline-block;
+  margin-left: 0.3rem;
+  padding: 0.05rem 0.4rem;
+  border-radius: 2px;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: rgba(249, 115, 22, 0.25);
+  color: #fdba74;
+}
+
+/* -- at-a-glance stats strip (category + severity counts), computed
+   entirely client-side from the same `events` array already in memory
+   (public/js/live.js's renderStatsStrip()) -- no new network call. Sits on
+   the page's normal light background like the feed section below it, not
+   the dark map/popup surfaces above. */
+.live-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(2rem, 5vw, 4rem);
+}
+
+.live-stats__empty {
+  color: var(--ink-faint);
+  margin: 0;
+}
+
+.live-stats__group {
+  flex: 1 1 260px;
+  min-width: 0;
+}
+
+.live-stats__heading {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+}
+
+.live-stats__categories {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.5rem;
+  font-size: 0.9rem;
+  color: var(--ink);
+}
+
+/* Decorative separator only -- each <li> already carries its own full
+   "count category" text, so a screen reader loses nothing without this. */
+.live-stats__categories li:not(:last-child)::after {
+  content: '\00b7';
+  margin-left: 0.5rem;
+  color: var(--ink-faint);
+}
+
+.live-stats__severity {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.live-stats__severity-row {
+  display: grid;
+  grid-template-columns: 0.9rem 6rem 1fr;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.live-stats__severity-swatch {
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 50%;
+}
+
+.live-stats__severity-track {
+  display: block;
+  height: 0.45rem;
+  border-radius: 2px;
+  background: var(--rule-soft);
+  overflow: hidden;
+}
+
+.live-stats__severity-fill {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+}
+
+.live-stats__severity-text {
+  font-size: 0.85rem;
+  color: var(--ink-muted);
 }
 
 /* ---------------------------------------------------------- 29. War room */
