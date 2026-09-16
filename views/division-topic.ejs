@@ -3,11 +3,11 @@
     content/<division>.js object), topic (the matched entry in
     division.topics). See views/division.ejs's header comment for why
     .hero--inner (no photo) is used uniformly across this whole section. %>
-<section class="hero hero--inner">
-  <div class="shell shell--narrow">
-    <a class="eyebrow" href="/<%= division.slug %>">← Back to <%= division.h1 %></a>
-    <h1 class="display-1" data-letter-reveal><%= topic.h1 %></h1>
-    <p class="lede" style="margin-top:1.5rem;"><%= topic.body %></p>
+<section class="hero hero--inner topic-hero">
+  <div class="shell shell--narrow topic-hero__inner">
+    <a class="eyebrow topic-hero__back" href="/<%= division.slug %>">← Back to <%= division.h1 %></a>
+    <h1 class="display-1 topic-hero__headline" data-letter-reveal><%= topic.h1 %></h1>
+    <p class="lede topic-hero__body"><%= topic.body %></p>
   </div>
 </section>
 

@@ -822,6 +822,28 @@ button {
   margin-top: 1.9rem;
 }
 
+/* Topic pages share the same editorial text placement: navigation first,
+   then a compact title block, then the explanatory paragraph. */
+.topic-hero__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.topic-hero__back {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+}
+
+.topic-hero__headline {
+  max-width: 15ch;
+}
+
+.topic-hero__body {
+  max-width: 58ch;
+  margin-top: 1.5rem;
+}
+
 /* ------------------------------------------------------------ 10. Factbar */
 
 .factbar {
