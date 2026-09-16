@@ -4420,11 +4420,11 @@ button {
 }
 
 .expertise-intro__accent {
-  color: #94d600;
+  color: #2E7BFF;
 }
 
 .expertise-intro__body {
-  max-width: 34rem;
+  max-width: 68rem;
   margin-top: clamp(1.5rem, 3vw, 2.5rem);
   color: var(--color-text-secondary);
   font-size: clamp(1rem, 1.35vw, 1.18rem);
@@ -4434,9 +4434,8 @@ button {
 .expertise-list {
   max-height: min(42rem, 72vh);
   overflow-y: auto;
-  padding: 0 1.25rem 0 0;
-  scrollbar-color: var(--color-accent) var(--color-border);
-  scrollbar-width: thin;
+  padding: 0;
+  scrollbar-width: none;
   cursor: ns-resize;
 }
 
@@ -4446,18 +4445,7 @@ button {
 }
 
 .expertise-list::-webkit-scrollbar {
-  width: 8px;
-}
-
-.expertise-list::-webkit-scrollbar-track {
-  background: var(--color-border);
-  border-radius: 999px;
-}
-
-.expertise-list::-webkit-scrollbar-thumb {
-  background: var(--color-accent);
-  border: 2px solid var(--color-border);
-  border-radius: 999px;
+  display: none;
 }
 
 .expertise-card {
@@ -4490,7 +4478,7 @@ button {
 .expertise-card__icon {
   width: 3.25rem;
   height: 3.25rem;
-  color: #17626c;
+  color: #002d5c;
 }
 
 .expertise-card__icon svg {
@@ -4527,7 +4515,6 @@ button {
 
   .expertise-list {
     max-height: 32rem;
-    padding-right: 0.75rem;
   }
 
   .expertise-card {
