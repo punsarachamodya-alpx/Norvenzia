@@ -52,11 +52,10 @@
       </div>
 
       <div class="expertise-list" tabindex="0" aria-label="Our expertise">
-        <% page.services.expertise.forEach(function (item, i) { %>
+        <% page.services.expertise.forEach(function (item) { %>
           <article class="expertise-card">
-            <span class="expertise-card__number"><%= String(i + 1).padStart(2, '0') %></span>
             <span class="expertise-card__icon"><%- include('partials/expertise-icon', { slug: item.slug }) %></span>
-            <h3 class="expertise-card__name"><%= item.name %></h3>
+            <h3 class="expertise-card__name"><a href="<%= item.href %>"><%= item.name %></a></h3>
             <span class="expertise-card__arrow" aria-hidden="true">↗</span>
           </article>
         <% }); %>

@@ -56,14 +56,14 @@ module.exports = {
     body:
       'We build resilient, future-ready supply chains. Modern markets are chaotic, but our end-to-end procurement strategies give your business the clarity, agility, and edge it needs to stay ahead.',
     expertise: [
-      { slug: 'sourcing-contracting', name: 'Sourcing & Contracting' },
-      { slug: 'source-to-pay', name: 'Source-to-Pay Operations' },
-      { slug: 'process-optimization', name: 'Process Optimization' },
-      { slug: 'spend-cost-intelligence', name: 'Spend & Cost Intelligence' },
-      { slug: 'supplier-performance', name: 'Supplier Performance' },
-      { slug: 'planning-working-capital', name: 'Planning & Working Capital' },
-      { slug: 'supplier-risk-resilience', name: 'Supplier Risk & Resilience' },
-      { slug: 'regulatory-sustainability', name: 'Regulatory & Sustainability' }
+      { slug: 'sourcing-contracting', name: 'Sourcing & Contracting', href: 'https://norvenzia.com/operations/sourcing-contracting' },
+      { slug: 'source-to-pay', name: 'Source-to-Pay Operations', href: 'https://norvenzia.com/operations/source-to-pay' },
+      { slug: 'process-optimization', name: 'Process Optimization', href: 'https://norvenzia.com/operations/process-optimization-topic' },
+      { slug: 'spend-cost-intelligence', name: 'Spend & Cost Intelligence', href: 'https://norvenzia.com/analytics/spend-cost-intelligence' },
+      { slug: 'supplier-performance', name: 'Supplier Performance', href: 'https://norvenzia.com/analytics/supplier-performance-topic' },
+      { slug: 'planning-working-capital', name: 'Planning & Working Capital', href: 'https://norvenzia.com/analytics/planning-working-capital' },
+      { slug: 'supplier-risk-resilience', name: 'Supplier Risk & Resilience', href: 'https://norvenzia.com/risk-management/supplier-risk-resilience' },
+      { slug: 'regulatory-sustainability', name: 'Regulatory & Sustainability', href: 'https://norvenzia.com/risk-management/regulatory-sustainability' }
     ]
   },
 
