@@ -13,7 +13,7 @@ module.exports = {
     body:
       'Full supply chain and procurement operations, run remotely from our delivery hub in Colombo, Sri Lanka — for manufacturers and industrial teams worldwide. Every day.',
     primaryCta: { label: 'Start a conversation', href: '#contact' },
-    secondaryCta: { label: 'See what we run', href: '#services' }
+    secondaryCta: { label: 'Our Expertise', href: '#services' }
   },
 
   // 3.2 — Social proof strip. Plain-text chips, no client logos (§4 rule).
@@ -27,7 +27,7 @@ module.exports = {
       'Apparel Manufacturing',
       'Footwear Manufacturing'
     ],
-    markets: 'Europe · Norway · UK · Australia · New Zealand · United States'
+    markets: 'Europe · Norway · Australia · New Zealand · United States'
   },
 
   // Who Norvenzia serves — asymmetric photo + copy split.
@@ -40,7 +40,7 @@ module.exports = {
       'Photo: a small cross-functional team reviewing a procurement or logistics plan together in a modern office — /img/photos/who-serve.jpg',
     body:
       'We are the delivery partner for mid-market manufacturers and industrial suppliers whose procurement volume has outgrown the team that set it up — companies that need senior-level execution without the overhead of building an in-house bench.',
-    cta: { label: 'See what we run', href: '#services' }
+    cta: { label: 'Our Expertise', href: '#services' }
   },
 
   // Full-bleed photo banner between the proof strip and the services list.
@@ -50,14 +50,19 @@ module.exports = {
       'Photo: an operations team working together over documents and a laptop, warm natural light — /img/photos/banner-team.jpg'
   },
 
-  // 3.3 — Divisions, alternating full-photo + bullet-list rows. The actual
-  // division data (names/status/summary/capabilities) lives once on the
-  // Services page and is exposed here via res.locals.divisions (see
-  // server.js) -- only the section's own intro copy stays here.
+  // 3.3 — Expertise list shown on the homepage.
   services: {
-    eyebrow: '// WHAT WE DO',
-    headline: 'Three divisions live today. Digital & AI in active development.',
-    body: 'Start with what’s live. The rest scales as the engagement grows.'
+    eyebrow: 'Our Expertise',
+    expertise: [
+      { slug: 'sourcing-contracting', name: 'Sourcing & Contracting' },
+      { slug: 'source-to-pay', name: 'Source-to-Pay Operations' },
+      { slug: 'process-optimization', name: 'Process Optimization' },
+      { slug: 'spend-cost-intelligence', name: 'Spend & Cost Intelligence' },
+      { slug: 'supplier-performance', name: 'Supplier Performance' },
+      { slug: 'planning-working-capital', name: 'Planning & Working Capital' },
+      { slug: 'supplier-risk-resilience', name: 'Supplier Risk & Resilience' },
+      { slug: 'regulatory-sustainability', name: 'Regulatory & Sustainability' }
+    ]
   },
 
   // 3.4 — Three entry-point tiers, numbered 01/02/03.
