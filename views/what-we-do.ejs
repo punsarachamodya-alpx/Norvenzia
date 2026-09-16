@@ -51,9 +51,6 @@
             <div class="service-row__copy">
               <h2 class="service-row__name"><%= d.name %></h2>
               <p class="home-section__body" style="margin-bottom:1.2rem;"><%= d.intro %></p>
-              <% if (d.href) { %>
-                <a class="arrow-link" style="margin-top:1.2rem;" href="<%= d.href %>">Explore <%= d.name %></a>
-              <% } %>
             </div>
           </article>
           <% if (d.topics && d.topics.length) { %>
