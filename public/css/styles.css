@@ -825,6 +825,7 @@ button {
 /* Topic pages share the same editorial text placement: navigation first,
    then a compact title block, then the explanatory paragraph. */
 .topic-hero__inner {
+  max-width: 680px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -840,7 +841,7 @@ button {
 }
 
 .topic-hero__body {
-  max-width: 58ch;
+  max-width: 52ch;
   margin-top: 1.5rem;
 }
 
