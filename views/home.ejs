@@ -43,14 +43,24 @@
 <%# 3.3 — Homepage expertise list %>
 <section class="home-section" id="services">
   <div class="shell home-section__inner">
-    <span class="eyebrow"><%= page.services.eyebrow %></span>
-    <div class="expertise-list" tabindex="0" aria-label="Our expertise">
-      <% page.services.expertise.forEach(function (item) { %>
-        <article class="expertise-card">
-          <span class="expertise-card__icon"><%- include('partials/expertise-icon', { slug: item.slug }) %></span>
-          <h2 class="expertise-card__name"><%= item.name %></h2>
-        </article>
-      <% }); %>
+    <div class="expertise-layout">
+      <div class="expertise-intro">
+        <h2 class="expertise-intro__heading">
+          <span>Our</span> <span class="expertise-intro__accent">Expertise</span>
+        </h2>
+        <p class="expertise-intro__body"><%= page.services.body %></p>
+      </div>
+
+      <div class="expertise-list" tabindex="0" aria-label="Our expertise">
+        <% page.services.expertise.forEach(function (item, i) { %>
+          <article class="expertise-card">
+            <span class="expertise-card__number"><%= String(i + 1).padStart(2, '0') %></span>
+            <span class="expertise-card__icon"><%- include('partials/expertise-icon', { slug: item.slug }) %></span>
+            <h3 class="expertise-card__name"><%= item.name %></h3>
+            <span class="expertise-card__arrow" aria-hidden="true">↗</span>
+          </article>
+        <% }); %>
+      </div>
     </div>
   </div>
 </section>

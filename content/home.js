@@ -53,6 +53,8 @@ module.exports = {
   // 3.3 — Expertise list shown on the homepage.
   services: {
     eyebrow: 'Our Expertise',
+    body:
+      'We build resilient, future-ready supply chains. Modern markets are chaotic, but our end-to-end procurement strategies give your business the clarity, agility, and edge it needs to stay ahead.',
     expertise: [
       { slug: 'sourcing-contracting', name: 'Sourcing & Contracting' },
       { slug: 'source-to-pay', name: 'Source-to-Pay Operations' },
