@@ -4426,13 +4426,16 @@ button {
 .expertise-layout {
   display: grid;
   grid-template-columns: minmax(15rem, 0.78fr) minmax(0, 1.22fr);
-  gap: clamp(3rem, 8vw, 8rem);
+  gap: clamp(2rem, 5vw, 5rem);
   align-items: start;
+  max-width: 1180px;
+  margin-inline: auto;
 }
 
 .expertise-intro {
   position: sticky;
   top: calc(var(--header-h) + 2rem);
+  padding-inline: 0.2rem;
 }
 
 .expertise-intro__heading {
@@ -4442,6 +4445,12 @@ button {
   line-height: 0.98;
   color: var(--color-text-primary);
   letter-spacing: -0.045em;
+  text-align: left;
+  max-width: 14ch;
+}
+
+.expertise-intro__heading span:first-child {
+  color: var(--navy);
 }
 
 .expertise-intro__accent {
@@ -4449,11 +4458,12 @@ button {
 }
 
 .expertise-intro__body {
-  max-width: 68rem;
+  max-width: 24.5rem;
   margin-top: clamp(1.5rem, 3vw, 2.5rem);
   color: var(--color-text-secondary);
   font-size: clamp(1rem, 1.35vw, 1.18rem);
   line-height: 1.65;
+  text-align: left;
 }
 
 .expertise-list {
