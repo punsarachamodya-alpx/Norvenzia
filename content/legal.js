@@ -6,64 +6,86 @@ const privacy = {
   slug: 'privacy',
   title: 'Privacy Policy',
   intro:
-    'This policy explains what personal data Norvenzia handles when you use this website or contact us, why we handle it, and what rights you have over it.',
-  updated: 'July 2026',
+    'This Privacy Policy explains how Norvenzia (Private) Limited handles personal data when you visit this website or contact us. It covers website visitors; data processed for a signed client engagement is governed by that engagement\'s own data-processing terms.',
+  updated: 'October 2026',
   counselReviewed: false,
   sections: [
     {
       heading: 'Who we are',
       body: [
-        'Norvenzia (Private) Limited runs procurement and supply chain operations for mid-market companies. We operate entirely remotely from a single team in Colombo, Sri Lanka, serving clients internationally.',
-        'For any question about this policy, or about data we hold, write to info@norvenzia.com.'
+        'Norvenzia (Private) Limited ("Norvenzia", "we", "us" or "our") is registered in Sri Lanka under registration number PV00374811, with its registered office in Galle, Sri Lanka. Our delivery team operates from Colombo, Sri Lanka.',
+        'Norvenzia is the controller of personal data collected through this website. This notice does not cover personal data we process for a client while delivering a signed engagement; that processing is governed by the relevant client agreement.',
+        'For questions about this policy or personal data we hold, contact contact@norvenzia.com.'
       ]
     },
     {
-      heading: 'What data we collect',
+      heading: 'Personal data we collect',
       body: [
-        'From this website, we collect only what you type into the contact form: your name, company, work email, country, and whatever you choose to write in the free-text field.',
-        'Our web server keeps standard request logs, which include IP addresses, for security and diagnostic purposes. We do not build profiles from them.',
-        'We do not use tracking pixels, advertising cookies, or third-party analytics on this site.'
+        'When you submit an inquiry, we collect the information you provide in the form: your name, company, work email, country, and message. Please do not include confidential or commercially sensitive sourcing information in an unsolicited inquiry; see the Terms of Use.',
+        'Our website infrastructure may record technical request data, such as IP address, request time, and browser information, for security, diagnosis, and reliable operation of the site.',
+        'This site currently has no content-download form, third-party analytics, advertising pixels, or LinkedIn Insight Tag.'
       ]
     },
     {
-      heading: 'Why we collect it',
+      heading: 'How we use personal data',
       body: [
-        'To respond to your enquiry, assess whether our service is a fit for your operation, and — if it is — to scope and deliver an engagement.',
-        'We do not sell personal data, and we do not use contact-form submissions for unrelated marketing.'
+        'We use inquiry details to respond to you, discuss a potential engagement, and take steps you request before entering into a contract.',
+        'We use technical request data to operate, protect, and troubleshoot the website, and to detect misuse or security incidents.',
+        'We may process information when necessary to meet legal, tax, regulatory, or record-keeping obligations. We do not sell personal data or use inquiry submissions for unrelated marketing.'
       ]
     },
     {
       heading: 'Legal basis',
       body: [
-        'Where the GDPR applies, we rely on legitimate interests for responding to a business enquiry you initiated, and on the necessity of processing to take steps at your request prior to entering a contract.',
-        'Strictly necessary cookies are set on the basis of that necessity. Anything non-essential would require your consent first — see our Cookie Policy.'
+        'Where the GDPR or UK GDPR applies, we process inquiry information to take steps at your request before a contract and, where appropriate, on our legitimate interest in responding to business inquiries and securing the website. We process information to meet legal obligations where required.',
+        'The site currently uses only cookies and similar storage needed for essential site functions. If non-essential analytics or marketing technologies are introduced, they will be used only where required consent has been obtained. See the Cookie Policy.'
       ]
     },
     {
-      heading: 'Where your data is handled',
+      heading: 'Who we share data with and international transfers',
       body: [
-        'Enquiry data reaches our team in Colombo, Sri Lanka, where it is handled by the analysts assigned to your account.',
-        'Sri Lanka is not covered by a European Commission adequacy decision. Where personal data is transferred there, we rely on appropriate safeguards, including contractual confidentiality terms and access limited to the analysts assigned to your account. A Data Processing Agreement is available on request.'
+        'We do not sell personal data. We may share it with website hosting, email-delivery, and technical support providers where needed to operate the site or respond to your inquiry, and with public authorities where disclosure is required by law.',
+        'Personal data may be accessed by our team in Sri Lanka. Sri Lanka does not currently benefit from an EU adequacy decision. Where data-protection law requires a transfer mechanism, the transfer must be supported by appropriate safeguards. Access is limited to people who need the information for their work; a Data Processing Agreement is available on request.'
       ]
     },
     {
       heading: 'How long we keep it',
       body: [
-        'Enquiries that do not lead to an engagement are kept for up to 24 months, so we can pick up a conversation you may resume, and are then deleted.',
-        'Where an engagement begins, data is retained for the life of the contract and for the period required by applicable statutory and tax obligations afterwards.'
+        'Inquiry information that does not lead to an engagement is generally kept for up to 24 months, then deleted, unless it is needed for an ongoing conversation or legal claim.',
+        'Information connected to a client engagement is kept according to the record-keeping terms of that engagement and applicable legal obligations. Technical logs are retained only as long as reasonably needed for security and diagnostics.'
+      ]
+    },
+    {
+      heading: 'Security',
+      body: [
+        'We use reasonable technical and organizational measures to protect personal data against unauthorized access, loss, or misuse. No method of transmission or storage is completely secure, and we cannot guarantee absolute security.',
+        'Norvenzia does not currently hold ISO 27001 or an equivalent security certification.'
       ]
     },
     {
       heading: 'Your rights',
       body: [
-        'Subject to applicable law, you may request access to the personal data we hold about you, ask us to correct or delete it, object to or restrict our processing, and request a portable copy.',
-        'To exercise any of these, email info@norvenzia.com. If you are in the EU or EEA and believe we have handled your data improperly, you also have the right to lodge a complaint with your national supervisory authority.'
+        'Depending on the law that applies to you, you may have rights to access, correct, or erase your personal data; restrict or object to its processing; receive a portable copy; and withdraw consent where processing is based on consent.',
+        'People in the EU/EEA or UK may also complain to their local data-protection supervisory authority. Sri Lanka\'s Personal Data Protection Act No. 9 of 2022, as amended, provides rights subject to the commencement and application of its provisions.',
+        'To make a request, contact contact@norvenzia.com. We may need to verify your identity before responding.'
       ]
     },
     {
-      heading: 'Contact',
+      heading: 'Children',
       body: [
-        'Questions about this policy, or about data we hold: info@norvenzia.com.'
+        'This website is intended for business visitors and is not directed at children. We do not knowingly collect personal data from anyone under 18.'
+      ]
+    },
+    {
+      heading: 'Changes to this policy',
+      body: [
+        'We may update this policy from time to time. The date at the top identifies the latest version. We will highlight material changes on the website where appropriate.'
+      ]
+    },
+    {
+      heading: 'Contact us',
+      body: [
+        'Norvenzia (Private) Limited, Galle, Sri Lanka. For questions or privacy requests, email contact@norvenzia.com.'
       ]
     }
   ]
@@ -73,36 +95,47 @@ const cookies = {
   slug: 'cookies',
   title: 'Cookie Policy',
   intro:
-    'This site uses as few cookies as it can. This policy sets out exactly which ones, and what you can do about them.',
-  updated: 'July 2026',
+    'This policy explains what cookies are used on the Norvenzia website, why they are needed, and how you can manage them.',
+  updated: 'October 2026',
   counselReviewed: false,
   sections: [
     {
-      heading: 'Strictly necessary cookies',
+      heading: 'What cookies are',
       body: [
-        'We store your cookie choice itself, so the banner does not reappear on every page you visit.',
-        'If you sign in to the site’s administration panel, a session cookie keeps you signed in. It is set only after a successful login, is HTTP-only, and expires after eight hours.',
-        'These cookies are required for the site to work as intended and cannot be switched off from within the site.'
+        'Cookies are small files stored by your browser when you visit a website. Similar browser storage can also remember a choice or support a site function.'
       ]
     },
     {
-      heading: 'Analytics cookies',
+      heading: 'Cookies used on this site',
       body: [
-        'No analytics tool is currently connected to this site. Nothing is measuring your visit.',
-        'The consent gate is built and in place so that if we do add a privacy-first, cookieless analytics tool later, it will sit behind your explicit choice rather than being switched on quietly.'
+        'Strictly necessary: the site remembers your cookie choice so the notice does not keep reappearing. This is needed for the preference control to work.',
+        'Administration session: if an administrator signs in, an HTTP-only session cookie keeps that administrator signed in. It is set only after successful login and expires after eight hours.',
+        'The public site currently has no Google Analytics, LinkedIn Insight Tag, advertising pixel, or other non-essential analytics or marketing cookie. Cookie names and technical details may change as the site is maintained.'
       ]
     },
     {
-      heading: 'What we do not use',
+      heading: 'Consent and managing your choice',
       body: [
-        'No advertising or retargeting cookies. No social media tracking pixels. No cross-site profiling. No third-party font or script CDNs — our fonts are served from this domain precisely so that visiting this page does not disclose your IP address to a third party.'
+        'The cookie notice lets you accept or reject non-essential cookies. The site currently does not set non-essential analytics or marketing cookies. If that changes, those technologies will be activated only after consent where required.',
+        'You can reopen the cookie notice using the Cookie preferences control in the footer. You can also clear or block cookies in your browser settings. Blocking necessary cookies may affect the preference control or administrator sign-in.'
       ]
     },
     {
-      heading: 'Managing your preference',
+      heading: 'Third-party services',
       body: [
-        'You can accept or reject non-essential cookies from the banner shown on your first visit, and reopen that choice at any time using the "Cookie preferences" link in the footer.',
-        'You can also clear or block cookies in your browser settings. The site remains fully functional if you do.'
+        'The site serves its fonts and scripts from its own domain. It currently does not load Google Analytics or LinkedIn advertising tracking. If third-party analytics or advertising services are added, this policy will be updated with their purposes and relevant details before activation.'
+      ]
+    },
+    {
+      heading: 'Changes to this policy',
+      body: [
+        'We may update this Cookie Policy when the site or its use of cookies changes. Please check this page periodically for the latest version.'
+      ]
+    },
+    {
+      heading: 'Contact us',
+      body: [
+        'Questions about this Cookie Policy: contact@norvenzia.com.'
       ]
     }
   ]
@@ -112,51 +145,95 @@ const terms = {
   slug: 'terms',
   title: 'Terms of Use',
   intro:
-    'These terms govern your use of this website. They do not govern any engagement between Norvenzia and a client — that is covered by a separate signed agreement.',
-  updated: 'July 2026',
+    'These Terms of Use govern access to and use of www.norvenzia.com (the "Site"). They do not govern a client engagement, which is covered by a separate signed agreement.',
+  updated: 'October 2026',
   counselReviewed: false,
   sections: [
     {
       heading: 'Acceptance of terms',
       body: [
-        'By using this website you accept these terms. If you do not accept them, please do not use the site.'
+        'The Site is operated by Norvenzia (Private) Limited ("Norvenzia", "we" or "us"), registration number PV00374811, with its registered office in Galle, Sri Lanka. By accessing or using the Site, you agree to these Terms. If you do not agree, please do not use the Site.'
       ]
     },
     {
-      heading: 'Use of the site',
+      heading: 'About Norvenzia',
       body: [
-        'You may use this site for lawful purposes: to learn about our services and to contact us. You may not attempt to gain unauthorised access to any part of the site, interfere with its operation, or use automated means to submit the contact form.'
+        'Norvenzia provides procurement and supply chain operations to mid-market companies. Our delivery team operates from Colombo, Sri Lanka, and serves clients remotely.'
       ]
     },
     {
-      heading: 'No binding offer',
+      heading: 'Information only, not professional advice',
       body: [
-        'Nothing on this site is an offer capable of acceptance, a quotation, or a commitment to provide services. Service descriptions, engagement tiers, and roadmap items are indicative.',
-        'Items labelled "Roadmap" describe intended direction and are explicitly not available to purchase today. Only work described in a signed engagement agreement is binding on us.'
+        'Site content, including service descriptions and the Global Disruption Monitor, is for general information only. It is not procurement, supply chain, tax, legal, or other professional advice. Do not act or refrain from acting based on Site content without advice appropriate to your circumstances.'
+      ]
+    },
+    {
+      heading: 'Claims and client information',
+      body: [
+        'Client names, logos, case studies, or performance results are published only with the client\'s prior written consent and where the information is genuine and verifiable. We do not intend to publish invented or exaggerated credentials or capabilities.'
       ]
     },
     {
       heading: 'Intellectual property',
       body: [
-        'The Norvenzia name, logo, site design, and written content are our property or used with permission, and may not be reproduced without written consent.'
+        'The Site, including its text, design, logo, names, and graphics, is owned by or licensed to Norvenzia and protected by applicable intellectual property laws. You may view and print pages for personal, non-commercial use. You may not reproduce, republish, distribute, or commercially use Site content without our prior written consent.'
+      ]
+    },
+    {
+      heading: 'Acceptable use',
+      body: [
+        'You may use the Site only for lawful purposes. You agree not to damage, disable, or impair the Site; attempt unauthorized access to the Site, its servers, or connected systems; scrape or use bots to extract Site content or disruption-monitor outputs for republication or resale without consent; or use Norvenzia\'s name, logo, or branding to imply an affiliation that does not exist.'
+      ]
+    },
+    {
+      heading: 'Third-party links',
+      body: [
+        'The Site may link to third-party websites for convenience. We do not control and are not responsible for their content, accuracy, availability, or privacy practices.'
+      ]
+    },
+    {
+      heading: 'Accuracy and availability',
+      body: [
+        'We take reasonable care to keep Site content accurate and up to date, but do not warrant that it is complete, current, or error-free. The Global Disruption Monitor depends on upstream data sources and may be delayed, incomplete, or unavailable. Its information is for general awareness, is not a substitute for engagement-level due diligence, and should not be the sole basis for a sourcing or supply chain decision.',
+        'We may suspend, withdraw, or change the Site or any feature at any time.'
+      ]
+    },
+    {
+      heading: 'Enquiries submitted through the Site',
+      body: [
+        'Submitting an inquiry does not create a client relationship, retainer, or duty of confidentiality. An engagement begins only when confirmed in writing through a signed proposal or statement of work.',
+        'Please do not send confidential or commercially sensitive information, such as supplier lists, pricing, or sourcing strategy, through the inquiry form before a formal agreement and any necessary confidentiality terms are in place.'
       ]
     },
     {
       heading: 'Limitation of liability',
       body: [
-        'This site is provided as-is. To the fullest extent permitted by law, we exclude liability for any loss arising from reliance on information published here. Nothing in these terms limits liability that cannot lawfully be limited.'
+        'To the fullest extent permitted by applicable law, Norvenzia excludes liability for indirect, incidental, or consequential loss arising from your use of, or inability to use, the Site, including decisions made in reliance on Site content or the Global Disruption Monitor instead of a formal engagement. Nothing in these Terms excludes liability that cannot lawfully be excluded.'
       ]
     },
     {
-      heading: 'Governing law',
+      heading: 'Indemnity',
       body: [
-        // TODO(founder): confirm the governing-law jurisdiction with counsel before publishing.
-        'The governing law and jurisdiction for these terms are being confirmed and will be stated here before publication.'
+        'You agree to indemnify Norvenzia against claims, losses, or expenses arising from your misuse of the Site or breach of these Terms, to the extent permitted by applicable law.'
       ]
     },
     {
-      heading: 'Contact',
-      body: ['Questions about these terms: info@norvenzia.com.']
+      heading: 'Governing law and jurisdiction',
+      body: [
+        'These Terms are governed by the laws of Sri Lanka, and the courts of Sri Lanka have exclusive jurisdiction over disputes arising from them, subject to any mandatory rights or protections that applicable law does not permit the parties to exclude. Visitors accessing the Site from outside Sri Lanka do so on their own initiative and are responsible for compliance with local laws that apply to them.'
+      ]
+    },
+    {
+      heading: 'Changes to these Terms',
+      body: [
+        'We may update these Terms from time to time. The date at the top identifies the latest version. Continued use of the Site after an update means you accept the revised Terms, to the extent permitted by law.'
+      ]
+    },
+    {
+      heading: 'Contact us',
+      body: [
+        'Norvenzia (Private) Limited, Galle, Sri Lanka. Questions about these Terms: contact@norvenzia.com.'
+      ]
     }
   ]
 };
