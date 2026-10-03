@@ -111,38 +111,7 @@
   </div>
 </section>
 
-<section class="section">
-  <div class="shell">
-    <div class="section-head reveal">
-      <span class="eyebrow"><%= page.roadmap.eyebrow %></span>
-      <h2 class="display-2"><%= page.roadmap.headline %></h2>
-      <p class="lede"><%= page.roadmap.body %></p>
-    </div>
-
-    <div class="table-scroll reveal">
-      <table class="data-table">
-        <thead>
-          <tr>
-            <th scope="col">Division</th>
-            <th scope="col">Scope</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% divisions.forEach(function (d) { %>
-            <tr>
-              <td><%= d.name %></td>
-              <td><%= d.summary %></td>
-            </tr>
-          <% }); %>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<%# Founder + team -- moved to the bottom of the page, just before the
-    closing CTA, so the roadmap/mission story leads and the "who's behind
-    it" detail closes the page instead of opening it. %>
+<%# Founder story and team details lead into the closing FAQ and CTA. %>
 <section class="section">
   <div class="shell">
     <div class="section-head reveal">

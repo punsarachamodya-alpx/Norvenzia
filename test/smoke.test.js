@@ -77,6 +77,15 @@ test('About Us shows security and FAQ sections after Our approach', async () => 
   assert.ok(body.includes('Why is Norvenzia so new'));
 });
 
+test('About Us no longer renders the divisions roadmap table', async () => {
+  const res = await fetch(base + '/about-us');
+  const body = await res.text();
+  assert.equal(res.status, 200);
+  assert.ok(!body.includes('Where this is headed.'));
+  assert.ok(!body.includes('Digital &amp; AI'));
+  assert.ok(!body.includes('<th scope="col">Division</th>'));
+});
+
 test('The Model page and legacy URL are unavailable', async () => {
   assert.equal(await get('/the-model'), 404);
   assert.equal(await get('/how-we-work'), 404);

@@ -149,13 +149,6 @@ module.exports = {
   // divisions shown in this section's table come from res.locals.divisions
   // (the Services page's data, see server.js) -- only the section's own
   // intro copy lives here.
-  roadmap: {
-    eyebrow: 'Roadmap',
-    headline: 'Where this is headed.',
-    body:
-      'We publish this so there’s no ambiguity about what you can buy today. Operations, Analytics, and Risk Management are live, Digital & AI is in active development, and Advisory is direction, not a menu.'
-  },
-
   closing: {
     headline: 'Let’s talk about your operation.',
     body:
