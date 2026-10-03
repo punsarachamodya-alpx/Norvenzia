@@ -41,7 +41,6 @@ const PUBLIC_ROUTES = [
   '/',
   '/services',
   '/industries',
-  '/the-model',
   '/about-us',
   '/contact',
   '/privacy',
@@ -66,12 +65,21 @@ test('About Us shows Our approach after About Norvenzia', async () => {
   assert.ok(body.includes('Knowledge Transfer'));
 });
 
-test('The Model no longer includes the approach stages', async () => {
-  const res = await fetch(base + '/the-model');
+test('About Us shows security and FAQ sections after Our approach', async () => {
+  const res = await fetch(base + '/about-us');
   const body = await res.text();
   assert.equal(res.status, 200);
-  assert.ok(!body.includes('Methodology'));
-  assert.ok(!body.includes('Knowledge Transfer'));
+  const approach = body.indexOf('Our approach');
+  const security = body.indexOf('Data security &amp; compliance');
+  const faq = body.indexOf('Frequently asked questions.');
+  assert.ok(approach !== -1 && security > approach && faq > security);
+  assert.ok(body.includes('ISO 27001 certification'));
+  assert.ok(body.includes('Why is Norvenzia so new'));
+});
+
+test('The Model page and legacy URL are unavailable', async () => {
+  assert.equal(await get('/the-model'), 404);
+  assert.equal(await get('/how-we-work'), 404);
 });
 
 // Old URLs (pre-rename: What We Do/How We Work/Who We Are) must 301 to
@@ -79,7 +87,6 @@ test('The Model no longer includes the approach stages', async () => {
 // still point at these.
 const RENAMED_REDIRECTS = [
   ['/what-we-do', '/services'],
-  ['/how-we-work', '/the-model'],
   ['/who-we-are', '/about-us']
 ];
 

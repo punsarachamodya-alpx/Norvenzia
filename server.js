@@ -302,7 +302,6 @@ const PUBLIC_ROUTES = [
   '/',
   '/services',
   '/industries',
-  '/the-model',
   '/about-us',
   '/contact',
   '/privacy',
@@ -339,11 +338,6 @@ app.get('/industries', (req, res) => {
   res.render('industries', { page, meta: page.meta });
 });
 
-app.get('/the-model', (req, res) => {
-  const page = store.getSection('how-we-work');
-  res.render('how-we-work', { page, meta: page.meta });
-});
-
 app.get('/about-us', (req, res) => {
   const page = store.getSection('who-we-are');
   res.render('who-we-are', { page, meta: page.meta });
@@ -355,7 +349,6 @@ app.get('/about-us', (req, res) => {
 // internal content-store keys and view filenames are unchanged -- only the
 // public-facing URLs and on-page labels moved.
 app.get('/what-we-do', (req, res) => res.redirect(301, '/services'));
-app.get('/how-we-work', (req, res) => res.redirect(301, '/the-model'));
 app.get('/who-we-are', (req, res) => res.redirect(301, '/about-us'));
 
 // ------------------------------------- Operations / Analytics / Risk Management

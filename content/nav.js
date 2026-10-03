@@ -12,7 +12,6 @@ module.exports = {
   primary: [
     { label: 'Services', href: '/services' },
     { label: 'Industries', href: '/industries' },
-    { label: 'The Model', href: '/the-model' },
     { label: 'About Us', href: '/about-us' },
     { label: 'Contact', href: '/contact' }
   ],
