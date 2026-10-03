@@ -4917,6 +4917,10 @@ button {
   margin: 0 0 1.3rem;
 }
 
+.about-approach__heading {
+  max-width: min(23ch, 100%);
+}
+
 @media (max-width: 640px) {
   .about-backdrop {
     min-height: 34rem;
