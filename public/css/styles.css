@@ -4848,40 +4848,70 @@ button {
 
 /* ---- 31.9 About ---- */
 
-.about-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-  gap: clamp(2.5rem, 5vw, 4rem);
+.about-backdrop {
+  position: relative;
+  isolation: isolate;
+  min-height: 38rem;
+  padding-block: clamp(5rem, 10vw, 9rem);
+  display: flex;
   align-items: center;
-  margin-top: clamp(2rem, 4vw, 3rem);
+  overflow: hidden;
+  background: var(--navy-deep);
 }
 
-.about-grid__body p {
-  color: var(--color-text-secondary);
+.about-backdrop__image,
+.about-backdrop__scrim {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.about-backdrop__image {
+  z-index: -2;
+  object-fit: cover;
+  object-position: center 46%;
+}
+
+.about-backdrop__scrim {
+  z-index: -1;
+  background: linear-gradient(90deg, rgba(0, 29, 60, 0.94) 0%, rgba(0, 45, 92, 0.8) 48%, rgba(0, 29, 60, 0.36) 100%);
+}
+
+.about-backdrop__inner {
+  max-width: var(--max-width);
+}
+
+.about-backdrop__heading {
+  max-width: 18ch;
+  margin-top: 0.6rem;
+  color: #fff;
+}
+
+.about-backdrop__body {
+  max-width: 62ch;
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.about-backdrop__body p {
+  color: rgba(255, 255, 255, 0.88);
   font-size: 1.05rem;
   line-height: 1.7;
   margin: 0 0 1.3rem;
 }
 
-.about-grid__visual {
-  aspect-ratio: 4 / 3;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-}
-
-.about-grid__visual img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-@media (max-width: 860px) {
-  .about-grid {
-    grid-template-columns: minmax(0, 1fr);
+@media (max-width: 640px) {
+  .about-backdrop {
+    min-height: 34rem;
+    padding-block: 4.5rem;
   }
 
-  .about-grid__visual {
-    order: -1;
+  .about-backdrop__image {
+    object-position: 58% center;
+  }
+
+  .about-backdrop__scrim {
+    background: rgba(0, 29, 60, 0.78);
   }
 }
 
