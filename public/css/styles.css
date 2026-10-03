@@ -5718,6 +5718,10 @@ body {
   gap: 0.75rem;
 }
 
+.service-steps-shell {
+  max-width: 1216px;
+}
+
 .step {
   padding: clamp(1.2rem, 2vw, 1.65rem);
   border: 1px solid var(--glass-border);
