@@ -56,6 +56,15 @@ for (const route of PUBLIC_ROUTES) {
   });
 }
 
+test('Home page no longer renders the Launch, Scale, Command engagement tiers', async () => {
+  const res = await fetch(base + '/');
+  const body = await res.text();
+  assert.equal(res.status, 200);
+  assert.ok(!body.includes('Pick your entry point'));
+  assert.ok(!body.includes('FAST START'));
+  assert.ok(!body.includes('Command'));
+});
+
 test('About Us shows Our approach after About Norvenzia', async () => {
   const res = await fetch(base + '/about-us');
   const body = await res.text();

@@ -67,41 +67,7 @@ module.exports = {
     ]
   },
 
-  // 3.4 — Three entry-point tiers, numbered 01/02/03.
-  tiers: {
-    eyebrow: '// HOW YOU ENGAGE',
-    headline: 'Pick your entry point — with a human on the other end at every step.',
-    items: [
-      {
-        number: '01',
-        label: 'FAST START',
-        name: 'Launch',
-        body:
-          'One or two modules. Defined scope, fixed deliverables, built to prove the model before you commit further.',
-        link: { label: 'Start here', href: '#contact' }
-      },
-      {
-        number: '02',
-        label: 'GROWING',
-        name: 'Scale',
-        body:
-          'Multiple modules working together across procurement, logistics, and reporting. A delivery team that feels like your own.',
-        link: { label: 'See what’s included', href: '#services' }
-      },
-      {
-        number: '03',
-        label: 'COMMITTED',
-        name: 'Command',
-        body:
-          'A fully staffed, dedicated operations function. Quoted by engagement. Not signable until we confirm delivery capacity — we’ll tell you honestly where we stand.',
-        link: { label: 'Talk to us', href: '#contact' },
-        // Honest signal, not a weakness — keep this, per the brief (§3.4 note).
-        note: '*Availability subject to delivery capacity. We’ll confirm on enquiry.'
-      }
-    ]
-  },
-
-  // 3.5 — How it works, three steps.
+  // How it works, three steps.
   how: {
     eyebrow: '// THREE STEPS',
     // Split so the first sentence renders in the accent colour and the
