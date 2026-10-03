@@ -22,6 +22,45 @@ module.exports = {
     ]
   },
 
+  approach: {
+    eyebrow: 'Our approach',
+    headline: 'Documented process, not tribal knowledge.',
+    body:
+      'Every engagement follows the same five stages. The point is that quality survives staff changes, holidays, and volume spikes — because the process is written down, not carried in someone’s head.',
+    stages: [
+      {
+        number: '01',
+        title: 'Onboarding',
+        body:
+          'We map your current tools, workflows, and reporting cadence before any task moves.'
+      },
+      {
+        number: '02',
+        title: 'Knowledge Transfer',
+        body:
+          'Structured handover sessions capture the context a new team needs to work inside your existing process — not around it.'
+      },
+      {
+        number: '03',
+        title: 'SOP Documentation',
+        body:
+          'Every recurring process is written up as a standard operating procedure, reviewed with you before it goes live.'
+      },
+      {
+        number: '04',
+        title: 'QA Loop',
+        body:
+          'Work is checked against the documented SOP before it reaches you — not after something breaks.'
+      },
+      {
+        number: '05',
+        title: 'SLA / TAT Commitments',
+        body:
+          'Turnaround and service-level commitments are agreed upfront and tracked per engagement.'
+      }
+    ]
+  },
+
   founder: {
     eyebrow: 'Founder',
     headline: 'Why this exists.',

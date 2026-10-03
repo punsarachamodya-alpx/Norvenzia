@@ -57,6 +57,23 @@ for (const route of PUBLIC_ROUTES) {
   });
 }
 
+test('About Us shows Our approach after About Norvenzia', async () => {
+  const res = await fetch(base + '/about-us');
+  const body = await res.text();
+  assert.equal(res.status, 200);
+  assert.ok(body.includes('Our approach'));
+  assert.ok(body.indexOf('ABOUT NORVENZIA') < body.indexOf('Our approach'));
+  assert.ok(body.includes('Knowledge Transfer'));
+});
+
+test('The Model no longer includes the approach stages', async () => {
+  const res = await fetch(base + '/the-model');
+  const body = await res.text();
+  assert.equal(res.status, 200);
+  assert.ok(!body.includes('Methodology'));
+  assert.ok(!body.includes('Knowledge Transfer'));
+});
+
 // Old URLs (pre-rename: What We Do/How We Work/Who We Are) must 301 to
 // their new pages, not 404 -- existing bookmarks/backlinks/search results
 // still point at these.

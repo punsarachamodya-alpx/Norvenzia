@@ -38,6 +38,26 @@
   </div>
 </section>
 
+<section class="section section--alt">
+  <div class="shell">
+    <div class="section-head reveal">
+      <span class="eyebrow"><%= page.approach.eyebrow %></span>
+      <h2 class="display-2"><%= page.approach.headline %></h2>
+      <p class="lede"><%= page.approach.body %></p>
+    </div>
+
+    <div class="steps">
+      <% page.approach.stages.forEach(function (s) { %>
+        <div class="step reveal">
+          <div class="step__number"><%= s.number %></div>
+          <h3 class="step__title"><%= s.title %></h3>
+          <p class="step__body"><%= s.body %></p>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+</section>
+
 <%# Full-bleed photo band, same treatment as the homepage's banner-photo. %>
 <section class="banner-photo">
   <img class="banner-photo__img" src="/img/photos/conversation-band.jpg" alt="" aria-hidden="true" width="1600" height="1194">
