@@ -3,12 +3,6 @@
     <span class="eyebrow">Legal</span>
     <h1 class="display-2"><%= page.title %></h1>
     <p class="lede" style="margin-top:1.5rem;"><%= page.intro %></p>
-    <% if (!page.counselReviewed) { %>
-      <div class="notice">
-        <span class="notice__label">Draft</span>
-        <span>Pending legal review. This document has not yet been reviewed by counsel and may change.</span>
-      </div>
-    <% } %>
     <p class="legal-meta">Last updated: <%= page.updated %></p>
   </div>
 </section>
