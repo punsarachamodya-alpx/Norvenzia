@@ -5487,3 +5487,489 @@ button {
 .header--transparent .header__nav.is-open .header__caret {
   color: var(--ink);
 }
+
+/* ------------------------------------------------------ 32. Water glass refresh
+   A shared translucent surface language across the public site. Solid brand
+   colors remain on primary actions and dark feature sections; glass is used
+   for navigation, repeated content surfaces, controls, and utility panels. */
+
+:root {
+  --glass-surface: rgba(255, 255, 255, 0.68);
+  --glass-surface-strong: rgba(255, 255, 255, 0.82);
+  --glass-border: rgba(255, 255, 255, 0.88);
+  --glass-edge: rgba(0, 45, 92, 0.12);
+  --glass-shadow: 0 18px 48px -34px rgba(0, 29, 60, 0.38);
+  --glass-blur: 18px;
+}
+
+body {
+  background-color: #edf3f9;
+  background-image:
+    radial-gradient(ellipse at 8% 14%, rgba(255, 255, 255, 0.92), transparent 38rem),
+    radial-gradient(ellipse at 94% 36%, rgba(200, 222, 241, 0.42), transparent 42rem),
+    linear-gradient(145deg, #f8fbff 0%, #edf3f9 48%, #f5f8fc 100%);
+  background-attachment: fixed;
+}
+
+.section--alt,
+.section--warm {
+  background: rgba(226, 237, 248, 0.34);
+  border-block: 1px solid rgba(255, 255, 255, 0.58);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.header {
+  border-color: var(--glass-border);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.76), rgba(235, 244, 252, 0.58));
+  backdrop-filter: saturate(190%) blur(26px);
+  -webkit-backdrop-filter: saturate(190%) blur(26px);
+  box-shadow: 0 12px 34px -24px rgba(0, 29, 60, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+.header__link {
+  padding: 0.55rem 0.8rem;
+  border-radius: 999px;
+}
+
+.header__link:hover,
+.header__link.is-current {
+  background: rgba(255, 255, 255, 0.54);
+}
+
+.header__link::after {
+  display: none;
+}
+
+.header__dropdown {
+  background: rgba(248, 252, 255, 0.8);
+  border-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 24px 54px -30px rgba(0, 29, 60, 0.38), inset 0 1px 0 #fff;
+  backdrop-filter: saturate(190%) blur(24px);
+  -webkit-backdrop-filter: saturate(190%) blur(24px);
+}
+
+.header__toggle {
+  border-color: var(--glass-edge);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.52);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.86);
+}
+
+.header--transparent {
+  border-color: rgba(255, 255, 255, 0.26);
+  background: linear-gradient(135deg, rgba(5, 38, 71, 0.58), rgba(4, 28, 54, 0.35));
+  box-shadow: 0 14px 36px -24px rgba(0, 12, 28, 0.58), inset 0 1px 0 rgba(255, 255, 255, 0.24);
+}
+
+.header--transparent .header__link:hover,
+.header--transparent .header__link.is-current {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.header--transparent .header__nav.is-open .header__link:hover,
+.header--transparent .header__nav.is-open .header__link.is-current {
+  background: rgba(0, 45, 92, 0.07);
+}
+
+.header--transparent.nav--scrolled {
+  border-color: var(--glass-border);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.76), rgba(235, 244, 252, 0.58));
+  backdrop-filter: saturate(190%) blur(26px);
+  -webkit-backdrop-filter: saturate(190%) blur(26px);
+  box-shadow: 0 12px 34px -24px rgba(0, 29, 60, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.92);
+}
+
+.btn {
+  border-radius: 999px;
+}
+
+.btn--primary {
+  box-shadow: 0 8px 20px -12px rgba(0, 45, 92, 0.82), inset 0 1px 0 rgba(255, 255, 255, 0.24);
+}
+
+.btn--ghost {
+  background: rgba(255, 255, 255, 0.46);
+  border-color: rgba(0, 45, 92, 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.btn--ghost:hover {
+  background: rgba(0, 45, 92, 0.94);
+}
+
+.btn--ghost-onDark {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.46);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.card,
+.fit-card,
+.tier,
+.tier-card,
+.panel,
+.aside-card,
+.success-panel,
+.live-unavailable,
+.contact-card {
+  background: var(--glass-surface);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.88);
+  backdrop-filter: saturate(165%) blur(var(--glass-blur));
+  -webkit-backdrop-filter: saturate(165%) blur(var(--glass-blur));
+}
+
+.card--media,
+.panel--model {
+  overflow: hidden;
+}
+
+.card--link:hover,
+.fit-card:hover,
+.tier:hover,
+.tier-card:hover,
+.panel--model:hover {
+  border-color: rgba(46, 123, 255, 0.48);
+  box-shadow: 0 24px 58px -34px rgba(0, 45, 92, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.94);
+}
+
+.social-proof {
+  background: rgba(248, 252, 255, 0.52);
+  border-color: rgba(255, 255, 255, 0.76);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.social-proof__chip {
+  border-color: rgba(255, 255, 255, 0.94);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95), 0 4px 12px -10px rgba(0, 45, 92, 0.42);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.expertise-card {
+  margin-bottom: 0.7rem;
+  padding: 1.2rem 1rem;
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  background: var(--glass-surface);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  backdrop-filter: saturate(145%) blur(12px);
+  -webkit-backdrop-filter: saturate(145%) blur(12px);
+}
+
+.expertise-card:last-child {
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.expertise-card:hover {
+  background: var(--glass-surface-strong);
+  box-shadow: 0 16px 36px -28px rgba(0, 45, 92, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.98);
+}
+
+.table-scroll {
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.42);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.table-scroll .data-table {
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.world-map__legend {
+  border-color: rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+  background: rgba(5, 19, 38, 0.68);
+  backdrop-filter: saturate(150%) blur(16px);
+  -webkit-backdrop-filter: saturate(150%) blur(16px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.panel--roadmap {
+  background: rgba(225, 236, 247, 0.62);
+  border-color: rgba(255, 255, 255, 0.74);
+  border-style: solid;
+}
+
+.fit-card__check {
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: inset 0 1px 0 #fff;
+}
+
+.steps {
+  border: 0;
+  gap: 0.75rem;
+}
+
+.step {
+  padding: clamp(1.2rem, 2vw, 1.65rem);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  background: var(--glass-surface);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  backdrop-filter: saturate(150%) blur(14px);
+  -webkit-backdrop-filter: saturate(150%) blur(14px);
+}
+
+.step:hover {
+  background: var(--glass-surface-strong);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.96);
+}
+
+.faq {
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.46);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.94);
+  backdrop-filter: saturate(155%) blur(16px);
+  -webkit-backdrop-filter: saturate(155%) blur(16px);
+}
+
+.faq__item,
+.faq-list {
+  border-color: rgba(0, 45, 92, 0.13);
+}
+
+.faq__item:last-child {
+  border-bottom: 0;
+}
+
+.faq__q {
+  padding-inline: clamp(1rem, 2vw, 1.4rem);
+}
+
+.faq__a {
+  padding-inline: clamp(1rem, 2vw, 1.4rem);
+}
+
+.field input,
+.field textarea,
+.field select,
+.live-feed__search,
+.live-feed__sort {
+  border-color: rgba(255, 255, 255, 0.92);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.62);
+  box-shadow: inset 0 1px 2px rgba(0, 45, 92, 0.05), 0 1px 0 rgba(255, 255, 255, 0.68);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus,
+.live-feed__search:focus,
+.live-feed__sort:focus {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(46, 123, 255, 0.58);
+  box-shadow: 0 0 0 4px rgba(46, 123, 255, 0.14), inset 0 1px 0 #fff;
+}
+
+.aside-card,
+.success-panel {
+  background: rgba(255, 255, 255, 0.64);
+}
+
+.success-panel {
+  border-top: 1px solid var(--glass-border);
+}
+
+.form-error-summary {
+  border-radius: 14px;
+  background: rgba(253, 236, 234, 0.84);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.notice {
+  border-radius: 14px;
+  background: rgba(255, 248, 230, 0.82);
+  border-color: rgba(240, 208, 145, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.data-table {
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.42);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.data-table th {
+  background: rgba(224, 237, 249, 0.62);
+}
+
+.data-table td,
+.data-table th {
+  border-color: rgba(0, 45, 92, 0.12);
+}
+
+.data-table tr:hover td {
+  background: rgba(255, 255, 255, 0.58);
+}
+
+.cookie-banner {
+  left: clamp(0.75rem, 2.5vw, 2rem);
+  right: clamp(0.75rem, 2.5vw, 2rem);
+  bottom: clamp(0.75rem, 2vw, 1.5rem);
+  border: 1px solid rgba(255, 255, 255, 0.92);
+  border-radius: 20px;
+  background: rgba(248, 252, 255, 0.82);
+  box-shadow: 0 22px 64px -30px rgba(0, 29, 60, 0.42), inset 0 1px 0 #fff;
+  backdrop-filter: saturate(180%) blur(24px);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  transform: translateY(calc(100% + 2rem));
+}
+
+.cookie-banner.is-visible {
+  transform: translateY(0);
+}
+
+.live-map-filters,
+.live-stats__group,
+.live-feed__item,
+.live-stats__empty {
+  border: 1px solid rgba(255, 255, 255, 0.84);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.56);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  backdrop-filter: saturate(150%) blur(14px);
+  -webkit-backdrop-filter: saturate(150%) blur(14px);
+}
+
+.live-stats__group {
+  padding: 1.1rem 1.25rem;
+}
+
+.live-feed__item {
+  border-color: rgba(255, 255, 255, 0.86);
+  background: rgba(255, 255, 255, 0.56);
+}
+
+.live-feed__item:hover,
+.live-feed__item:focus-visible {
+  background: rgba(255, 255, 255, 0.82);
+  border-color: rgba(46, 123, 255, 0.4);
+  box-shadow: 0 18px 42px -30px rgba(0, 45, 92, 0.38);
+}
+
+.live-map-filters {
+  padding: 1rem 1.2rem;
+}
+
+.live-map-filters__chip {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.live-stats__empty {
+  padding: 1rem 1.2rem;
+}
+
+.cta-band {
+  background:
+    radial-gradient(ellipse at 82% 14%, rgba(64, 137, 205, 0.34), transparent 34rem),
+    linear-gradient(135deg, #002d5c 0%, #001d3c 78%);
+}
+
+.footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+@media (max-width: 860px) {
+  .step {
+    padding: 1.15rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .cookie-banner {
+    border-radius: 18px;
+  }
+
+  .live-map-filters {
+    padding: 0.85rem;
+  }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .header,
+  .header--transparent.nav--scrolled,
+  .card,
+  .fit-card,
+  .tier,
+  .tier-card,
+  .panel,
+  .aside-card,
+  .success-panel,
+  .live-unavailable,
+  .contact-card,
+  .step,
+  .faq,
+  .field input,
+  .field textarea,
+  .field select,
+  .cookie-banner,
+  .live-map-filters,
+  .live-stats__group,
+  .live-feed__item {
+    background-color: rgba(248, 252, 255, 0.96);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .header,
+  .header--transparent,
+  .header--transparent.nav--scrolled,
+  .card,
+  .fit-card,
+  .tier,
+  .tier-card,
+  .panel,
+  .aside-card,
+  .success-panel,
+  .live-unavailable,
+  .contact-card,
+  .step,
+  .faq,
+  .field input,
+  .field textarea,
+  .field select,
+  .cookie-banner,
+  .live-map-filters,
+  .live-stats__group,
+  .live-feed__item,
+  .social-proof__chip,
+  .expertise-card {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background-color: rgba(248, 252, 255, 0.96);
+  }
+
+  .header--transparent {
+    background: rgba(0, 29, 60, 0.96);
+  }
+}
