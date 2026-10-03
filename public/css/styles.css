@@ -4882,10 +4882,14 @@ button {
   max-width: var(--max-width);
 }
 
+.about-backdrop .eyebrow,
+.about-backdrop__heading {
+  color: #fff;
+}
+
 .about-backdrop__heading {
   max-width: 18ch;
   margin-top: 0.6rem;
-  color: #fff;
 }
 
 .about-backdrop__body {
