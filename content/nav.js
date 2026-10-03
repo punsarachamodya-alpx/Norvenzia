@@ -10,6 +10,7 @@ module.exports = {
   // straight at the /services summary page, same as the plain link it used
   // to be); server.js only adds `children` to it.
   primary: [
+    { label: 'Home', href: '/' },
     { label: 'Services', href: '/services' },
     { label: 'Industries', href: '/industries' },
     { label: 'About Us', href: '/about-us' },
