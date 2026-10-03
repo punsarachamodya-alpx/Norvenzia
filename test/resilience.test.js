@@ -58,7 +58,7 @@ test('createInvestigation returns {available:false} (never throws) when War Room
 // End-to-end version of the same scenario through the real app + a real
 // (fake) MIS server, so this proves the whole /intelligence path, not just
 // the client library in isolation.
-test('GET /intelligence degrades gracefully (200) when MIS returns garbage instead of JSON', async () => {
+test('GET /intelligence stays hidden when MIS returns garbage instead of JSON', async () => {
   const fakeMis = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.end('this is not { valid json');
@@ -75,9 +75,7 @@ test('GET /intelligence degrades gracefully (200) when MIS returns garbage inste
 
   try {
     const res = await fetch(`${base}/intelligence`);
-    const body = await res.text();
-    assert.equal(res.status, 200);
-    assert.ok(body.includes('temporarily unavailable'));
+    assert.equal(res.status, 404);
   } finally {
     await new Promise((resolve) => server.close(resolve));
     await new Promise((resolve) => fakeMis.close(resolve));

@@ -39,22 +39,14 @@ test.after(async () => {
   await new Promise((resolve) => server.close(resolve));
 });
 
-test('GET /intelligence returns 200 fully degraded (no MIS configured)', async () => {
+test('GET /intelligence is temporarily hidden', async () => {
   const res = await fetch(`${base}/intelligence`);
-  assert.equal(res.status, 200);
+  assert.equal(res.status, 404);
 });
 
 test('GET /insights/sweden-trade returns 200 fully degraded', async () => {
   const res = await fetch(`${base}/insights/sweden-trade`);
   assert.equal(res.status, 200);
-});
-
-test('GET /intelligence renders the degraded panel, never the globe, when MIS_BASE_URL is unset', async () => {
-  const res = await fetch(`${base}/intelligence`);
-  const body = await res.text();
-  assert.equal(res.status, 200);
-  assert.ok(body.includes('temporarily unavailable'));
-  assert.ok(!body.includes('id="live-globe"'));
 });
 
 test('GET /intelligence/data reports available:false (200, not an error) when MIS_BASE_URL is unset', async () => {

@@ -392,35 +392,8 @@ for (const key of DIVISION_KEYS) {
 
 // --------------------------------------------------------- intelligence
 
-// In primary nav (content/nav.js) as "Intelligence" and no longer an
-// off-nav experimental link — still deliberately excluded from
-// PUBLIC_ROUTES / sitemap.xml pending a decision on indexing it.
-app.get('/intelligence', async (req, res) => {
-  const health = await misClient.getHealth(MIS_BASE_URL);
-  const events = health ? await misClient.getDisruptions(MIS_BASE_URL) : null;
-  // Vessels are a separate, optional layer — MIS itself may have no
-  // AISSTREAM_API_KEY configured, which is not a degraded state, just an
-  // empty list. Only fetched once MIS is confirmed healthy either way.
-  const vessels = health ? await misClient.getVessels(MIS_BASE_URL) : [];
-
-  // MIS being unset, down, slow, or returning garbage all collapse to the
-  // same degraded state — /intelligence must render 200 regardless.
-  res.render('live', {
-    meta: {
-      title: `Live Disruption Monitor — ${res.locals.site.publicName}`,
-      description: 'A live view of global supply chain disruptions, monitored and classified in real time.'
-    },
-    misAvailable: Boolean(health && events),
-    events: events || [],
-    vessels,
-    // War Room gating (docs/internal/WARROOM_BUILD_PLAN.md §10): a shared
-    // access code unlocks the "Investigate" action for this browser session
-    // only. Unset/false by default -- anonymous visitors always see the
-    // locked teaser state.
-    warroomUnlocked: Boolean(req.session && req.session.warroomUnlocked),
-    warroomBookingEmbedUrl: store.getSection('contact').bookingEmbedUrl || ''
-  });
-});
+// Temporarily hidden from the public site. The route is intentionally absent;
+// data and War Room proxy routes below remain available for a future restore.
 
 // Same-origin proxy so the browser never learns MIS's real address — the
 // client-side map polls this instead of MIS directly.

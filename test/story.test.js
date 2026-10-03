@@ -50,16 +50,15 @@ test('GET /insights/trade/se returns 200 and renders the story shell', async () 
   assert.ok(body.includes('id="story-data"'));
 });
 
-test('GET /insights/trade/se cross-links back to /intelligence', async () => {
+test('GET /insights/trade/se does not link to the temporarily hidden monitor', async () => {
   const res = await fetch(`${base}/insights/trade/se`);
   const body = await res.text();
-  assert.ok(body.includes('href="/intelligence"'));
+  assert.ok(!body.includes('href="/intelligence"'));
 });
 
-test('GET /intelligence cross-links to the Sweden trade story', async () => {
+test('GET /intelligence is hidden', async () => {
   const res = await fetch(`${base}/intelligence`);
-  const body = await res.text();
-  assert.ok(body.includes('href="/insights/sweden-trade"'));
+  assert.equal(res.status, 404);
 });
 
 test('renders real hero figures straight from content/trade-data/se.json, never hardcoded', async () => {

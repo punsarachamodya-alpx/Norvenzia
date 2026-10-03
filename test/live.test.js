@@ -97,26 +97,9 @@ test.after(async () => {
   await new Promise((resolve) => fakeMis.close(resolve));
 });
 
-test('GET /intelligence returns 200 with the globe rendered when MIS is healthy', async () => {
+test('GET /intelligence is hidden even when MIS is healthy', async () => {
   const res = await fetch(`${base}/intelligence`);
-  const body = await res.text();
-  assert.equal(res.status, 200);
-  assert.ok(body.includes('id="live-globe"'));
-  assert.ok(body.includes('Rotterdam'));
-  assert.ok(!body.includes('temporarily unavailable'));
-});
-
-test('GET /intelligence degrades gracefully (still 200) when MIS is down', async () => {
-  misShouldFail = true;
-  try {
-    const res = await fetch(`${base}/intelligence`);
-    const body = await res.text();
-    assert.equal(res.status, 200);
-    assert.ok(body.includes('temporarily unavailable'));
-    assert.ok(!body.includes('id="live-globe"'));
-  } finally {
-    misShouldFail = false;
-  }
+  assert.equal(res.status, 404);
 });
 
 test('GET /intelligence/data proxies MIS data without exposing its address to the client', async () => {
@@ -138,32 +121,6 @@ test('GET /intelligence/data degrades to available:false when MIS is down', asyn
     assert.deepEqual(body.events, []);
   } finally {
     misShouldFail = false;
-  }
-});
-
-test('a valid https sourceUrl survives end to end into the rendered page', async () => {
-  const res = await fetch(`${base}/intelligence`);
-  const body = await res.text();
-  assert.ok(body.includes('href="https://example.com/rotterdam-storm-port-congestion"'));
-});
-
-test('GET /intelligence embeds live vessel data and shows the "live ships" legend/caption when available', async () => {
-  const res = await fetch(`${base}/intelligence`);
-  const body = await res.text();
-  assert.ok(body.includes('Ever Given'));
-  assert.ok(body.includes('world-map__legend-vessel'));
-  assert.ok(body.includes('live AIS data via aisstream.io'));
-});
-
-test('GET /intelligence omits the "live ships" legend/caption when no vessels are available', async () => {
-  vesselsAvailable = false;
-  try {
-    const res = await fetch(`${base}/intelligence`);
-    const body = await res.text();
-    assert.ok(!body.includes('world-map__legend-vessel'));
-    assert.ok(!body.includes('live AIS data via aisstream.io'));
-  } finally {
-    vesselsAvailable = true;
   }
 });
 
