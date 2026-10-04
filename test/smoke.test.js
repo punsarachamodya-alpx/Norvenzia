@@ -56,6 +56,19 @@ for (const route of PUBLIC_ROUTES) {
   });
 }
 
+test('Page titles use short hyphens instead of long dashes', async () => {
+  for (const [route, expected] of [
+    ['/services', '<title>Services - Norvenzia</title>'],
+    ['/operations/sourcing-contracting', '<title>Sourcing &amp; Contracting - Norvenzia</title>']
+  ]) {
+    const res = await fetch(base + route);
+    const body = await res.text();
+    assert.equal(res.status, 200);
+    assert.ok(body.includes(expected));
+    assert.ok(!body.match(/<title>[^<]*[—–]/));
+  }
+});
+
 test('Home page no longer renders the Launch, Scale, Command engagement tiers', async () => {
   const res = await fetch(base + '/');
   const body = await res.text();

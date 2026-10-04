@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <% const pageTitle = String(meta && meta.title ? meta.title : site.publicName).replace(/[—–]/g, '-'); %>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title><%= meta && meta.title ? meta.title : site.publicName %></title>
+  <title><%= pageTitle %></title>
   <meta name="description" content="<%= meta && meta.description ? meta.description : site.description %>">
   <link rel="canonical" href="<%= canonical %>">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="<%= site.publicName %>">
-  <meta property="og:title" content="<%= meta && meta.title ? meta.title : site.publicName %>">
+  <meta property="og:title" content="<%= pageTitle %>">
   <meta property="og:description" content="<%= meta && meta.description ? meta.description : site.description %>">
   <meta property="og:url" content="<%= canonical %>">
   <meta property="og:image" content="<%= site.baseUrl %>/og-image.png?v=<%= ogImageVersion %>">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="<%= meta && meta.title ? meta.title : site.publicName %>">
+  <meta name="twitter:title" content="<%= pageTitle %>">
   <meta name="twitter:description" content="<%= meta && meta.description ? meta.description : site.description %>">
   <meta name="twitter:image" content="<%= site.baseUrl %>/og-image.png?v=<%= ogImageVersion %>">
 
