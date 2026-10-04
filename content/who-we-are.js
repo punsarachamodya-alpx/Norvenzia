@@ -120,9 +120,9 @@ module.exports = {
     // notice back (see views/who-we-are.ejs).
     draftNotice: '',
     story: [
-      'I started Norvenzia because I noticed that during the years I spent in supply chain and procurement operations across telecom, garments, seafood, and logistics, good mid-market companies choose between two bad options: overpaying for a full in-house procurement team they don’t need year-round, or underpaying for outsourced labour that never really understands the work.',
-      'There’s a third option: Norvenzia runs on people who’ve actually done this work, not people trained to sound like they have — delivered remotely from Colombo, with a single person accountable for it. No layers between the judgment and the job.',
-      'That’s the starting point, not the ceiling. Where we’re going is a KPO shaped for how supply chains actually run now, senior judgment first, technology built to sharpen it, never to replace it.'
+      'Over years spent in supply chain and procurement leadership across apparel, telecom, 3PL warehousing, and seafood, I saw a recurring pattern: supply chain is the lifeblood of a business controlling upwards of 60% of its working capital and operational cash flow yet most companies struggle to run it efficiently. Managing end-to-end logistics demands immense capital, time, and specialized talent, taking focus away from a company’s core mission.',
+      'I founded Norvenzia to rewrite that narrative.',
+      'Norvenzia is a specialized Knowledge Process Outsourcing (KPO) partner engineered to run end-to-end supply chain operations with precision. We don’t assign theorists or textbook consultants; our team consists of operators who have managed real supply chains on the ground. Powered by Sri Lanka’s top-tier logistics talent and operated with 100% operational transparency and direct, real-time client integration, we give global companies the speed, strategy, and cost advantage to scale effortlessly.'
     ]
   },
 

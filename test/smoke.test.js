@@ -72,6 +72,10 @@ test('About Us shows Our approach after About Norvenzia', async () => {
   assert.ok(body.includes('Our approach'));
   assert.ok(body.indexOf('ABOUT NORVENZIA') < body.indexOf('Our approach'));
   assert.ok(body.includes('Knowledge Transfer'));
+  assert.ok(body.includes('Over years spent in supply chain and procurement leadership'));
+  assert.ok(body.includes('I founded Norvenzia to rewrite that narrative.'));
+  assert.ok(body.includes('100% operational transparency'));
+  assert.ok(!body.includes('I started Norvenzia because I noticed'));
 });
 
 test('About Us shows security and FAQ sections after Our approach', async () => {
