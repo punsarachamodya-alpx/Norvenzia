@@ -31,6 +31,7 @@ module.exports = {
   // Single hub, replacing the former engagementPoint/deliveryHub split (that
   // pair implied two locations; there is only one now).
   hub: 'Colombo, Sri Lanka',
+  footerLocation: 'Galle, Sri Lanka',
   linkedinUrl: 'https://www.linkedin.com/company/norvenzia',
   baseUrl: process.env.BASE_URL || 'https://www.norvenzia.com'
 };

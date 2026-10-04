@@ -63,6 +63,7 @@ test('Home page no longer renders the Launch, Scale, Command engagement tiers', 
   assert.ok(!body.includes('Pick your entry point'));
   assert.ok(!body.includes('FAST START'));
   assert.ok(!body.includes('Command'));
+  assert.ok(body.includes('Galle, Sri Lanka - remote delivery worldwide'));
 });
 
 test('About Us shows Our approach after About Norvenzia', async () => {
