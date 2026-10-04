@@ -9,7 +9,7 @@
 module.exports = {
   legalEntity: 'Norvenzia (Private) Limited',
   publicName: 'Norvenzia',
-  descriptor: 'Procurement & supply chain operations',
+  descriptor: 'Supply chain & procurement operations partner',
   // Retired "Precision. Partnership. Progress." — generic for the first two,
   // over-claiming for the third. "We run the work." is true today and is the
   // actual differentiator.
