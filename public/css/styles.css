@@ -430,8 +430,10 @@ button {
   backdrop-filter: saturate(185%) blur(24px);
   -webkit-backdrop-filter: saturate(185%) blur(24px);
   box-shadow: 0 8px 30px rgba(0, 29, 60, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.82);
-  transition: background var(--transition-base), border-color var(--transition-base),
-    box-shadow var(--transition-base), backdrop-filter var(--transition-base);
+  transition: background 380ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 380ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 380ms cubic-bezier(0.4, 0, 0.2, 1),
+    backdrop-filter 380ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .header__inner {
@@ -439,6 +441,8 @@ button {
   align-items: center;
   gap: 2rem;
   min-height: var(--header-h);
+  position: relative;
+  z-index: 1;
 }
 
 .header__logo img {
@@ -459,7 +463,8 @@ button {
   color: var(--ink);
   padding-block: 0.35rem;
   position: relative;
-  transition: color 0.2s var(--ease);
+  transition: color 380ms cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 380ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .header__link::after {
@@ -507,6 +512,7 @@ button {
   height: 1.5px;
   background: var(--navy);
   position: relative;
+  transition: background-color 380ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .header__toggle span::before,
@@ -517,6 +523,7 @@ button {
   width: 18px;
   height: 1.5px;
   background: var(--navy);
+  transition: background-color 380ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .header__toggle span::before {
@@ -584,16 +591,12 @@ button {
 }
 
 .header--transparent.nav--scrolled {
-  position: sticky;
-  top: 0.65rem;
-  left: auto;
-  right: auto;
-  width: calc(100% - clamp(1.25rem, 3vw, 3rem));
-  margin: 0.65rem auto;
-  transform: none;
   border-color: rgba(255, 255, 255, 0.78);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.58));
   box-shadow: 0 8px 30px rgba(0, 29, 60, 0.09), inset 0 1px 0 rgba(255, 255, 255, 0.82);
+}
+
+.header--transparent.nav--scrolled::before {
+  opacity: 1;
 }
 
 .header--transparent.nav--scrolled .header__link {
@@ -2532,6 +2535,16 @@ button {
     transform: none;
     transition: none;
     transition-delay: 0s;
+  }
+
+  .header,
+  .header__link,
+  .header__toggle span,
+  .header__toggle span::before,
+  .header__toggle span::after,
+  .header__caret,
+  .header--transparent::before {
+    transition: none;
   }
 
   .js [data-parallax] {
@@ -5419,6 +5432,7 @@ button {
   color: inherit;
   cursor: pointer;
   flex: none;
+  transition: color 380ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .header__caret span {
@@ -5561,6 +5575,18 @@ body {
   box-shadow: 0 14px 36px -24px rgba(0, 12, 28, 0.58), inset 0 1px 0 rgba(255, 255, 255, 0.24);
 }
 
+.header--transparent::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.76), rgba(235, 244, 252, 0.58));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 380ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 .header--transparent .header__link:hover,
 .header--transparent .header__link.is-current {
   background: rgba(255, 255, 255, 0.14);
@@ -5573,7 +5599,6 @@ body {
 
 .header--transparent.nav--scrolled {
   border-color: var(--glass-border);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.76), rgba(235, 244, 252, 0.58));
   backdrop-filter: saturate(190%) blur(26px);
   -webkit-backdrop-filter: saturate(190%) blur(26px);
   box-shadow: 0 12px 34px -24px rgba(0, 29, 60, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.92);
