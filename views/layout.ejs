@@ -29,7 +29,7 @@
       Google Search shows a generic globe instead of the real icon, which is
       exactly what was happening before this file existed. %>
   <link rel="icon" href="/favicon.ico" sizes="32x32">
-  <link rel="icon" href="/norvenzia-transparent/norvenzia-icon-dark.png">
+  <link rel="icon" href="/norvenzia-transparent/norvenzia-icon-dark.png?v=<%= v %>">
   <link rel="icon" href="/brand/favicon-32.png" sizes="32x32">
   <link rel="icon" href="/brand/favicon-256.png" sizes="256x256">
   <link rel="apple-touch-icon" href="/brand/apple-icon-180.png">
@@ -251,7 +251,7 @@
         legalName: site.legalEntity,
         alternateName: ['Norvenzia', 'Norvenzia Pvt Ltd'],
         url: site.baseUrl + '/',
-        logo: site.baseUrl + '/norvenzia-transparent/norvenzia-logo-light.png',
+        logo: site.baseUrl + '/norvenzia-transparent/norvenzia-logo-light.png?v=' + v,
         sameAs: [site.linkedinUrl].filter(Boolean)
       }) %>
     </script>
