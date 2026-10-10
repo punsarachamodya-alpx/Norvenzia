@@ -2,8 +2,9 @@
 // numbers stored as strings from the admin form; views parse them with a fallback
 // to these same defaults, so a blank or corrupted value can never break layout.
 
-// The logo SVGs (public/brand/norvenzia-logo-*.svg) are tightly cropped to the
-// artwork, so these numbers are the height of the visible wordmark itself.
+// The logo PNGs (public/norvenzia-transparent/norvenzia-logo-*.png) are
+// tightly cropped to the artwork, so these numbers are the height of the
+// visible wordmark itself.
 module.exports = {
   logoHeaderHeight: '90',
   logoFooterHeight: '83',

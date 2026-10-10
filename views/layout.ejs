@@ -29,7 +29,7 @@
       Google Search shows a generic globe instead of the real icon, which is
       exactly what was happening before this file existed. %>
   <link rel="icon" href="/favicon.ico" sizes="32x32">
-  <link rel="icon" href="/brand/norvenzia-favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/norvenzia-transparent/norvenzia-icon-dark.png">
   <link rel="icon" href="/brand/favicon-32.png" sizes="32x32">
   <link rel="icon" href="/brand/favicon-256.png" sizes="256x256">
   <link rel="apple-touch-icon" href="/brand/apple-icon-180.png">
@@ -66,17 +66,18 @@
     const logoHMobile = Math.min(MOBILE_LOGO_CAP, logoH);
     const footerLogoHMobile = Math.min(MOBILE_LOGO_CAP, footerLogoH);
 
-    // The wordmark's own viewBox (public/brand/norvenzia-logo-light.svg) —
-    // its true aspect ratio, straight from the source vector, tightly cropped
-    // to the artwork (icon + wordmark) with no baked-in padding, so the logo
-    // sits flush left in its box instead of drifting right of other flush-left
+    // The wordmark's true aspect ratio (public/norvenzia-transparent/
+    // norvenzia-logo-*.png, rendered 1164x228 from the same source vector
+    // geometry as the old public/brand SVGs) — tightly cropped to the
+    // artwork (icon + wordmark) with no baked-in padding, so the logo sits
+    // flush left in its box instead of drifting right of other flush-left
     // text like the footer tagline. Left/top/bottom are cropped precisely
     // (icon geometry, font-independent); the right edge carries extra padding
-    // because <img src="*.svg"> renders in an isolated context that can't see
+    // because <img src="*.png"> renders in an isolated context that can't see
     // this page's @font-face Montserrat, so the wordmark silently falls back
     // to a system sans-serif that measures wider than Montserrat at the same
     // size — the crop has to fit that wider fallback render, not the brand font.
-    const LOGO_ASPECT = 337 / 66;
+    const LOGO_ASPECT = 1164 / 228;
     const desktopLogoWidth = logoH * LOGO_ASPECT;
 
     // How much room the nav links + CTA button + gutters need beside the logo
@@ -250,7 +251,7 @@
         legalName: site.legalEntity,
         alternateName: ['Norvenzia', 'Norvenzia Pvt Ltd'],
         url: site.baseUrl + '/',
-        logo: site.baseUrl + '/brand/norvenzia-logo-light.svg',
+        logo: site.baseUrl + '/norvenzia-transparent/norvenzia-logo-light.png',
         sameAs: [site.linkedinUrl].filter(Boolean)
       }) %>
     </script>
