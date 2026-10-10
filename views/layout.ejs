@@ -29,7 +29,7 @@
       Google Search shows a generic globe instead of the real icon, which is
       exactly what was happening before this file existed. %>
   <link rel="icon" href="/favicon.ico" sizes="32x32">
-  <link rel="icon" href="/norvenzia-transparent/norvenzia-icon-dark.png?v=<%= v %>">
+  <link rel="icon" href="/norvenzia-transparent/norvenzia-icon-light.png?v=<%= v %>">
   <link rel="icon" href="/brand/favicon-32.png" sizes="32x32">
   <link rel="icon" href="/brand/favicon-256.png" sizes="256x256">
   <link rel="apple-touch-icon" href="/brand/apple-icon-180.png">
@@ -67,17 +67,12 @@
     const footerLogoHMobile = Math.min(MOBILE_LOGO_CAP, footerLogoH);
 
     // The wordmark's true aspect ratio (public/norvenzia-transparent/
-    // norvenzia-logo-*.png, rendered 1164x228 from the same source vector
-    // geometry as the old public/brand SVGs) — tightly cropped to the
-    // artwork (icon + wordmark) with no baked-in padding, so the logo sits
-    // flush left in its box instead of drifting right of other flush-left
-    // text like the footer tagline. Left/top/bottom are cropped precisely
-    // (icon geometry, font-independent); the right edge carries extra padding
-    // because <img src="*.png"> renders in an isolated context that can't see
-    // this page's @font-face Montserrat, so the wordmark silently falls back
-    // to a system sans-serif that measures wider than Montserrat at the same
-    // size — the crop has to fit that wider fallback render, not the brand font.
-    const LOGO_ASPECT = 1164 / 228;
+    // norvenzia-logo-*.png — the badge + wordmark artwork is already
+    // flattened into the PNG raster, so unlike an SVG it carries its own
+    // rendered wordmark font and needs no live @font-face at all). The
+    // artwork is already flush to its 1244x228 canvas, so this is just
+    // the file's own pixel ratio -- no crop/padding correction needed.
+    const LOGO_ASPECT = 1244 / 228;
     const desktopLogoWidth = logoH * LOGO_ASPECT;
 
     // How much room the nav links + CTA button + gutters need beside the logo
