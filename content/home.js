@@ -9,7 +9,7 @@ module.exports = {
   // (scrambles into place, then settles — see [data-scramble] in hero.ejs).
   hero: {
     eyebrow: '// YOUR RELIABLE SUPPLY CHAIN OPERATIONS PARTNER.',
-    headline: 'We run the work.',
+    headline: 'We Execute Operations',
     body:
       'Full supply chain and procurement operations, run remotely from our delivery hub in Colombo, Sri Lanka — for manufacturers and industrial teams worldwide. Every day.',
     primaryCta: { label: 'Start a conversation', href: '#contact' },

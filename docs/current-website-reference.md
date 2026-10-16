@@ -25,7 +25,7 @@ Footer legal links: Privacy Policy (`/privacy`), Cookie Policy (`/cookies`), Ter
 **Purpose:** Introduce Norvenzia, its expertise areas, how engagements work, and a path to contact.
 
 **Sections, in order:**
-1. Hero — "We run the work." with a "Start a conversation" and an "Our Expertise" CTA
+1. Hero — "We Execute Operations" with a "Start a conversation" and an "Our Expertise" CTA
 2. Social proof marquee — auto-scrolling vertical/market chips
 3. Full-bleed photo banner
 4. **Our Expertise** — 8 icon-cards, each linking directly to a topic page (see list below)
@@ -170,7 +170,7 @@ A scroll-driven story built on the committed Sweden trade dataset (totals, goods
 
 - Legal entity: Norvenzia (Private) Limited
 - Descriptor: "Supply chain & procurement operations partner" (changed from "Procurement & supply chain operations")
-- Tagline: "We run the work."
+- Tagline: "We Execute Operations"
 - Delivery hub: Colombo, Sri Lanka
 - **Registered/footer location: Galle, Sri Lanka** (new `site.footerLocation` field — footer now reads "Galle, Sri Lanka - remote delivery worldwide")
 - Contact email: contact@norvenzia.com (same address used for both the contact form and footer)

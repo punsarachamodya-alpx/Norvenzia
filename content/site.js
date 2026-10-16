@@ -10,10 +10,10 @@ module.exports = {
   legalEntity: 'Norvenzia (Private) Limited',
   publicName: 'Norvenzia',
   descriptor: 'Supply chain & procurement operations partner',
-  // Retired "Precision. Partnership. Progress." — generic for the first two,
-  // over-claiming for the third. "We run the work." is true today and is the
-  // actual differentiator.
-  tagline: 'We run the work.',
+  // Retired "We run the work." for "We Execute Operations" -- per explicit
+  // request, applied everywhere the tagline appears, including the
+  // homepage hero (content/home.js's hero.headline).
+  tagline: 'We Execute Operations',
   description:
     'Norvenzia runs procurement and supply chain operations for mid-market companies — a single Colombo-based team, delivered fully remotely to clients across the EU, Norway, the UK, Australia, New Zealand, and the United States.',
   // Two genuinely separate inboxes — contactEmail is the contact-form
