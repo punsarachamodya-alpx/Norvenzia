@@ -117,7 +117,7 @@ module.exports = {
       {
         question: 'What does "KPO" mean in practice?',
         answer:
-          'Knowledge Process Outsourcing. Unlike BPO (data entry, call centres), KPO covers skilled, judgement-intensive work — procurement negotiations, supplier management, spend analysis. We run the work that needs supply chain expertise, not just bandwidth.'
+          'Knowledge Process Outsourcing. Unlike BPO (data entry, call centres), KPO covers skilled, judgement-intensive work — procurement negotiations, supplier management, spend analysis. We execute the operations that need supply chain expertise, not just bandwidth.'
       },
       {
         question: 'Do we need to change our ERP or TMS?',
