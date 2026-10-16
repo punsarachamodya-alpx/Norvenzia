@@ -172,7 +172,7 @@ A scroll-driven story built on the committed Sweden trade dataset (totals, goods
 - Descriptor: "Supply chain & procurement operations partner" (changed from "Procurement & supply chain operations")
 - Tagline: "We Execute Operations"
 - Delivery hub: Colombo, Sri Lanka
-- **Registered/footer location: Galle, Sri Lanka** (new `site.footerLocation` field — footer now reads "Galle, Sri Lanka - remote delivery worldwide")
+- **Footer location: Colombo, Sri Lanka** (`site.footerLocation` field — footer reads "Colombo, Sri Lanka - remote delivery worldwide"); registered office (Privacy/Terms) remains Galle, Sri Lanka — the two are deliberately distinct
 - Contact email: contact@norvenzia.com (same address used for both the contact form and footer)
 - Phone: +46 73 779 5741 *(legacy Swedish number, flagged in source comments as pending a decision)*
 - Markets served: EU, Norway, UK, Australia, New Zealand, United States *(Switzerland was removed earlier this session; note the homepage's own `markets` chip line currently omits "UK" while the footer/model copy still includes it — a small inconsistency worth a look)*
