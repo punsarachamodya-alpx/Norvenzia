@@ -58,6 +58,7 @@ module.exports = {
     expertise: [
       { slug: 'sourcing-contracting', name: 'Sourcing & Contracting', href: 'https://norvenzia.com/operations/sourcing-contracting' },
       { slug: 'source-to-pay', name: 'Source-to-Pay Operations', href: 'https://norvenzia.com/operations/source-to-pay' },
+      { slug: 'logistics', name: 'Logistics', href: 'https://norvenzia.com/operations/logistics' },
       { slug: 'process-optimization', name: 'Process Optimization', href: 'https://norvenzia.com/operations/process-optimization-topic' },
       { slug: 'spend-cost-intelligence', name: 'Spend & Cost Intelligence', href: 'https://norvenzia.com/analytics/spend-cost-intelligence' },
       { slug: 'supplier-performance', name: 'Supplier Performance', href: 'https://norvenzia.com/analytics/supplier-performance-topic' },

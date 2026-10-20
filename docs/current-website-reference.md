@@ -28,7 +28,7 @@ Footer legal links: Privacy Policy (`/privacy`), Cookie Policy (`/cookies`), Ter
 1. Hero — "We Execute Operations" with a "Start a conversation" and an "Our Expertise" CTA
 2. Social proof marquee — auto-scrolling vertical/market chips
 3. Full-bleed photo banner
-4. **Our Expertise** — 8 icon-cards, each linking directly to a topic page (see list below)
+4. **Our Expertise** — 9 icon-cards, each linking directly to a topic page (see list below)
 5. How it works (dark section) — three steps: Scope, Onboard, Run
 6. Editorial quote block (dark)
 7. FAQ accordion — 6 questions
@@ -39,6 +39,7 @@ Engagement tiers (Launch/Scale/Command) and the old divisions photo-rows are **n
 **Expertise links** (absolute URLs in the source data):
 - Sourcing & Contracting → `/operations/sourcing-contracting`
 - Source-to-Pay Operations → `/operations/source-to-pay`
+- Logistics → `/operations/logistics`
 - Process Optimization → `/operations/process-optimization-topic`
 - Spend & Cost Intelligence → `/analytics/spend-cost-intelligence`
 - Supplier Performance → `/analytics/supplier-performance-topic`
@@ -124,6 +125,8 @@ Flat URLs: topic pages sit one level under their division, service pages are fla
   → Category Strategy, Sourcing and RFQ Execution, Negotiation Preparation, Contract Management
 - **Source-to-Pay Operations** — `/operations/source-to-pay`
   → Purchase Order and Procure-to-Pay Operations, Master Data Management, Supplier Onboarding and Screening
+- **Logistics** — `/operations/logistics`
+  → Freight Booking and Shipment Coordination (`/operations/freight-coordination`), Carrier and Freight Rate Management (`/operations/carrier-management`), Shipment Tracking and Exception Management (`/operations/shipment-tracking`), Shipping and Trade Documentation (`/operations/trade-documentation`), Warehouse and Inventory Coordination (`/operations/warehouse-inventory`)
 - **Process Optimization** — `/operations/process-optimization-topic`
   → Process Optimization
 

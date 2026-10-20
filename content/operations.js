@@ -6,6 +6,9 @@
 // which by searching this tree, and each level's own PARENT is what drives
 // the "back to..." link, not the URL depth.
 //
+// The Logistics topic (and its five services) was added afterwards at the
+// owner's request and is not in the source document.
+//
 // Digital and AI / Advisory and Transformation are deliberately absent from
 // the source document and must not be added here.
 
@@ -18,7 +21,7 @@ module.exports = {
   },
   h1: 'Operations',
   body:
-    'Operations forms the operational foundation of your supply chain. Norvenzia integrates directly into your business to manage strategic sourcing, procurement execution, contract lifecycles, and vendor onboarding with daily rigor and institutional discipline.',
+    'Operations forms the operational foundation of your supply chain. Norvenzia integrates directly into your business to manage strategic sourcing, procurement execution, contract lifecycles, vendor onboarding, and logistics coordination with daily rigor and institutional discipline.',
 
   topics: [
     {
@@ -165,6 +168,106 @@ module.exports = {
       ],
       cardBlurb:
         'Seamless procure-to-pay administration, master data integrity, and compliance-driven vendor onboarding.'
+    },
+
+    {
+      slug: 'logistics',
+      meta: {
+        title: 'Logistics — Norvenzia',
+        description:
+          'Freight and shipment coordination, carrier management, trade documentation, and warehouse coordination for mid-market industrial companies, run remotely inside your existing systems.'
+      },
+      h1: 'Logistics',
+      body:
+        'Procurement does not end when the purchase order is issued. We coordinate the movement and storage of your goods from supplier dock to your site—booking freight, managing carriers, tracking shipments, keeping the documentation in order, and reconciling stock records—so delays and discrepancies surface early and are resolved before they reach production.',
+      services: [
+        {
+          slug: 'freight-coordination',
+          meta: {
+            title: 'Freight Booking and Shipment Coordination — Norvenzia',
+            description:
+              'Day-to-day freight booking, carrier liaison, and shipment coordination so inbound and outbound goods move on schedule.'
+          },
+          h1: 'Freight Booking and Shipment Coordination',
+          cardBlurb: 'Day-to-day booking, scheduling, and carrier follow-up for inbound and outbound shipments.',
+          problem:
+            'Booking freight, confirming pickup windows, and chasing carriers for updates is repetitive, time-sensitive work that lands on buyers and planners who have other priorities—so it is done late, inconsistently, or only when something has already gone wrong.',
+          whatWeDo:
+            'We run your daily shipment coordination. We convert confirmed orders into freight bookings, agree pickup and delivery windows with suppliers and carriers, issue booking confirmations, and act as a single point of contact for transport questions, working inside your existing ERP, TMS, or shared mailbox.',
+          whatYouGet:
+            'A predictable, documented booking routine and one accountable team to ask about any shipment, so your people can stay focused on planning and supplier relationships.'
+        },
+        {
+          slug: 'carrier-management',
+          meta: {
+            title: 'Carrier and Freight Rate Management — Norvenzia',
+            description:
+              'Carrier performance tracking, freight rate benchmarking, and tender support to control transport cost and service.'
+          },
+          h1: 'Carrier and Freight Rate Management',
+          cardBlurb:
+            'Freight rate benchmarking, carrier scorecards, and tender support to keep transport cost and service in check.',
+          problem:
+            'Freight is often booked with whichever carrier answers first, at whatever rate was quoted that day. Without a rate baseline or performance data, transport cost creeps up and service problems are never traced back to a carrier.',
+          whatWeDo:
+            'We build and maintain a lane-by-lane rate baseline, benchmark quotes against it, and track carrier performance on on-time pickup, on-time delivery, and damage and claim rates. When you want to test the market, we prepare the carrier tender and bid comparison and present the results for your decision.',
+          whatYouGet:
+            'A clear picture of what you pay and what you get, by lane and carrier, with a recommendation for each tender—final carrier selection stays with you.'
+        },
+        {
+          slug: 'shipment-tracking',
+          meta: {
+            title: 'Shipment Tracking and Exception Management — Norvenzia',
+            description:
+              'Proactive shipment visibility and exception handling to catch delays before they disrupt production.'
+          },
+          h1: 'Shipment Tracking and Exception Management',
+          cardBlurb:
+            'Proactive tracking and fast exception handling so late shipments are flagged before they stop production.',
+          problem:
+            'Most teams learn a shipment is late when the line is already waiting for material. Tracking information sits across carrier portals, emails, and spreadsheets, and nobody owns the follow-up.',
+          whatWeDo:
+            'We monitor open shipments against their promised dates, consolidate status into a single view, and flag exceptions—delays, missed handovers, port or customs holds, damaged goods—as they appear. For each exception we contact the carrier or supplier, document the cause, and propose a recovery option, such as an expedite or a re-route, for your approval.',
+          whatYouGet:
+            'Early warning on late or at-risk shipments, a logged history of every exception, and weekly visibility reporting you can act on rather than chase.'
+        },
+        {
+          slug: 'trade-documentation',
+          meta: {
+            title: 'Shipping and Trade Documentation — Norvenzia',
+            description:
+              'Preparation and checking of commercial invoices, packing lists, and shipping documents so cross-border shipments clear without avoidable delay.'
+          },
+          h1: 'Shipping and Trade Documentation',
+          cardBlurb:
+            'Preparing and checking shipping and customs documents so cross-border shipments clear without avoidable delay.',
+          problem:
+            'A missing or inconsistent invoice, packing list, or certificate of origin can hold a container at the border for days. Documentation errors are small, common, and expensive, and they are usually found only after the shipment has stalled.',
+          whatWeDo:
+            'We collect and check the commercial invoice, packing list, bill of lading or airway bill, and supporting certificates against the purchase order before the shipment leaves, and prepare the documentation pack for your freight forwarder or customs broker. Filing and customs declarations stay with your licensed broker; we make sure they receive complete, consistent paperwork.',
+          whatYouGet:
+            'Fewer documentation-related holds, an auditable file for every shipment, and a clear record of what was checked and when.'
+        },
+        {
+          slug: 'warehouse-inventory',
+          meta: {
+            title: 'Warehouse and Inventory Coordination — Norvenzia',
+            description:
+              'Coordination of inbound receipts, stock records, and third-party warehouse activity so inventory data matches what is physically on the shelf.'
+          },
+          h1: 'Warehouse and Inventory Coordination',
+          cardBlurb:
+            'Inbound receipt coordination, stock record accuracy, and 3PL liaison to keep inventory data and physical stock aligned.',
+          problem:
+            'Warehouse and ERP records drift apart quietly: receipts are booked late, transfers go unrecorded, and cycle-count differences sit unexplained—until a stockout or an audit exposes the gap.',
+          whatWeDo:
+            'We coordinate inbound receipts against expected deliveries, reconcile goods-received and stock records between your warehouse or third-party logistics (3PL) provider and your ERP, follow up on discrepancies and cycle-count differences until they are resolved, and report stock accuracy and open exceptions on a regular cadence. The physical handling stays with your warehouse team or 3PL; we manage the information and the follow-up.',
+          whatYouGet:
+            'Inventory records you can trust, discrepancies closed rather than carried forward, and one accountable point of contact between your procurement team and your warehouse or 3PL.'
+        }
+      ],
+      cardBlurb:
+        'Freight booking, carrier management, shipment tracking, trade documentation, and warehouse coordination—end to end.'
     },
 
     {
