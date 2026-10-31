@@ -273,17 +273,9 @@
       attribute isn't present, so it's safe to load unconditionally rather
       than gating it per page. %>
   <script src="/js/letter-reveal.js?v=<%= v %>" defer></script>
-  <%# Smooth scroll on every page except /intelligence, whose map handles its own wheel. %>
-  <% if (currentPath.indexOf('/intelligence') !== 0) { %>
-    <script src="/js/vendor/lenis.min.js?v=<%= v %>" defer></script>
-    <script src="/js/smooth-scroll.js?v=<%= v %>" defer></script>
-  <% } %>
   <%# Homepage-only behaviours — no point shipping these to every page. %>
   <% if (currentPath === '/') { %>
     <script src="/js/accordion.js?v=<%= v %>" defer></script>
-    <script src="/js/vendor/three.r143.min.js?v=<%= v %>" defer></script>
-    <script src="/js/vendor/three-r143-postprocessing.js?v=<%= v %>" defer></script>
-    <script src="/js/hero-globe.js?v=<%= v %>" defer></script>
   <% } %>
 </body>
 </html>

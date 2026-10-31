@@ -19,15 +19,3 @@ bundle (exposes a global `d3`), unmodified, downloaded from
 `unpkg.com/d3@7.9.0/dist/d3.min.js`. Used by the Sweden Trade Intelligence
 scrollytelling story (`public/js/story.js`) for the sticky-graphic
 transitions (enter/update/exit) that page's narrative depends on.
-
-`three.r143.min.js` + `three-r143-postprocessing.js` — [three.js](https://threejs.org)
-r0.143.0, MIT. The official UMD build (global `THREE`), unmodified, plus the
-matching non-module add-ons from `examples/js/` (CopyShader,
-LuminosityHighPassShader, EffectComposer, MaskPass, ShaderPass, RenderPass,
-UnrealBloomPass) concatenated in dependency order into one file. Loaded as plain
-scripts, not ES modules, so they run under `script-src 'self'` with no importmap.
-Used only by the homepage hero globe (`public/js/hero-globe.js`).
-
-`lenis.min.js` — [Lenis](https://lenis.darkroom.engineering) v1.3.23, MIT. Official
-UMD build (global `Lenis`), unmodified. Used by `public/js/smooth-scroll.js`
-on every page except `/intelligence`.

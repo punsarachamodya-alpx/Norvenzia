@@ -40,31 +40,6 @@
   </div>
 </section>
 
-<%# At-a-glance tiles. Every figure is counted from the site's own content data
-    (divisions + expertise list), never typed in, so it can't drift from what
-    the pages below actually list. %>
-<% var liveDivisions = (typeof divisions !== 'undefined' ? divisions : []).filter(function (d) { return d.status === 'live'; });
-   var capabilityCount = liveDivisions.reduce(function (n, d) { return n + (d.capabilities ? d.capabilities.length : 0); }, 0);
-   var glance = [
-     { value: liveDivisions.length, label: 'Divisions live today' },
-     { value: page.services.expertise.length, label: 'Areas of expertise' },
-     { value: capabilityCount, label: 'Service capabilities' }
-   ].filter(function (g) { return g.value > 0; }); %>
-<% if (glance.length) { %>
-<section class="home-glance" aria-label="Norvenzia at a glance">
-  <div class="shell">
-    <div class="glance-grid reveal-group">
-      <% glance.forEach(function (g) { %>
-        <div class="glance-tile">
-          <span class="glance-tile__value"><%= g.value %></span>
-          <span class="glance-tile__label"><%= g.label %></span>
-        </div>
-      <% }); %>
-    </div>
-  </div>
-</section>
-<% } %>
-
 <%# 3.3 — Homepage expertise list %>
 <section class="home-section" id="services">
   <div class="shell home-section__inner">
@@ -76,7 +51,7 @@
         <p class="expertise-intro__body"><%= page.services.body %></p>
       </div>
 
-      <div class="expertise-list" data-lenis-prevent tabindex="0" aria-label="Our expertise">
+      <div class="expertise-list" tabindex="0" aria-label="Our expertise">
         <% page.services.expertise.forEach(function (item) { %>
           <article class="expertise-card">
             <span class="expertise-card__icon"><%- include('partials/expertise-icon', { slug: item.slug }) %></span>
