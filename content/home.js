@@ -27,7 +27,7 @@ module.exports = {
       'Apparel Manufacturing',
       'Footwear Manufacturing'
     ],
-    markets: 'Europe · Norway · Australia · New Zealand · United States'
+    markets: 'EU · Norway · UK · Australia · New Zealand · United States'
   },
 
   // Who Norvenzia serves — asymmetric photo + copy split.
@@ -144,6 +144,11 @@ module.exports = {
         question: 'What’s the pricing model?',
         answer:
           'Fixed-price modules, quoted in outcome units (not hourly rates). Always 50% deposit upfront. Scope is agreed in writing before we start.'
+      },
+      {
+        question: 'What do you decide, and what do we decide?',
+        answer:
+          'We run the day-to-day work. Anything that commits your company, such as a contract, a payment, a supplier commitment or customer-facing data, is approved by a named person on your side before it goes out.'
       }
     ]
   },
@@ -160,7 +165,7 @@ module.exports = {
     headline: 'Tell us what’s struggling. We’ll give it to you straight.',
     body:
       'One email. We’ll come back with a scoped, honest read on whether Norvenzia is the right fit — not a sales deck.',
-    bookingNote: 'Or book a 30-minute call →',
+    bookingNote: 'Or book a free 30-minute Discovery Call →',
     bookingHref: '/contact'
   }
 };

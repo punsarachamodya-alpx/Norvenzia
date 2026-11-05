@@ -74,23 +74,25 @@
 <section class="section">
   <div class="shell">
     <div class="section-head reveal">
-      <span class="eyebrow"><%= page.tiers.eyebrow %></span>
-      <h2 class="display-2"><%= page.tiers.headline %></h2>
-      <p class="lede"><%= page.tiers.body %></p>
+      <h2 class="display-2"><%= page.approval.headline %></h2>
+      <p class="lede"><%= page.approval.body %></p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="shell">
+    <div class="section-head reveal">
+      <h2 class="display-2"><%= page.start.headline %></h2>
     </div>
 
-    <div class="tier-cards reveal-group">
-      <% page.tiers.items.forEach(function (t) { %>
-        <article class="tier-card">
-          <h3 class="tier-card__name"><%= t.name %></h3>
-          <p class="tier-card__body"><%= t.summary %></p>
-          <ul class="service-row__list" style="margin-top:0.8rem;">
-            <% t.includes.forEach(function (i) { %>
-              <li><%= i %></li>
-            <% }); %>
-          </ul>
-          <a class="tier-card__link" href="/contact"><%= page.tiers.ctaLabel %> →</a>
-        </article>
+    <div class="steps">
+      <% page.start.steps.forEach(function (s, i) { %>
+        <div class="step reveal">
+          <div class="step__number">0<%= i + 1 %></div>
+          <h3 class="step__title"><%= s.title %></h3>
+          <p class="step__body"><%= s.body %></p>
+        </div>
       <% }); %>
     </div>
   </div>

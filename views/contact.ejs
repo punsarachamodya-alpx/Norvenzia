@@ -66,6 +66,11 @@
             <% }); %>
 
             <button type="submit" class="btn btn--primary"><%= page.submitLabel %></button>
+            <% if (page.privacyNote) { %>
+              <p class="form-privacy-note" style="margin-top:1rem;font-size:0.85rem;color:var(--ink-muted);">
+                <%= page.privacyNote.before %><a href="<%= page.privacyNote.href %>" style="text-decoration:underline;"><%= page.privacyNote.linkLabel %></a><%= page.privacyNote.after %>
+              </p>
+            <% } %>
           </form>
         </div>
 

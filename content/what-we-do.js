@@ -86,53 +86,38 @@ module.exports = {
     }
   ],
 
-  tiers: {
-    eyebrow: 'Engagement tiers',
-    headline: 'Launch, Scale, Command.',
+  // Shown below the three divisions on /services.
+  approval: {
+    headline: 'What we prepare. What you approve.',
     body:
-      'Every engagement is scoped and priced against your actual process, so we don’t publish rate cards. Tell us what you run today and we’ll come back with a scoped proposal.',
-    items: [
+      'We prepare and run the work. You approve anything that commits your business: contracts, payments, supplier commitments, and data that goes to your customers. Nothing in those four areas goes out without sign-off from a named person on your side.'
+  },
+
+  start: {
+    headline: 'How an engagement starts',
+    steps: [
       {
-        name: 'Launch',
-        summary:
-          'For teams starting with a single defined process (PO management or supplier onboarding, for example).',
-        includes: [
-          'One core process',
-          'Dedicated analyst',
-          'Monthly reporting',
-          'Documented SOP + QA loop'
-        ]
+        title: 'Discovery Call',
+        body:
+          'A free 30-minute call. We map where your purchasing work gets stuck and agree whether a pilot makes sense.'
       },
       {
-        name: 'Scale',
-        summary:
-          'For teams running several procurement and analytics workflows in parallel.',
-        includes: [
-          'Multiple processes',
-          'Dedicated analyst team',
-          'Quarterly business reviews',
-          'Custom KPI dashboards'
-        ]
+        title: 'Fixed-price pilot',
+        body:
+          'One process, scope agreed in writing, 50% deposit before work starts.'
       },
       {
-        name: 'Command',
-        summary:
-          'For teams that want Norvenzia embedded across procurement and analytics end to end.',
-        includes: [
-          'Full Operations + Analytics scope',
-          'Embedded delivery team',
-          'Quarterly business reviews',
-          'Master data & ERP administration'
-        ]
+        title: 'Ongoing operation',
+        body:
+          'Fixed-price modules, weekly reporting, and any change in scope agreed in writing.'
       }
-    ],
-    ctaLabel: 'Contact us'
+    ]
   },
 
   closing: {
     headline: 'Ready to scope your engagement?',
     body:
       'A discovery call is the fastest way to find out whether this model fits your operation.',
-    cta: { label: 'Book a Call', href: '/contact' }
+    cta: { label: 'Book a Discovery Call', href: '/contact' }
   }
 };

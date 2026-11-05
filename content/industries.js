@@ -99,7 +99,8 @@ module.exports = {
     eyebrow: 'Is this a fit?',
     headline: 'Where Norvenzia works best.',
     criteria: [
-      'You run 20–500 employees, procurement has outgrown the person who set it up, and you have a defined (or semi-defined) supply chain process to build on.',
+      'A real purchasing flow: regular purchase orders and a supplier base you manage today.',
+      'Procurement has outgrown the person who set it up, and you have a defined (or semi-defined) supply chain process to build on.',
       'You’re based in the EU, Norway, the UK, Australia, New Zealand, or the United States.',
       'You’re ready to plug an external team into your existing tools and workflows, not rebuild everything from scratch.',
       'You’d rather buy senior capacity than carry the cost of hiring it in-house.'
@@ -110,6 +111,6 @@ module.exports = {
     headline: 'Don’t see your industry?',
     body:
       'If your operation runs on procurement and supply chain, we’d still like to hear from you.',
-    cta: { label: 'Book a Call', href: '/contact' }
+    cta: { label: 'Book a Discovery Call', href: '/contact' }
   }
 };

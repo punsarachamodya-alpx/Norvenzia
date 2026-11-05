@@ -14,7 +14,7 @@ Primary header nav, in order:
 3. Industries (`/industries`)
 4. About Us (`/about-us`)
 5. Contact (`/contact`)
-6. "Book a Call" button → `/contact`
+6. "Book a Discovery Call" button → `/contact`
 
 Footer legal links: Privacy Policy (`/privacy`), Cookie Policy (`/cookies`), Terms of Use (`/terms`).
 
@@ -34,7 +34,7 @@ Footer legal links: Privacy Policy (`/privacy`), Cookie Policy (`/cookies`), Ter
 7. FAQ accordion — 6 questions
 8. Contact CTA
 
-Engagement tiers (Launch/Scale/Command) and the old divisions photo-rows are **no longer on the homepage** — both were removed in this round of edits (tiers remain on `/services`; the divisions rows were replaced by the Expertise list).
+The old engagement tiers and the old divisions photo-rows are **no longer on the homepage**; the divisions rows were replaced by the Expertise list. The tiers are retired site-wide and replaced on `/services` by "How an engagement starts".
 
 **Expertise links** (absolute URLs in the source data):
 - Sourcing & Contracting → `/operations/sourcing-contracting`
@@ -52,12 +52,13 @@ Engagement tiers (Launch/Scale/Command) and the old divisions photo-rows are **n
 
 ### Services — `/services`
 
-**Purpose:** Summarize the three live divisions and the engagement tiers.
+**Purpose:** Summarize the three live divisions, what Norvenzia prepares versus what the client approves, and how an engagement starts.
 
 **Sections:**
 - Services hero
 - One block per live division (Operations, Analytics, Risk Management): photo + intro paragraph, then that division's own topic cards nested directly underneath, each linking to the topic page
-- Engagement tiers (Launch/Scale/Command)
+- "What we prepare. What you approve." block
+- "How an engagement starts": Discovery Call, Fixed-price pilot, Ongoing operation (the previous three-tier model is retired and must not appear)
 - Closing contact CTA
 
 All tier-card and topic-card links across this page and the division/topic pages below read **"Explore →"** (renamed from "Learn more →" as of this session). The standalone "Explore {Division}" link that used to sit above the topic cards has been removed — the cards themselves are the way down.

@@ -45,6 +45,6 @@ module.exports = {
     headline: 'Want to see how this maps to your operation?',
     body:
       'We’ll walk through your current process and show you exactly where the model would slot in.',
-    cta: { label: 'Book a Call', href: '/contact' }
+    cta: { label: 'Book a Discovery Call', href: '/contact' }
   }
 };

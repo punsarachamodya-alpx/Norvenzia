@@ -24,6 +24,6 @@ module.exports = {
   // CTA label throughout the site (Brief §9). Lands on the contact form, which
   // sets the right expectation until a real calendar link is wired up
   // (contact.bookingEmbedUrl is still empty).
-  ctaLabel: 'Book a Call',
+  ctaLabel: 'Book a Discovery Call',
   ctaHref: '/contact'
 };

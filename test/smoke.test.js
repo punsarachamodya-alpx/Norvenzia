@@ -79,6 +79,44 @@ test('Home page no longer renders the Launch, Scale, Command engagement tiers', 
   assert.ok(body.includes('Colombo, Sri Lanka - remote delivery worldwide'));
 });
 
+test('Services shows how an engagement starts and what the client approves, with no retired tier names', async () => {
+  const res = await fetch(base + '/services');
+  const body = await res.text();
+  assert.equal(res.status, 200);
+  assert.ok(body.includes('How an engagement starts'));
+  assert.ok(body.includes('Discovery Call'));
+  assert.ok(body.includes('What we prepare. What you approve.'));
+  assert.ok(!/\b(Launch|Command)\b/.test(body));
+});
+
+test('Home lists the UK in its markets, has the approval FAQ, and uses the Discovery Call wording', async () => {
+  const res = await fetch(base + '/');
+  const body = await res.text();
+  assert.equal(res.status, 200);
+  assert.ok(body.includes('EU · Norway · UK · Australia · New Zealand · United States'));
+  assert.ok(body.includes('What do you decide, and what do we decide?'));
+  assert.ok(body.includes('Book a Discovery Call'));
+  assert.ok(!body.includes('Book a Call'));
+});
+
+test('Contact form links the Privacy Policy and Industries sets no company-size limit', async () => {
+  const contact = await (await fetch(base + '/contact')).text();
+  assert.ok(/By sending this form you agree to our <a href="\/privacy"[^>]*>Privacy Policy<\/a>/.test(contact));
+  const industries = await (await fetch(base + '/industries')).text();
+  assert.ok(industries.includes('A real purchasing flow'));
+  assert.ok(!/20[–-]500|employees/.test(industries));
+});
+
+test('Public pages never mention the discontinued team member or the Swedish number', async () => {
+  for (const path of ['/', '/about-us', '/contact', '/services', '/industries']) {
+    const body = await (await fetch(base + path)).text();
+    assert.ok(!body.includes('Viraj'), path);
+    assert.ok(!body.includes('+46'), path);
+    assert.ok(!body.includes('60%'), path);
+    assert.ok(!body.includes('Scandinavia'), path);
+  }
+});
+
 test('About Us shows Our approach after About Norvenzia', async () => {
   const res = await fetch(base + '/about-us');
   const body = await res.text();

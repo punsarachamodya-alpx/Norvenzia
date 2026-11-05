@@ -17,7 +17,7 @@ module.exports = {
     headline: 'Built to be the operations team you haven’t hired yet.',
     photoHint: 'Photo: the Norvenzia team or delivery hub, Colombo — /img/photos/about.jpg',
     body: [
-      'Norvenzia (Private) Limited is a supply chain and procurement operations partner registered in Sri Lanka. We give mid-market manufacturers and industrial suppliers across Scandinavia and Europe an operations bench without the overhead of building one in-house.',
+      'Norvenzia (Private) Limited is a supply chain and procurement operations partner registered in Sri Lanka. Built to serve manufacturers and industrial companies in Europe, Norway, the UK, Australia, New Zealand and the United States.',
       'Client relationships and strategy stay with you, close to your business. Execution runs from our delivery hub in Colombo — where the operational work gets done, every day.'
     ]
   },
@@ -120,7 +120,7 @@ module.exports = {
     // notice back (see views/who-we-are.ejs).
     draftNotice: '',
     story: [
-      'Over years spent in supply chain and procurement leadership across apparel, telecom, 3PL warehousing, and seafood, I saw a recurring pattern: supply chain is the lifeblood of a business controlling upwards of 60% of its working capital and operational cash flow yet most companies struggle to run it efficiently. Managing end-to-end logistics demands immense capital, time, and specialized talent, taking focus away from a company’s core mission.',
+      'Over years spent in supply chain and procurement leadership across apparel, telecom, 3PL warehousing, and seafood, I saw a recurring pattern: procurement and supply chain decisions tie up a large share of a manufacturer’s working capital and cash flow, yet most companies struggle to run them efficiently. Managing end-to-end logistics demands immense capital, time, and specialized talent, taking focus away from a company’s core mission.',
       'I founded Norvenzia to rewrite that narrative.',
       'Norvenzia is a specialized Knowledge Process Outsourcing (KPO) partner engineered to run end-to-end supply chain operations with precision. We don’t assign theorists or textbook consultants; our team consists of operators who have managed real supply chains on the ground. Powered by Sri Lanka’s top-tier logistics talent and operated with 100% operational transparency and direct, real-time client integration, we give global companies the speed, strategy, and cost advantage to scale effortlessly.'
     ]
@@ -138,6 +138,6 @@ module.exports = {
     headline: 'Let’s talk about your operation.',
     body:
       'A discovery call costs you half an hour and tells us both whether there’s a fit.',
-    cta: { label: 'Book a Call', href: '/contact' }
+    cta: { label: 'Book a Discovery Call', href: '/contact' }
   }
 };

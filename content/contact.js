@@ -51,6 +51,14 @@ module.exports = {
 
   submitLabel: 'Send message',
 
+  // Shown under the form; the link words are the only part that links.
+  privacyNote: {
+    before: 'By sending this form you agree to our ',
+    linkLabel: 'Privacy Policy',
+    href: '/privacy',
+    after: '.'
+  },
+
   success: {
     headline: 'Thanks — your message is in.',
     body: 'We respond within one business day, usually sooner.'
